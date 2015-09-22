@@ -3,8 +3,24 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "applesauce": "app.js"
+  },
+  "description": "mix some applesauce into your project and get zero configuration logging from anywhere to share with anyone",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unnamedstudios/applesauce-node.git"
+  },
+  "author": "giuseppe mancone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unnamedstudios/applesauce-node/issues"
+  },
+  "homepage": "https://github.com/unnamedstudios/applesauce-node#readme",
   "dependencies": {
     "express": "^4.13.3",
     "serve-favicon": "^2.3.0",

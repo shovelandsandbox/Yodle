@@ -1,5 +1,6 @@
 var express = require('express'),
   router = express.Router(),
+  config = require('../../config/config.js'),
   mongoose = require('mongoose'),
   Diary = mongoose.model('Diary'),
   Entry = mongoose.model('Entry');
@@ -79,6 +80,20 @@ router.post('/:diary/entries', function (req, res, next) {
   entry.message = req.body.message;
   entry.code = req.body.code;
 
+  var createMethod;
+  if(config.autoCreateDiaries) {
+    createMethod =  {
+      insert: true
+    };
+  } else {
+    createMethod =  {
+      upsert: true
+    };
+  }
+
+console.log(diary);
+
+console.log(mongoose.Types.ObjectId.fromString);
   Diary.update(
     {
       _id: diary
@@ -86,9 +101,10 @@ router.post('/:diary/entries', function (req, res, next) {
     {
       $push: { entries: entry }
     },
-    {
-      insert: true
-    }, function(err, data) {
+    createMethod, function(err, data) {
+console.log(err);
+console.log(data);
+
       if(data.ok) {
         if(data.nModified === 0) {
           res.statusCode = 400;

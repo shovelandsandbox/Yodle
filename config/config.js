@@ -9,6 +9,7 @@ var config = {
       name: 'applesauce'
     },
     port: 3000,
+    //db: 'tingodb:///tmp/applesauce'
     db: 'mongodb://localhost/applesauce-development'
   },
 
