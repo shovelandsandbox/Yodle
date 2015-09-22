@@ -1,15 +1,24 @@
 var path = require('path'),
     rootPath = path.normalize(__dirname + '/..'),
-    env = process.env.NODE_ENV || 'development';
+    env = process.env.NODE_ENV || 'local';
 
 var config = {
-  development: {
+  local: {
     root: rootPath,
     app: {
       name: 'applesauce'
     },
     port: 3000,
     //db: 'tingodb:///tmp/applesauce'
+    db: 'mongodb://localhost/applesauce-development'
+  },
+
+  development: {
+    root: rootPath,
+    app: {
+      name: 'applesauce'
+    },
+    port: 3000,
     db: 'mongodb://localhost/applesauce-development'
   },
 
