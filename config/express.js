@@ -36,10 +36,9 @@ module.exports = function(app, config) {
 
   if(app.get('env') === 'development'){
     app.use(function (err, req, res, next) {
-      res.status(err.status || 500);
-      res.render({
-        status: 500,
-        message: err
+      res.send({
+        status: err.status,
+        message: err.toString()
       });
     });
   }
@@ -47,8 +46,8 @@ module.exports = function(app, config) {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
       res.send({
-        status: 500,
-        message: err
+        status: err.status,
+        message: err.toString()
       });
   });
 

@@ -32,7 +32,7 @@ router.post('/', function (req, res, next) {
 });
 
 
-router.get('/:diaries', function (req, res, next) {
+router.get('/:diary', function (req, res, next) {
   var diary = req.params["diary"];
 
   Diary.findOne({
@@ -52,7 +52,7 @@ router.get('/:diaries', function (req, res, next) {
   });
 });
 
-router.get('/:diaries/entries', function (req, res, next) {
+router.get('/:diary/entries', function (req, res, next) {
   var diary = req.params["diary"];
 
   Diary.findOne({
@@ -67,6 +67,32 @@ router.get('/:diaries/entries', function (req, res, next) {
       res.send({
         status: 404,
         message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+      });
+    }
+  });
+});
+
+router.get('/:diary/entries/:entry', function (req, res, next) {
+  var diary = req.params["diary"];
+  var entry = req.params["entry"];
+
+  Diary.findOne({
+    _id: diary
+  }, {
+    'entries': 1
+  }, function(err, diary) {
+    if(diary) {
+      diary.entries.forEach(function(subEntry) {
+        if(subEntry._id == entry) {
+          res.send(subEntry);
+        }
+      });
+
+    } else {
+      res.statusCode = 404;
+      res.send({
+        status: 404,
+        message: 'That Diary is missing! Weird.'
       });
     }
   });
@@ -91,9 +117,6 @@ router.post('/:diary/entries', function (req, res, next) {
     };
   }
 
-console.log(diary);
-
-console.log(mongoose.Types.ObjectId.fromString);
   Diary.update(
     {
       _id: diary
@@ -102,8 +125,6 @@ console.log(mongoose.Types.ObjectId.fromString);
       $push: { entries: entry }
     },
     createMethod, function(err, data) {
-console.log(err);
-console.log(data);
 
       if(data.ok) {
         if(data.nModified === 0) {
@@ -113,7 +134,7 @@ console.log(data);
             message: 'Invalid diary.'
           });
         } else if(data.nModified === 1) {
-          res.writeHead(303, { 'Location': '/diary/' + diary + '/entry/' + entry.id });
+          res.writeHead(303, { 'Location': '/diaries/' + diary + '/entries/' + entry.id });
           res.end();
         } else {
           res.statusCode = 500;

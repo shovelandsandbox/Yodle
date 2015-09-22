@@ -41,6 +41,9 @@ for(var i in userArgs) {
   }
 }
 
+//global.TUNGUS_DB_OPTIONS =  { nativeObjectID: false };
+
+
 if(!daemon) {
   console.log("-d, --daemon                     daemon mode");
   console.log("-p [port], --port [port]         port");

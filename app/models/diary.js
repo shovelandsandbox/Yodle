@@ -2,7 +2,6 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var DiarySchema = new Schema({
-  _id: String,
   users: [ String ],
   entries: [ 'Entry' ]
 });
