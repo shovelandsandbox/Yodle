@@ -19,7 +19,7 @@ var config = {
       name: 'applesauce'
     },
     port: 3000,
-    db: 'mongodb://localhost/applesauce-development'
+    db: process.env.DATABASE
   },
 
   test: {
