@@ -125,7 +125,6 @@ router.post('/:diary/entries', function (req, res, next) {
       $push: { entries: entry }
     },
     createMethod, function(err, data) {
-
       if(data.ok) {
         if(data.nModified === 0) {
           res.statusCode = 400;
