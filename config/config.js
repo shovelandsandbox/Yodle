@@ -18,7 +18,7 @@ var config = {
     app: {
       name: 'applesauce'
     },
-    port: 3000,
+    port: (process.env.PORT || 5000),
     db: process.env.MONGOLAB_URI
   },
 
