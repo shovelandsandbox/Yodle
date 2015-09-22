@@ -8,9 +8,9 @@ var config = {
     app: {
       name: 'applesauce'
     },
-    port: 3000,
+    port: (process.env.PORT || 3000),
     //db: 'tingodb:///tmp/applesauce'
-    db: 'mongodb://localhost/applesauce-development'
+    db: (process.env.DB || 'mongodb://localhost/applesauce-development')
   },
 
   development: {
@@ -18,7 +18,7 @@ var config = {
     app: {
       name: 'applesauce'
     },
-    port: (process.env.PORT || 5000),
+    port: (process.env.PORT || 3000),
     db: process.env.MONGOLAB_URI
   },
 
