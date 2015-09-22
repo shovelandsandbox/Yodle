@@ -29,7 +29,10 @@
     "glob": "^5.0.3",
     "method-override": "^2.3.0",
     "mongoose": "^4.1.8",
-    "morgan": "^1.6.1"
+    "morgan": "^1.6.1",
+    "promise": "^7.0.4",
+    "tingodb": "^0.4.1",
+    "tungus": "0.0.5"
   },
   "devDependencies": {}
 }
