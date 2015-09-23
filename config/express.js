@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 
+var jwt = require('jsonwebtoken');
+
 module.exports = function(app, config) {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
@@ -22,6 +24,34 @@ module.exports = function(app, config) {
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
+
+  app.use(function(req, res, next) {
+    var token = req.headers['x-access-token'];
+
+    if (token) {
+      jwt.verify(token, config.secret, function(err, decoded) {
+        if (err) {
+          return res.json({ success: false, message: 'Failed to authenticate token.' });
+        } else {
+          req.decoded = decoded;
+          next();
+        }
+      });
+
+    } else {
+
+      if(req._parsedUrl.pathname.match(/users\/auth$/)) {
+        next();
+        return;
+      }
+
+      return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+      });
+
+    }
+  });
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach(function (controller) {

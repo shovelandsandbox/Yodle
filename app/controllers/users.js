@@ -2,11 +2,34 @@ var express = require('express'),
   router = express.Router(),
   config = require('../../config/config.js'),
   mongoose = require('mongoose'),
+  jwt = require('jsonwebtoken'),
   User = mongoose.model('User');
 
 module.exports = function (app) {
   app.use('/users', router);
 };
+
+router.post('/auth', function (req, res, next) {
+  User.findOne({
+    email: req.body.email,
+    password: req.body.password
+  }, function(err, user) {
+    if(user) {
+      var token = jwt.sign(user, config.secret, {
+        expiresInMinutes: 1440
+      });
+      res.send({
+        token: token
+      });
+    } else {
+      res.statusCode = 401;
+      res.send({
+        status: 401,
+        message: 'That didn\'t work out in your favor.'
+      });
+    }
+  });
+});
 
 router.get('/', function (req, res, next) {
   User.find(function(err, users) {
