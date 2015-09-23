@@ -37,12 +37,23 @@ applesauce --help
 
 Some of the commands are:
 ```javascript
-# login(username, password);
-# getLogs();
-# diary();
+=============== Setup
+# login(email, password);
+# server(server, port); // future
+# database(host) // future
+# changePassword(newPassword, confirmNewPassword); // future
+# exportConfiguration() // future
+
+=============== Diary manipulation
 # showDiaries(); // future
+# diary();
 # useDiary(diaryId); // future
+# addUser(email); // future
+# getLogs();
+
+=============== Log functions
 # log(level, message, code);
+# query(conditions); // future
 ```
 
 That's it. It's pretty bad. Also it crashes a bunch so don't be scared. Right now the only way to view the logs is through the CLI (and you can't sort or search or limit anything) or directly in your mongoDB.
