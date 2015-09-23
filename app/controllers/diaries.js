@@ -97,10 +97,10 @@ router.post('/:diary/users', function (req, res, next) {
   }, function(err, data) {
       if(data.ok) {
         if(data.nModified === 0) {
-          res.statusCode = 400;
+          res.statusCode = 404;
           res.send({
-            status: 400,
-            message: 'Invalid diary.'
+            status: 404,
+            message: 'Invalid diary - not found.'
           });
         } else if(data.nModified === 1) {
           res.statusCode = 200;
