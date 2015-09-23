@@ -210,10 +210,10 @@ router.post('/:diary/entries', function (req, res, next) {
     createMethod, function(err, data) {
       if(data.ok) {
         if(data.nModified === 0) {
-          res.statusCode = 400;
+          res.statusCode = 404;
           res.send({
-            status: 400,
-            message: 'Invalid diary.'
+            status: 404,
+            message: 'Invalid diary - not found.'
           });
         } else if(data.nModified === 1) {
           res.writeHead(303, { 'Location': '/diaries/' + diary + '/entries/' + entry.id });
