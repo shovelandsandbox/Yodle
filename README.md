@@ -37,7 +37,11 @@ applesauce --help
 
 Some of the commands are:
 ```javascript
+# login(username, password);
 # getLogs();
+# diary();
+# showDiaries(); // future
+# useDiary(diaryId); // future
 # log(level, message, code);
 ```
 
