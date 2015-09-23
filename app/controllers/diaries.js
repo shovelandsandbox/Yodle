@@ -11,7 +11,7 @@ module.exports = function (app) {
 
 router.get('/', function (req, res, next) {
   Diary.find({
-    users: 'test@test.com'
+    users: req.decoded.email
   }, function(err, diaries) {
     res.send(diaries);
   });
@@ -22,7 +22,7 @@ router.get('/:diary', function (req, res, next) {
 
   Diary.findOne({
     _id: diary,
-    users: 'test@test.com'
+    users: req.decoded.email
   }, {
     entries: 1,
     users: 1
@@ -44,7 +44,7 @@ router.get('/:diary/entries', function (req, res, next) {
 
   Diary.findOne({
     _id: diary,
-    users: 'test@test.com'
+    users: req.decoded.email
   }, {
     entries: 1
   }, function(err, diary) {
@@ -65,7 +65,7 @@ router.get('/:diary/users', function (req, res, next) {
 
   Diary.findOne({
     _id: diary,
-    users: 'test@test.com'
+    users: req.decoded.email
   }, {
     entries: 1
   }, function(err, diary) {
@@ -87,7 +87,7 @@ router.post('/:diary/users', function (req, res, next) {
 
   Diary.update({
     _id: diary,
-    users: 'test@test.com'
+    users: req.decoded.email
   },
   {
     $push: { users: user }
@@ -138,7 +138,7 @@ router.get('/:diary/entries/:entry', function (req, res, next) {
 
   Diary.findOne({
     _id: diary,
-    users: 'test@test.com'
+    users: req.decoded.email
   }, {
     'entries': 1
   }, function(err, diary) {
@@ -164,6 +164,8 @@ router.post('/', function (req, res, next) {
 
   diary.users = req.body.users;
   diary.entries = req.body.entries;
+
+  if(diary.users.indexOf(req.decoded.email) === -1) diary.users.push(req.decoded.email);
 
   diary.save(function(err, data) {
     if(err) {
@@ -200,7 +202,7 @@ router.post('/:diary/entries', function (req, res, next) {
   Diary.update(
     {
       _id: diary,
-      users: 'test@test.com'
+      users: req.decoded.email
     },
     {
       $push: { entries: entry }
