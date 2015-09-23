@@ -31,9 +31,10 @@ All three of the above pieces of data can be json. Do whatever you want with the
 
 ## Command lining it
 To use the CLI:
-```
-applesauce --help
-```
+> applesauce
+
+For help:
+> applesauce --help
 
 Some of the commands are:
 ```javascript
