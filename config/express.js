@@ -31,7 +31,7 @@ module.exports = function(app, config) {
     if (token) {
       jwt.verify(token, config.secret, function(err, decoded) {
         if (err) {
-          return res.json({ success: false, message: 'Failed to authenticate token.' });
+          return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });
         } else {
           req.decoded = decoded;
           next();
@@ -66,6 +66,7 @@ module.exports = function(app, config) {
 
   if(app.get('env') === 'development'){
     app.use(function (err, req, res, next) {
+      res.status(err.status || 500);
       res.send({
         status: err.status,
         message: err.toString()

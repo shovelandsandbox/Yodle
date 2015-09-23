@@ -162,7 +162,7 @@ router.get('/:diary/entries/:entry', function (req, res, next) {
 router.post('/', function (req, res, next) {
   var diary = new Diary();
 
-  diary.users = req.body.users;
+  diary.users = req.body.users ? req.body.users : [];
   diary.entries = req.body.entries;
 
   if(diary.users.indexOf(req.decoded.email) === -1) diary.users.push(req.decoded.email);
@@ -188,16 +188,9 @@ router.post('/:diary/entries', function (req, res, next) {
   entry.message = req.body.message;
   entry.code = req.body.code;
 
-  var createMethod;
-  if(config.autoCreateDiaries) {
-    createMethod =  {
-      insert: true
-    };
-  } else {
-    createMethod =  {
-      upsert: true
-    };
-  }
+  var createMethod = {
+    update: true
+  };
 
   Diary.update(
     {
