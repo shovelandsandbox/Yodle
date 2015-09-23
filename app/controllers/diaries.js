@@ -10,35 +10,22 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
-  Diary.find(function(err, diaries) {
+  Diary.find({
+    users: 'test@test.com'
+  }, function(err, diaries) {
     res.send(diaries);
   });
 });
-
-router.post('/', function (req, res, next) {
-  var diary = new Diary();
-
-  diary.save(diary, function(err, data) {
-    if(err) {
-      res.statusCode = 500;
-      res.send({
-        status: 500,
-        message: 'Weird error to get here. Nothing should be going wrong...'
-      });
-    } else {
-      res.writeHead(201, { 'Location': '/diary/' + diary.id });
-      res.end();
-    }});
-});
-
 
 router.get('/:diary', function (req, res, next) {
   var diary = req.params["diary"];
 
   Diary.findOne({
-    _id: diary
+    _id: diary,
+    users: 'test@test.com'
   }, {
-    entries: 1
+    entries: 1,
+    users: 1
   }, function(err, diary) {
     if(diary) {
       res.send(diary);
@@ -56,7 +43,8 @@ router.get('/:diary/entries', function (req, res, next) {
   var diary = req.params["diary"];
 
   Diary.findOne({
-    _id: diary
+    _id: diary,
+    users: 'test@test.com'
   }, {
     entries: 1
   }, function(err, diary) {
@@ -72,12 +60,85 @@ router.get('/:diary/entries', function (req, res, next) {
   });
 });
 
+router.get('/:diary/users', function (req, res, next) {
+  var diary = req.params["diary"];
+
+  Diary.findOne({
+    _id: diary,
+    users: 'test@test.com'
+  }, {
+    entries: 1
+  }, function(err, diary) {
+    if(diary) {
+      res.send(diary.users);
+    } else {
+      res.statusCode = 404;
+      res.send({
+        status: 404,
+        message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+      });
+    }
+  });
+});
+
+router.post('/:diary/users', function (req, res, next) {
+  var diary = req.params["diary"];
+  var user = req.body.email;
+
+  Diary.update({
+    _id: diary,
+    users: 'test@test.com'
+  },
+  {
+    $push: { users: user }
+  },
+  {
+    update: true
+  }, function(err, data) {
+      if(data.ok) {
+        if(data.nModified === 0) {
+          res.statusCode = 400;
+          res.send({
+            status: 400,
+            message: 'Invalid diary.'
+          });
+        } else if(data.nModified === 1) {
+          res.statusCode = 200;
+          res.send({
+            status: 200,
+            message: "User added"
+          });
+        } else {
+          res.statusCode = 500;
+          res.send({
+            status: 500,
+            message: 'Are you a wizard? You just updated more than one diary with this entry.'
+          });
+        }
+      } else {
+        var error = "Unknown error...";
+
+        // TODO: Log this.... with applesauce?!
+
+        if((err.name === "CastError") && (err.path === '_id')) {
+          error = "Invalid diary id!";
+        }
+        res.statusCode = 500;
+        res.send({
+          status: 500,
+          message: error
+        });
+      }
+  });
+});
+
 router.get('/:diary/entries/:entry', function (req, res, next) {
   var diary = req.params["diary"];
   var entry = req.params["entry"];
 
   Diary.findOne({
-    _id: diary
+    _id: diary,
+    users: 'test@test.com'
   }, {
     'entries': 1
   }, function(err, diary) {
@@ -96,6 +157,25 @@ router.get('/:diary/entries/:entry', function (req, res, next) {
       });
     }
   });
+});
+
+router.post('/', function (req, res, next) {
+  var diary = new Diary();
+
+  diary.users = req.body.users;
+  diary.entries = req.body.entries;
+
+  diary.save(function(err, data) {
+    if(err) {
+      res.statusCode = 500;
+      res.send({
+        status: 500,
+        message: 'Weird error to get here. Nothing should be going wrong...'
+      });
+    } else {
+      res.writeHead(303, { 'Location': '/diaries/' + diary.id });
+      res.end();
+    }});
 });
 
 router.post('/:diary/entries', function (req, res, next) {
@@ -119,7 +199,8 @@ router.post('/:diary/entries', function (req, res, next) {
 
   Diary.update(
     {
-      _id: diary
+      _id: diary,
+      users: 'test@test.com'
     },
     {
       $push: { entries: entry }
