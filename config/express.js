@@ -26,7 +26,10 @@ module.exports = function(app, config) {
   app.use(methodOverride());
 
   app.use(function(req, res, next) {
-    var token = req.headers['x-access-token'];
+    if(req._parsedUrl.pathname.match(/users\/auth$/)) {
+      next();
+      return;
+    }
 
     if (token) {
       jwt.verify(token, config.secret, function(err, decoded) {
@@ -40,17 +43,14 @@ module.exports = function(app, config) {
 
     } else {
 
-      if(req._parsedUrl.pathname.match(/users\/auth$/)) {
-        next();
-        return;
-      }
-
       return res.status(403).send({
         success: false,
         message: 'No token provided.'
       });
 
     }
+
+    var token = req.headers['x-access-token'];
   });
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
