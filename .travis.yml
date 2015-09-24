@@ -1,0 +1,3 @@
+language: javascript
+notifications:
+  slack: shovelandsandbox:CSsJELJ6vB13lbfajTAnow8d
