@@ -26,6 +26,8 @@ module.exports = function(app, config) {
   app.use(methodOverride());
 
   app.use(function(req, res, next) {
+    var token = req.headers['x-access-token'];
+
     if(req._parsedUrl.pathname.match(/users\/auth$/)) {
       next();
       return;
@@ -49,8 +51,6 @@ module.exports = function(app, config) {
       });
 
     }
-
-    var token = req.headers['x-access-token'];
   });
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
