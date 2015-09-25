@@ -1,4 +1,4 @@
-# Applesauce
+# Applesauce [![Build Status](https://travis-ci.org/unnamedstudios/applesauce.svg)](https://travis-ci.org/unnamedstudios/applesauce)
 
 Easy logging for your node applications! You just have to master:
 
