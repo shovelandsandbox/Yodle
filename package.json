@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js -d",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "bin": {
     "applesauce": "lib/cli.js"
@@ -29,6 +29,7 @@
     "glob": "^5.0.3",
     "jsonwebtoken": "^5.0.5",
     "method-override": "^2.3.0",
+    "mocha": "^2.3.3",
     "mongoose": "^4.1.8",
     "morgan": "^1.6.1",
     "promise": "^7.0.4",
