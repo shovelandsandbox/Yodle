@@ -9,7 +9,7 @@ module.exports = function (app) {
   app.use('/diaries', router);
 };
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res, next) {console.log(req.decoded.email);
   Diary.find({
     users: req.decoded.email
   }, function(err, diaries) {
