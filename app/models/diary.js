@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
 
 var DiarySchema = new Schema({
   users: [ String ],
+  name: String,
   entries: [ 'Entry' ]
 });
 

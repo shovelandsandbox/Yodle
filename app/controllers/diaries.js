@@ -164,6 +164,7 @@ router.post('/', function (req, res, next) {
 
   diary.users = req.body.users ? req.body.users : [];
   diary.entries = req.body.entries;
+  diary.name = req.body.name;
 
   if(diary.users.indexOf(req.decoded.email) === -1) diary.users.push(req.decoded.email);
 
