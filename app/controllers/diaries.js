@@ -202,12 +202,13 @@ router.post('/:diary/entries', function (req, res, next) {
   entry.level = req.body.level;
   entry.message = req.body.message;
   entry.code = req.body.code;
+  entry.ip = req.connection.remoteAddress;
 
   var createMethod = {
     update: true
   };
 
-  console.log(req.body.level + ' [' + req.body.code + '] :' + JSON.stringify(req.body.message) + '\n\r');
+  console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message) + '\n\r');
 
   Diary.update(
     {

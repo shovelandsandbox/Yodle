@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
 var EntrySchema = new Schema({
   level: String,
   message: Object,
-  code: String
+  code: String,
+  ip: String
 });
 
 EntrySchema.virtual('date')
