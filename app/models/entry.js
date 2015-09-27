@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var EntrySchema = new Schema({
   level: String,
-  message: String,
+  message: Object,
   code: String
 });
 

@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {console.log(req.decoded.email);
     users: req.decoded.email
   };
 
-  if(name) search['$where'] = 'this._id.str.match(/' + name + '$/)';
+  if(name) search.$where = 'this._id.str.match(/' + name + '$/)';
 
   Diary.find(search, function(err, diaries) {
     res.send(diaries);
@@ -48,22 +48,30 @@ router.get('/:diary', function (req, res, next) {
 router.get('/:diary/entries', function (req, res, next) {
   var diary = req.params["diary"];
 
-  Diary.findOne({
-    _id: diary,
+  var search = {
+    _id: mongoose.Types.ObjectId(diary),
     users: req.decoded.email
-  }, {
-    entries: 1
-  }, function(err, diary) {
-    if(diary) {
-      res.send(diary.entries);
-    } else {
-      res.statusCode = 404;
-      res.send({
-        status: 404,
-        message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
-      });
-    }
-  });
+  };
+
+  for(var i in req.query) {
+    search[i] = req.query[i];
+  }
+
+  Diary.aggregate()
+    .unwind('entries')
+    .match(search)
+    .group({_id: "$_id", entries: {$push: "$entries"}})
+    .exec(function(err, diary) {
+      if(diary.length) {
+        res.send(diary[0].entries);
+      } else {
+        res.statusCode = 404;
+        res.send({
+          status: 404,
+          message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+        });
+      }
+    });
 });
 
 router.get('/:diary/users', function (req, res, next) {
@@ -198,6 +206,8 @@ router.post('/:diary/entries', function (req, res, next) {
   var createMethod = {
     update: true
   };
+
+  console.log(req.body.level + ' [' + req.body.code + '] :' + JSON.stringify(req.body.message) + '\n\r');
 
   Diary.update(
     {
