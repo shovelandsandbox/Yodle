@@ -10,9 +10,15 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {console.log(req.decoded.email);
-  Diary.find({
+  var name = req.query.search;
+
+  var search = {
     users: req.decoded.email
-  }, function(err, diaries) {
+  };
+
+  if(name) search['$where'] = 'this._id.str.match(/' + name + '$/)';
+
+  Diary.find(search, function(err, diaries) {
     res.send(diaries);
   });
 });
