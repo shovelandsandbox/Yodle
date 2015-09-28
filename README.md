@@ -46,15 +46,16 @@ Some of the commands are:
 # exportConfiguration() // future
 
 =============== Diary manipulation
-# showDiaries(); // future
+# getDiaries();
 # diary();
-# useDiary(diaryId); // future
-# addUser(email); // future
-# getLogs();
+# useDiary(diaryId);
+# addUser(email);
+# removeUser(email); // future
 
 =============== Log functions
 # log(level, message, code);
-# query(conditions); // future
+# getLogs(conditions);
+# count(conditions); // future
 ```
 
 That's it. It's pretty bad. Also it crashes a bunch so don't be scared. Right now the only way to view the logs is through the CLI (and you can't sort or search or limit anything) or directly in your mongoDB.
