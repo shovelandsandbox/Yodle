@@ -1,4 +1,4 @@
-# Applesauce [![Build Status](https://travis-ci.org/unnamedstudios/applesauce.svg)](https://travis-ci.org/unnamedstudios/applesauce) [![Code Climate](https://codeclimate.com/github/unnamedstudios/applesauce/badges/gpa.svg)](https://codeclimate.com/github/unnamedstudios/applesauce) [![Test Coverage](https://codeclimate.com/github/unnamedstudios/applesauce/badges/coverage.svg)](https://codeclimate.com/github/unnamedstudios/applesauce/coverage)
+# Applesauce [![Build Status](https://travis-ci.org/unnamedstudios/applesauce.svg)](https://travis-ci.org/unnamedstudios/applesauce) [![Code Climate](https://codeclimate.com/github/unnamedstudios/applesauce/badges/gpa.svg)](https://codeclimate.com/github/unnamedstudios/applesauce) [![Test Coverage](https://codeclimate.com/github/unnamedstudios/applesauce/badges/coverage.svg)](https://codeclimate.com/github/unnamedstudios/applesauce/coverage) [![bitHound Score](https://www.bithound.io/github/unnamedstudios/applesauce/badges/score.svg)](https://www.bithound.io/github/unnamedstudios/applesauce)
 
 Easy logging for your node applications! You just have to master:
 
