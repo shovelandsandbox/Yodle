@@ -7,3 +7,6 @@ addons:
         repo_token: 0612f5c3e3167a334d54e0b2391b1d8e4eb01a8b7e540366e2b6b6dda9958fd2
 after_script:
   - codeclimate-test-reporter < lcov.info
+script:
+  - "npm test --coverage"
+  - "node ./node_modules/.bin/istanbul check-coverage --statements 90 --branches 90 --lines 90 --functions 90"
