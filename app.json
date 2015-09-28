@@ -1,0 +1,12 @@
+{
+  "name":"applesauce",
+  "scripts":{},
+  "env":{
+    "NODE_ENV":{
+      "required":true
+    }
+  },
+  "addons":[
+    "mongolab"
+  ]
+}
