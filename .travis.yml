@@ -9,4 +9,5 @@ after_script:
   - codeclimate-test-reporter < lcov.info
 script:
   - "npm test --coverage"
+  - "node ./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha"
   - "node ./node_modules/.bin/istanbul check-coverage --statements 90 --branches 90 --lines 90 --functions 90"
