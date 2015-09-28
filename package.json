@@ -34,7 +34,8 @@
     "morgan": "^1.6.1",
     "promise": "^7.0.4",
     "tingodb": "^0.4.1",
-    "tungus": "0.0.5"
+    "tungus": "0.0.5",
+    "istanbul": "0.3.21"
   },
   "devDependencies": {}
 }
