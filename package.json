@@ -7,7 +7,7 @@
     "test": "mocha"
   },
   "bin": {
-    "applesauce": "lib/cli.js"
+    "applesauce": "lib/bin.js"
   },
   "description": "mix some applesauce into your project and get zero configuration logging from anywhere to share with anyone",
   "main": "index.js",

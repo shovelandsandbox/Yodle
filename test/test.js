@@ -1,10 +1,12 @@
 var assert = require("assert");
 
-describe('Array', function() {
-	describe('#indexOf()', function() {
-		it('should return -1 when the value is not present', function() {
-			assert.equal(-1, [1, 2, 3].indexOf(5));
-			assert.equal(-1, [1, 2, 3].indexOf(0));
+var Cli = require("../lib/cli.js");
+var cli = new Cli();
+describe('Cli', function() {
+	describe('#isInt(n)', function() {
+		it('should return true if n is an int', function() {
+			assert.equal(true, cli.isInt(5));
+			assert.equal(false, cli.isInt(0.4));
 		});
 	});
 });
