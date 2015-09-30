@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js -d",
-    "test": "mocha"
+    "test": "node ./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha"
   },
   "bin": {
     "applesauce": "lib/bin.js"
@@ -34,8 +34,9 @@
     "morgan": "^1.6.1",
     "promise": "^7.0.4",
     "tingodb": "^0.4.1",
-    "tungus": "0.0.5",
-    "istanbul": "0.3.21"
+    "tungus": "0.0.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "istanbul": "0.3.21"
+   }
 }
