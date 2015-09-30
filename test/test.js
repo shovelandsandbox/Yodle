@@ -16,6 +16,33 @@ describe('Cli', function() {
 
 describe('Cli', function() {
   describe('#configure(n)', function() {
+    it('should fail with -1, invalid port', function() {
+      var config = cli.configure(['-p', 'invalid']);
+      assert.equal(-1, config);
+    });
+  });
+});
+
+describe('Cli', function() {
+  describe('#configure(n)', function() {
+    it('should fail with -2, invalid mongo serger', function() {
+      var config = cli.configure(['-m']);
+      assert.equal(-2, config);
+    });
+  });
+});
+
+describe('Cli', function() {
+  describe('#configure(n)', function() {
+    it('should fail with -3, displaying help', function() {
+      var config = cli.configure(['-?']);
+      assert.equal(-3, config);
+    });
+  });
+});
+
+describe('Cli', function() {
+  describe('#configure(n)', function() {
     it('should return defaults', function() {
       var config;
 
