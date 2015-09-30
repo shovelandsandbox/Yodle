@@ -38,7 +38,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:user', function (req, res, next) {
-  var user = req.params["user"];
+  var user = req.params.user;
 
   User.findOne({
     _id: user
@@ -80,7 +80,7 @@ router.post('/', function (req, res, next) {
 
 
 router.patch('/:user', function (req, res, next) {
-  var user = req.params["user"];
+  var user = req.params.user;
 
   var data = {};
   if(req.body.email) data.email = req.body.email;

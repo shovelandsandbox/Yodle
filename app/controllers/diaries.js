@@ -24,7 +24,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:diary', function (req, res, next) {
-  var diary = req.params["diary"];
+  var diary = req.params.diary;
 
   Diary.findOne({
     _id: diary,
@@ -46,7 +46,7 @@ router.get('/:diary', function (req, res, next) {
 });
 
 router.get('/:diary/entries', function (req, res, next) {
-  var diary = req.params["diary"];
+  var diary = req.params.diary;
 
   var search = {
     _id: mongoose.Types.ObjectId(diary),
@@ -75,7 +75,7 @@ router.get('/:diary/entries', function (req, res, next) {
 });
 
 router.get('/:diary/users', function (req, res, next) {
-  var diary = req.params["diary"];
+  var diary = req.params.diary;
 
   Diary.findOne({
     _id: diary,
@@ -96,7 +96,7 @@ router.get('/:diary/users', function (req, res, next) {
 });
 
 router.post('/:diary/users', function (req, res, next) {
-  var diary = req.params["diary"];
+  var diary = req.params.diary;
   var user = req.body.email;
 
   Diary.update({
@@ -147,8 +147,8 @@ router.post('/:diary/users', function (req, res, next) {
 });
 
 router.get('/:diary/entries/:entry', function (req, res, next) {
-  var diary = req.params["diary"];
-  var entry = req.params["entry"];
+  var diary = req.params.diary;
+  var entry = req.params.entry;
 
   Diary.findOne({
     _id: diary,
@@ -196,7 +196,7 @@ router.post('/', function (req, res, next) {
 });
 
 router.post('/:diary/entries', function (req, res, next) {
-  var diary = req.params["diary"];
+  var diary = req.params.diary;
 
   var entry = new Entry();
   entry.level = req.body.level;

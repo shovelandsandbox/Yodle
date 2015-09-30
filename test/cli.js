@@ -1,6 +1,5 @@
 var assert = require("assert");
 var fs = require('fs');
-var Promise = require('promise');
 
 var Cli = require("../lib/commands/cli.js");
 var cli = new Cli();
