@@ -86,14 +86,16 @@ describe('Cli', function() {
 describe('Cli', function() {
 	describe('#execute(executable, command, callback)', function() {
 		it('files off command on executable and calls callback', function() {
-      cli.execute({
+      var applesauce = {
         command: function() {
           return new Promise(function (_resolve, _reject) {
             global.testingValue = "123";
             _resolve();
           });
         }
-      }, 'command()', function() {
+      };
+
+      cli.execute(applesauce, 'command()', function() {
         assert.equal('123', global.testingValue);
       });
 
@@ -129,7 +131,7 @@ describe('Cli', function() {
 describe('Cli', function() {
 	describe('#turnOnPrompt(rl, callback, closedCallback)', function() {
 		it('bye - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
-      var prompt = {
+      var rl = {
         setPrompt: function(value) {this.value = value;},
         prompt: function() {this.prompt = true;},
         close: function() {this.closed = true;},
@@ -139,13 +141,49 @@ describe('Cli', function() {
         }
       };
 
-      cli.turnOnPrompt(prompt, function(command) {
+      cli.turnOnPrompt(rl, function(command) {
         assert.equal(1, 0);
       }, function() {
         assert.equal(1, 1);
       });
 
-      prompt.line('bye');
+      rl.line('bye');
+		});
+	});
+});
+
+describe('Cli', function() {
+	describe('#startCli(savePath, rl, applesauce, exit)', function() {
+		it('emulate the main function', function() {
+      var rl = {
+        setPrompt: function(value) {this.value = value;},
+        prompt: function() {this.prompt = true;},
+        close: function() {this.closed = true;},
+        on: function(event, callback) {
+          this[event] = callback;
+          return this;
+        }
+      };
+
+      rl.on('line', function(command) {
+        if (command === "bye") rl.close();
+        else callback(command);
+      });
+
+      var applesauce = {
+        command: function() {
+          return new Promise(function (_resolve, _reject) {
+            global.testingValue = "123";
+            _resolve();
+          });
+        }
+      };
+
+      cli.startCli('/tmp/test', rl, applesauce, function() {
+        assert.equal(1, 1);
+      });
+
+      rl.line('bye');
 		});
 	});
 });
