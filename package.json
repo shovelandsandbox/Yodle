@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js -d",
+    "start": "node app.js",
     "test": "node ./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha"
   },
   "bin": {
