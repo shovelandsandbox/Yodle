@@ -1,0 +1,1 @@
+{"DAEMON":false,"PORT":"3000","HOST":"localhost","DB":"mongodb://localhost/applesauce-development","DIARY":null,"TOKEN":null}
