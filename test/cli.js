@@ -1,7 +1,7 @@
 var assert = require("assert");
 var fs = require('fs');
 
-var Cli = require("../lib/commands/cli.js");
+var Cli = require("../lib/cli/index.js");
 var cli = new Cli();
 
 describe('Cli', function() {
