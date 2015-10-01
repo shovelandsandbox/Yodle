@@ -165,7 +165,7 @@ describe('Cli', function() {
       };
 
       var applesauce = {
-        command: function() {
+        endit: function() {
           return new Promise(function (_resolve, _reject) {
             assert.equal(1, 1);
           });
@@ -174,7 +174,7 @@ describe('Cli', function() {
 
       cli.startCli(rl, applesauce, null);
 
-      rl.line('command');
+      rl.line('endit()');
 		});
 	});
 });
