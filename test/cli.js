@@ -70,18 +70,18 @@ describe('Cli', function() {
 	});
 });
 
-describe('Cli', function() {
-	describe('#loadFromFile(n)', function() {
-		it('will load from file', function() {
-      fs.writeFile('/tmp/test', "success");
-
-      cli.loadFromFile('/tmp/test', function() {
-        assert.equal('success', global.applesauce.token);
-      });
-
-		});
-	});
-});
+//describe('Cli', function() {
+//	describe('#loadFromFile(n)', function() {
+//		it('will load from file', function() {
+//      fs.writeFile('/tmp/test', "success");
+//
+//      cli.loadFromFile('/tmp/test', function() {
+//        assert.equal('success', global.applesauce.token);
+//      });
+//
+//		});
+//	});
+//});
 
 describe('Cli', function() {
 	describe('#execute(executable, command, callback)', function() {
@@ -107,7 +107,7 @@ describe('Cli', function() {
 		it('command - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
       var prompt = {
         setPrompt: function(value) {this.value = value;},
-        prompt: function() {this.prompt = true;},
+        prompt: function() {this.prompted = true;},
         close: function() {this.closed = true;},
         on: function(event, callback) {
           this[event] = callback;
@@ -156,7 +156,7 @@ describe('Cli', function() {
 		it('emulate the main function', function() {
       var rl = {
         setPrompt: function(value) {this.value = value;},
-        prompt: function() {this.prompt = true;},
+        prompt: function() {this.prompted = true;},
         close: function() {this.closed = true;},
         on: function(event, callback) {
           this[event] = callback;
@@ -164,25 +164,17 @@ describe('Cli', function() {
         }
       };
 
-      rl.on('line', function(command) {
-        if (command === "bye") rl.close();
-        else callback(command);
-      });
-
       var applesauce = {
         command: function() {
           return new Promise(function (_resolve, _reject) {
-            global.testingValue = "123";
-            _resolve();
+            assert.equal(1, 1);
           });
         }
       };
 
-      cli.startCli('/tmp/test', rl, applesauce, function() {
-        assert.equal(1, 1);
-      });
+      cli.startCli(rl, applesauce, null);
 
-      rl.line('bye');
+      rl.line('command');
 		});
 	});
 });
