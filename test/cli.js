@@ -46,10 +46,10 @@ describe('Cli', function() {
       var config;
 
       config = cli.configure();
-      assert.equal('localhost', config.HOST);
-      assert.equal(3000, config.PORT);
-      assert.equal(false, config.DAEMON);
-      assert.equal('mongodb://localhost/applesauce-development', config.DB);
+      assert.equal(null, config.HOST);
+      assert.equal(null, config.PORT);
+      assert.equal(null, config.DAEMON);
+      assert.equal(null, config.DB);
       assert.equal(null, config.DIARY);
     });
   });
