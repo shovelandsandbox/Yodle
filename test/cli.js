@@ -85,18 +85,20 @@ describe('Cli', function() {
 
 describe('Cli', function() {
 	describe('#execute(executable, command, callback)', function() {
-		it('files off command on executable and calls callback', function() {
+		it('fires off command on executable and calls callback', function() {
+      var testingValue;
+
       var applesauce = {
         command: function() {
           return new Promise(function (_resolve, _reject) {
-            global.testingValue = "123";
+            testingValue = "123";
             _resolve();
           });
         }
       };
 
       cli.execute(applesauce, 'command()', function() {
-        assert.equal('123', global.testingValue);
+        assert.equal('123', testingValue);
       });
 
 		});
