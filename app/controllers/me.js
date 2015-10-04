@@ -2,32 +2,45 @@ var express = require('express'),
   router = express.Router(),
   config = require('../../config/config.js'),
   mongoose = require('mongoose'),
-  User = mongoose.model('Diary');
+  User = mongoose.model('User');
 
 module.exports = function (app) {
   app.use('/me', router);
 };
 
 router.get('/', function (req, res, next) {
-  var name = req.query.search;
-
   var search = {
-    email: req.decoded.email
+    _id: req.decoded._id
   };
-  
+
   User.findOne(search, function(err, user) {
     res.send(user);
   });
 });
 
-router.post('/me', function (req, res, next) {
-  var email = req.body.email;
+router.post('/', function (req, res, next) {
+  var email = req.body.email ? req.body.email : '';
+
+  if(email === req.decoded.email) {
+    res.send({
+      message: 'email is unchanged'
+    });
+    return;
+  }
+
+
+  if(!email.match(/.+@.+\..+/)) {
+    res.send({
+      message: 'no way is that email valid'
+    });
+    return;
+  }
 
   User.update({
-    users: req.decoded.email
+    _id: req.decoded._id
   },
   {
-    $push: { email: email }
+    email: email
   },
   {
     update: true
@@ -56,7 +69,7 @@ router.post('/me', function (req, res, next) {
         var error = "Unknown error...";
 
         // TODO: Log this.... with applesauce?!
-
+console.log(err);
         res.statusCode = 500;
         res.send({
           status: 500,
