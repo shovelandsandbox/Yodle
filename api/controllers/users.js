@@ -5,14 +5,18 @@ var express = require('express'),
   jwt = require('jsonwebtoken'),
   User = mongoose.model('User');
 
-module.exports = function (app) {
-  app.use('/users', router);
+module.exports = {
+  auth: auth,
+  listUsers: listUsers,
+  createUser: createUser,
+  editUser: editUser,
+  getUser: getUser
 };
 
-router.post('/auth', function (req, res, next) {
+function auth(req, res) {
   User.findOne({
-    email: req.body.email,
-    password: req.body.password
+    email: req.swagger.params.credentials.value.email,
+    password: req.swagger.params.credentials.value.password
   }, function(err, user) {
     if(user) {
       var token = jwt.sign(user, config.secret, {
@@ -25,19 +29,19 @@ router.post('/auth', function (req, res, next) {
       res.statusCode = 401;
       res.send({
         status: 401,
-        message: 'That didn\'t work out in your favor.'
+        message: 'That didn\'t work out in your favor. Invalid user credentials!'
       });
     }
   });
-});
+}
 
-router.get('/', function (req, res, next) {
+function listUsers(req, res) {
   User.find(function(err, users) {
     res.send(users);
   });
-});
+}
 
-router.get('/:user', function (req, res, next) {
+function getUser(req, res) {
   var user = req.params.user;
 
   User.findOne({
@@ -56,9 +60,9 @@ router.get('/:user', function (req, res, next) {
       });
     }
   });
-});
+}
 
-router.post('/', function (req, res, next) {
+function createUser(req, res) {
   var user = new User();
 
   var data = {};
@@ -76,10 +80,10 @@ router.post('/', function (req, res, next) {
       res.writeHead(303, { 'Location': '/users/' + user.id });
       res.end();
     }});
-});
+}
 
 
-router.patch('/:user', function (req, res, next) {
+function editUser(req, res) {
   var user = req.params.user;
 
   var data = {};
@@ -102,4 +106,4 @@ router.patch('/:user', function (req, res, next) {
       });
     }
   });
-});
+}

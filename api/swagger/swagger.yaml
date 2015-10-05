@@ -1,0 +1,105 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Applesauce
+host: localhost:10010
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  X-Access-Token:
+    name: X-Access-Token
+    in: header
+    description: The token to prove you're a user
+    type: apiKey
+security: [
+  {
+  X-Access-Token: []
+  }
+  ]
+paths:
+  /users/auth:
+    x-swagger-router-controller: users
+    post:
+      description: Submits the user\'s credentials in exchange for a token to be used in the \'x-access-token\' header in subsequent requests
+      operationId: auth
+      security: []
+      parameters:
+        - name: credentials
+          in: body
+          description: The credentials of the user to log in
+          schema:
+            $ref: "#/definitions/AuthenticationRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/AuthenticationResponseSuccess"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /users:
+    x-swagger-router-controller: users
+    get:
+      description: Gets all of the users the current user has permission to see
+      operationId: listUsers
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Gets all of the users the current user has permission to see
+      operationId: createUser
+      parameters:
+        - name: user
+          in: body
+          description: User to create
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/User"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+definitions:
+  AuthenticationRequest:
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+  AuthenticationResponseSuccess:
+    properties:
+      token:
+        type: string
+  ErrorResponse:
+    properties:
+      status:
+        type: number
+      message:
+        type: string
+  User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string

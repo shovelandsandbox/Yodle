@@ -5,11 +5,18 @@ var express = require('express'),
   Diary = mongoose.model('Diary'),
   Entry = mongoose.model('Entry');
 
-module.exports = function (app) {
-  app.use('/diaries', router);
+module.exports = {
+  getDiaries: getDiaries,
+  getDiary: getDiary,
+  getDiaryEntries: getDiaryEntries,
+  getDiaryUsers: getDiaryUsers,
+  addDiaryUser: addDiaryUser,
+  getDiaryEntry: getDiaryEntry,
+  createDiary: createDiary,
+  createLog: createLog
 };
 
-router.get('/', function (req, res, next) {
+function getDiaries(req, res, next) {
   var name = req.query.search;
 
   var search = {
@@ -21,9 +28,9 @@ router.get('/', function (req, res, next) {
   Diary.find(search, function(err, diaries) {
     res.send(diaries);
   });
-});
+}
 
-router.get('/:diary', function (req, res, next) {
+function getDiary(req, res, next) {
   var diary = req.params.diary;
 
   Diary.findOne({
@@ -43,9 +50,9 @@ router.get('/:diary', function (req, res, next) {
       });
     }
   });
-});
+}
 
-router.get('/:diary/entries', function (req, res, next) {
+function getDiaryEntries(req, res, next) {
   var diary = req.params.diary;
 
   var search = {
@@ -72,9 +79,9 @@ router.get('/:diary/entries', function (req, res, next) {
         });
       }
     });
-});
+}
 
-router.get('/:diary/users', function (req, res, next) {
+function getDiaryUsers (req, res, next) {
   var diary = req.params.diary;
 
   Diary.findOne({
@@ -93,9 +100,9 @@ router.get('/:diary/users', function (req, res, next) {
       });
     }
   });
-});
+}
 
-router.post('/:diary/users', function (req, res, next) {
+function addDiaryUser(req, res, next) {
   var diary = req.params.diary;
   var user = req.body.email;
 
@@ -144,9 +151,9 @@ router.post('/:diary/users', function (req, res, next) {
         });
       }
   });
-});
+}
 
-router.get('/:diary/entries/:entry', function (req, res, next) {
+function getDiaryEntry(req, res, next) {
   var diary = req.params.diary;
   var entry = req.params.entry;
 
@@ -171,9 +178,9 @@ router.get('/:diary/entries/:entry', function (req, res, next) {
       });
     }
   });
-});
+}
 
-router.post('/', function (req, res, next) {
+function createDiary(req, res, next) {
   var diary = new Diary();
 
   diary.users = req.body.users ? req.body.users : [];
@@ -193,9 +200,9 @@ router.post('/', function (req, res, next) {
       res.writeHead(303, { 'Location': '/diaries/' + diary.id });
       res.end();
     }});
-});
+}
 
-router.post('/:diary/entries', function (req, res, next) {
+function createLog(req, res, next) {
   var diary = req.params.diary;
 
   var entry = new Entry();
@@ -251,4 +258,4 @@ router.post('/:diary/entries', function (req, res, next) {
         });
       }
     });
-});
+}
