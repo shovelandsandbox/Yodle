@@ -22,10 +22,161 @@ security: [
   }
   ]
 paths:
+  /diaries/{diaryId}:
+    x-swagger-router-controller: diaries
+    get:
+      description: Get a diary by id
+      operationId: getDiary
+      parameters:
+        - name: diaryId
+          in: path
+          description: Id of diary to fetch
+          type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/Diary"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /diaries/{diaryId}/entries:
+    x-swagger-router-controller: diaries
+    get:
+      description: Get a diary's entries
+      operationId: getDiaryEntries
+      parameters:
+        - name: diaryId
+          in: path
+          description: Id of diary to fetch entries from
+          type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Entry"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /diaries/{diaryId}/users:
+    x-swagger-router-controller: diaries
+    get:
+      description: Get a diary's users
+      operationId: getDiaryUsers
+      parameters:
+        - name: diaryId
+          in: path
+          description: Id of diary to fetch users from
+          type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /diaries:
+    x-swagger-router-controller: diaries
+    get:
+      description: Get all diary
+      operationId: getDiaries
+      parameters:
+        - name: search
+          in: query
+          description: Partial ID of diary to fetch, must be from the end of the ID
+          type: string
+          required: false
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Diary"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Create a diary
+      operationId: createDiary
+      parameters:
+        - name: diary
+          in: body
+          description: Diary to create
+          schema:
+            $ref: "#/definitions/Diary"
+      responses:
+        303:
+          description: Success
+          headers:
+            Location:
+              description: "Location of new diary"
+              type: string
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /users/{userId}:
+    x-swagger-router-controller: users
+    get:
+      description: Fetch a user
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          description: Id of user to fetch
+          type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/User"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    patch:
+      description: Update a user's email or password
+      operationId: editUser
+      parameters:
+        - name: userId
+          in: path
+          description: Id of user to update
+          type: string
+          required: true
+        - name: user
+          in: body
+          description: User to update with params; all params are optional
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /users/auth:
     x-swagger-router-controller: users
     post:
-      description: Submits the user\'s credentials in exchange for a token to be used in the \'x-access-token\' header in subsequent requests
+      description: Submits the user's credentials in exchange for a token to be used in the 'x-access-token' header in subsequent requests
       operationId: auth
       security: []
       parameters:
@@ -35,7 +186,7 @@ paths:
           schema:
             $ref: "#/definitions/AuthenticationRequest"
       responses:
-        "200":
+        200:
           description: Success
           schema:
             $ref: "#/definitions/AuthenticationResponseSuccess"
@@ -49,7 +200,7 @@ paths:
       description: Gets all of the users the current user has permission to see
       operationId: listUsers
       responses:
-        "200":
+        200:
           description: Success
           schema:
             type: array
@@ -60,7 +211,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
-      description: Gets all of the users the current user has permission to see
+      description: Creates a user
       operationId: createUser
       parameters:
         - name: user
@@ -69,10 +220,14 @@ paths:
           schema:
             $ref: "#/definitions/User"
       responses:
-        "200":
+        303:
           description: Success
+          headers:
+            Location:
+              description: "Location of new user"
+              type: string
           schema:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/SuccessResponse"
         default:
           description: Error
           schema:
@@ -91,6 +246,12 @@ definitions:
     properties:
       token:
         type: string
+  SuccessResponse:
+    properties:
+      status:
+        type: number
+      message:
+        type: string
   ErrorResponse:
     properties:
       status:
@@ -98,8 +259,35 @@ definitions:
       message:
         type: string
   User:
+    type: object
     properties:
       email:
         type: string
       password:
+        type: string
+  Diary:
+    type: object
+    properties:
+      _id:
+        type: string
+      users:
+        type: array
+        items: 
+          type: string
+      name:
+        type: string
+      entries:
+        type: array
+        items:
+          $ref: "#/definitions/Entry"
+  Entry:
+    type: object
+    properties:
+      level:
+        type: string
+      message:
+        type: string
+      code:
+        type: string
+      ip:
         type: string

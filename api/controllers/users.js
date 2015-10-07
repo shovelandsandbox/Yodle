@@ -42,7 +42,7 @@ function listUsers(req, res) {
 }
 
 function getUser(req, res) {
-  var user = req.params.user;
+  var user = req.swagger.params.userId.value;
 
   User.findOne({
     _id: user
@@ -56,7 +56,7 @@ function getUser(req, res) {
       res.statusCode = 404;
       res.send({
         status: 404,
-        message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+        message: 'Are you snooping? We couldn\'t find the user you\'re looking for.'
       });
     }
   });
@@ -77,8 +77,12 @@ function createUser(req, res) {
         message: 'Weird error to get here. Nothing should be going wrong...'
       });
     } else {
-      res.writeHead(303, { 'Location': '/users/' + user.id });
-      res.end();
+      res.statusCode = 303;
+      res.setHeader('Location', '/users/' + user.id);
+      res.send({
+        status: 303,
+        message: 'User created!'
+      });
     }});
 }
 

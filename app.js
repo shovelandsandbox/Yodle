@@ -61,7 +61,8 @@ SwaggerExpress.create({
   	if(!res.headers) res.headers = {};
 
   	res.setHeader('Access-Control-Allow-Origin', '*');
-  	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-Token');
+  	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
+  	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-Token, Location');
 
   	if(req.method === "OPTIONS") {
   		res.statusCode = 200;

@@ -26,13 +26,14 @@ module.exports = function(app, config) {
   app.use(function (err, req, res, next) {
     // TODO: remove console log
     console.log("Error:");
-    console.log(err.toString());
+    if(err.results) console.log(err.results.errors);
+    else console.log(err);
     
     res.status(err.status || 500);
-      res.send({
-        status: err.status || 500,
-        message: err.toString()
-      });
+    res.send({
+      status: err.status || 500,
+      message: err.toString()
+    });
   });
 
 };

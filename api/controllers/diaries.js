@@ -7,17 +7,17 @@ var express = require('express'),
 
 module.exports = {
   getDiaries: getDiaries,
+  createDiary: createDiary,
   getDiary: getDiary,
   getDiaryEntries: getDiaryEntries,
   getDiaryUsers: getDiaryUsers,
   addDiaryUser: addDiaryUser,
   getDiaryEntry: getDiaryEntry,
-  createDiary: createDiary,
   createLog: createLog
 };
 
 function getDiaries(req, res, next) {
-  var name = req.query.search;
+  var name = req.swagger.params.search;
 
   var search = {
     users: req.decoded.email
@@ -31,7 +31,7 @@ function getDiaries(req, res, next) {
 }
 
 function getDiary(req, res, next) {
-  var diary = req.params.diary;
+  var diary = req.swagger.params.diaryId.value;
 
   Diary.findOne({
     _id: diary,
@@ -52,8 +52,33 @@ function getDiary(req, res, next) {
   });
 }
 
+function createDiary(req, res, next) {
+  var diary = new Diary();
+
+  diary.users = req.swagger.params.diary.value.users ? req.swagger.params.diary.value.users : [];
+  diary.entries = req.swagger.params.diary.value.entries;
+  diary.name = req.swagger.params.diary.value.name;
+  
+  if(diary.users.indexOf(req.decoded.email) === -1) diary.users.push(req.decoded.email);
+
+  diary.save(function(err, data) {
+    if(err) {
+      res.statusCode = 500;
+      res.send({
+        status: 500,
+        message: 'Weird error to get here. Nothing should be going wrong...'
+      });
+    } else {
+      res.statusCode = 303;
+      res.setHeader('Location', '/diaries/' + diary.id);
+      res.send({
+          status: 303
+      });
+    }});
+}
+
 function getDiaryEntries(req, res, next) {
-  var diary = req.params.diary;
+  var diary = req.swagger.params.diaryId.value;
 
   var search = {
     _id: mongoose.Types.ObjectId(diary),
@@ -82,7 +107,7 @@ function getDiaryEntries(req, res, next) {
 }
 
 function getDiaryUsers (req, res, next) {
-  var diary = req.params.diary;
+  var diary = req.swagger.params.diaryId.value;
 
   Diary.findOne({
     _id: diary,
@@ -90,7 +115,7 @@ function getDiaryUsers (req, res, next) {
   }, {
     entries: 1
   }, function(err, diary) {
-    if(diary) {
+    if(diary && diary.users) {
       res.send(diary.users);
     } else {
       res.statusCode = 404;
@@ -178,28 +203,6 @@ function getDiaryEntry(req, res, next) {
       });
     }
   });
-}
-
-function createDiary(req, res, next) {
-  var diary = new Diary();
-
-  diary.users = req.body.users ? req.body.users : [];
-  diary.entries = req.body.entries;
-  diary.name = req.body.name;
-
-  if(diary.users.indexOf(req.decoded.email) === -1) diary.users.push(req.decoded.email);
-
-  diary.save(function(err, data) {
-    if(err) {
-      res.statusCode = 500;
-      res.send({
-        status: 500,
-        message: 'Weird error to get here. Nothing should be going wrong...'
-      });
-    } else {
-      res.writeHead(303, { 'Location': '/diaries/' + diary.id });
-      res.end();
-    }});
 }
 
 function createLog(req, res, next) {
