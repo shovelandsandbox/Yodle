@@ -51,8 +51,7 @@ SwaggerExpress.create({
 	    }
     }
   }
-
-
+  
   // install middleware
   app.use(swaggerExpress.metadata());
   app.use(swaggerExpress.security());

@@ -157,6 +157,29 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Remove a user from a diary
+      operationId: removeDiaryUser
+      parameters:
+        - name: diaryId
+          in: path
+          description: Id of diary to modify
+          type: string
+          required: true
+        - name: user
+          in: query
+          description: the user's email to remove
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /diaries:
     x-swagger-router-controller: diaries
     get:

@@ -6,14 +6,15 @@ var express = require('express'),
   Entry = mongoose.model('Entry');
 
 module.exports = {
-  getDiaries: getDiaries,
+  addDiaryUser: addDiaryUser,
   createDiary: createDiary,
+  createLog: createLog,
+  getDiaries: getDiaries,
   getDiary: getDiary,
   getDiaryEntries: getDiaryEntries,
-  getDiaryUsers: getDiaryUsers,
-  addDiaryUser: addDiaryUser,
   getDiaryEntry: getDiaryEntry,
-  createLog: createLog
+  getDiaryUsers: getDiaryUsers,
+  removeDiaryUser: removeDiaryUser
 };
 
 function getDiaries(req, res, next) {
@@ -152,6 +153,57 @@ function addDiaryUser(req, res, next) {
           res.send({
             status: 200,
             message: "User added"
+          });
+        } else {
+          res.statusCode = 500;
+          res.send({
+            status: 500,
+            message: 'Are you a wizard? You just updated more than one diary with this entry.'
+          });
+        }
+      } else {
+        var error = "Unknown error...";
+
+        // TODO: Log this.... with applesauce?!
+
+        if((err.name === "CastError") && (err.path === '_id')) {
+          error = "Invalid diary id!";
+        }
+        res.statusCode = 500;
+        res.send({
+          status: 500,
+          message: error
+        });
+      }
+  });
+}
+
+function removeDiaryUser(req, res, next) {
+  var diary = req.swagger.params.diaryId.value;
+  var user = req.swagger.params.user.value;
+
+  Diary.update({
+    _id: diary,
+    users: req.decoded.email
+  },
+  {
+    $pull: { users: user }
+  },
+  {
+    update: true
+  }, function(err, data) {
+      if(data.ok) {
+        if(data.nModified === 0) {
+          res.statusCode = 404;
+          res.send({
+            status: 404,
+            message: 'Invalid diary or user - not found.'
+          });
+        } else if(data.nModified === 1) {
+          res.statusCode = 200;
+          res.send({
+            status: 200,
+            message: "User removed"
           });
         } else {
           res.statusCode = 500;
