@@ -44,15 +44,15 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /diaries/{diaryId}/entries:
     x-swagger-router-controller: diaries
+    parameters:
+      - name: diaryId
+        in: path
+        description: Id of diary to fetch entries from
+        type: string
+        required: true
     get:
       description: Get a diary's entries
       operationId: getDiaryEntries
-      parameters:
-        - name: diaryId
-          in: path
-          description: Id of diary to fetch entries from
-          type: string
-          required: true
       responses:
         200:
           description: Success
@@ -60,6 +60,53 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Entry"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: post an entry to a diary
+      operationId: createLog
+      parameters:
+        - name: entry
+          in: body
+          description: entry to persist
+          schema:
+            $ref: "#/definitions/Entry"
+      responses:
+        303:
+          description: Success
+          headers:
+            Location:
+              description: "Location of new Entry"
+              type: string
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /diaries/{diaryId}/entries/{entryId}:
+    x-swagger-router-controller: diaries
+    get:
+      description: get an entry from a diary
+      operationId: getDiaryEntry
+      parameters:
+        - name: diaryId
+          in: path
+          description: Id of the diary to look into
+          type: string
+          required: true
+        - name: entryId
+          in: path
+          description: Id of the entry to look into
+          type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/Entry"
         default:
           description: Error
           schema:
@@ -82,6 +129,30 @@ paths:
             type: array
             items:
               type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Add a user to a diary
+      operationId: addDiaryUser
+      parameters:
+        - name: diaryId
+          in: path
+          description: Id of diary to fetch users from
+          type: string
+          required: true
+        - name: user
+          in: body
+          description: the user's email to add
+          required: true
+          schema:
+            $ref: "#/definitions/AddUserRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/SuccessResponse"
         default:
           description: Error
           schema:
@@ -138,7 +209,7 @@ paths:
       parameters:
         - name: userId
           in: path
-          description: Id of user to fetch
+          description: Id of user to fetch. Can be "me" if authenticated
           type: string
           required: true
       responses:
@@ -156,7 +227,7 @@ paths:
       parameters:
         - name: userId
           in: path
-          description: Id of user to update
+          description: Id of user to update. Can be "me" if authenticated
           type: string
           required: true
         - name: user
@@ -233,7 +304,15 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 definitions:
+  AddUserRequest:
+    type: object
+    required:
+      - email
+    properties:
+      email:
+        type: string
   AuthenticationRequest:
+    type: object
     required:
       - email
       - password

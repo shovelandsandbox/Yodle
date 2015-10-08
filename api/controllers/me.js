@@ -50,7 +50,7 @@ router.post('/', function (req, res, next) {
           res.statusCode = 404;
           res.send({
             status: 404,
-            message: 'Invalid user. Did you forget to sent an auth token in your header?'
+            message: 'Invalid user. Did you forget to sent an auth token in your header? Wait, you can\'t get here without it.... PANIC!'
           });
         } else if(data.nModified === 1) {
           res.statusCode = 200;

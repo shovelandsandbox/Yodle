@@ -42,10 +42,12 @@ function listUsers(req, res) {
 }
 
 function getUser(req, res) {
-  var user = req.swagger.params.userId.value;
+  var userId = req.swagger.params.userId.value;
+
+  var realUserId = userId === 'me' ? req.decoded._id : userId;
 
   User.findOne({
-    _id: user
+    _id: realUserId
   }, {
     email: 1,
     password: 1
@@ -66,8 +68,8 @@ function createUser(req, res) {
   var user = new User();
 
   var data = {};
-  if(req.body.email) user.email = req.body.email;
-  if(req.body.password) user.password = req.body.password;
+  if(req.swagger.params.user.value.email) user.email = req.swagger.params.user.value.email;
+  if(req.swagger.params.user.value.password) user.password = req.swagger.params.user.value.password;
 
   user.save(function(err, data) {
     if(err) {
@@ -88,15 +90,69 @@ function createUser(req, res) {
 
 
 function editUser(req, res) {
-  var user = req.params.user;
+  var userId = req.swagger.params.userId.value;
+
+  var realUserId = userId === 'me' ? req.decoded._id : userId;
 
   var data = {};
-  if(req.body.email) data.email = req.body.email;
-  if(req.body.password) data.password = req.body.password;
+  if(req.swagger.params.user.value.email) data.email = req.swagger.params.user.value.email;
+  if(req.swagger.params.user.value.password) data.password = req.swagger.params.user.value.password;
+
+  if(email === req.decoded.email) {
+    res.send({
+      message: 'email is unchanged'
+    });
+    return;
+  }
+
+
+  if(!email.match(/.+@.+\..+/)) {
+    res.send({
+      message: 'no way is that email valid'
+    });
+    return;
+  }
+
 
   User.update({
-    _id: user
+    _id: realUserId
   }, data, function(err, user) {
+    if(data.ok) {
+      if(data.nModified === 0) {
+        res.statusCode = 404;
+
+        var message = 'Are you snooping? We couldn\'t find the diary you\'re looking for.';
+        if(userId === 'me') message = 'Invalid user. Did you forget to sent an auth token in your header?';
+
+        res.send({
+          status: 404,
+          message: message
+        });
+      } else if(data.nModified === 1) {
+        res.statusCode = 200;
+        res.send({
+          status: 200,
+          message: "User Updated"
+        });
+      } else {
+        res.statusCode = 500;
+        res.send({
+          status: 500,
+          message: 'Are you a wizard? You just updated more than one user with this entry.'
+        });
+      }
+    } else {
+      var error = "Unknown error...";
+
+      // TODO: Log this.... with applesauce?!
+console.log(err);
+      res.statusCode = 500;
+      res.send({
+        status: 500,
+        message: error
+      });
+    }
+
     if(user) {
       res.send({
         status: 200,

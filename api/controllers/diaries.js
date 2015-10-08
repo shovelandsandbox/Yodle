@@ -113,7 +113,6 @@ function getDiaryUsers (req, res, next) {
     _id: diary,
     users: req.decoded.email
   }, {
-    entries: 1
   }, function(err, diary) {
     if(diary && diary.users) {
       res.send(diary.users);
@@ -128,8 +127,8 @@ function getDiaryUsers (req, res, next) {
 }
 
 function addDiaryUser(req, res, next) {
-  var diary = req.params.diary;
-  var user = req.body.email;
+  var diary = req.swagger.params.diaryId.value;
+  var user = req.swagger.params.user.value.email;
 
   Diary.update({
     _id: diary,
@@ -179,8 +178,8 @@ function addDiaryUser(req, res, next) {
 }
 
 function getDiaryEntry(req, res, next) {
-  var diary = req.params.diary;
-  var entry = req.params.entry;
+  var diary = req.swagger.params.diaryId.value;
+  var entry = req.swagger.params.entryId.value;
 
   Diary.findOne({
     _id: diary,
@@ -206,12 +205,12 @@ function getDiaryEntry(req, res, next) {
 }
 
 function createLog(req, res, next) {
-  var diary = req.params.diary;
+  var diary = req.swagger.params.diaryId.value;
 
   var entry = new Entry();
-  entry.level = req.body.level;
-  entry.message = req.body.message;
-  entry.code = req.body.code;
+  entry.level = req.swagger.params.entry.value.level;
+  entry.message = req.swagger.params.entry.value.message;
+  entry.code = req.swagger.params.entry.value.code;
   entry.ip = req.connection.remoteAddress;
 
   var createMethod = {
@@ -237,8 +236,11 @@ function createLog(req, res, next) {
             message: 'Invalid diary - not found.'
           });
         } else if(data.nModified === 1) {
-          res.writeHead(303, { 'Location': '/diaries/' + diary + '/entries/' + entry.id });
-          res.end();
+          res.statusCode = 303;
+          res.setHeader('Location', '/diaries/' + diary + '/entries' + entry.id);
+          res.send({
+              status: 303
+          });
         } else {
           res.statusCode = 500;
           res.send({
