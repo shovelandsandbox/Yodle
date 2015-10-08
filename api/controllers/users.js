@@ -98,9 +98,15 @@ function editUser(req, res) {
   if(req.swagger.params.user.value.email) data.email = req.swagger.params.user.value.email;
   if(req.swagger.params.user.value.password) data.password = req.swagger.params.user.value.password;
 
-  if(email === req.decoded.email) {
+  if(data.email === req.decoded.email) {
     res.send({
       message: 'email is unchanged'
+    });
+    return;
+  }
+  if(data.password === req.decoded.password) {
+    res.send({
+      message: 'password is unchanged'
     });
     return;
   }
