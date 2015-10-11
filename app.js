@@ -10,6 +10,12 @@ var express = require('express'),
   // tungus = require('tungus'),
   mongoose = require('mongoose');
 
+var app = express();
+
+// ************************************************************************************
+// Mongoose config
+// ************************************************************************************
+
 mongoose.connect(config.DB);
 var db = mongoose.connection;
 db.on('error', function (err) {
@@ -21,35 +27,44 @@ var models = glob.sync(config.root + '/api/models/*.js');
 models.forEach(function (model) {
   require(model);
 });
-var app = express();
 
+// ************************************************************************************
+// Security functions
+// ************************************************************************************
 
-
-
-function tokenHandler(request, securityDefinition, scopes, callback) {
+function tokenHandler(token, callback) {
   var jwt = require('jsonwebtoken');
-  var token = request.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, config.secret, function(err, decoded) {
+      if (err) {
+        debug("failed authentication");
+        callback(new Error("Failed to authenticate token"), null);
+      } else {
+        debug("authenticated as " + decoded);
+        callback(null, decoded);
+      }
+    });
+  } else {
+    debug("no token provided");
+    callback(new Error("No token provided"), null);
+  }
+}
 
+function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
   if(request._parsedUrl.pathname.match(/users\/auth$/)) {
     return callback();
   }
 
-  if (token) {
-    jwt.verify(token, config.secret, function(err, decoded) {
-      if (err) {
-        return callback(new Error("Failed to authenticate token"));
-      } else {
-        request.decoded = decoded;
-        return callback();
-      }
-    });
-  } else {
-    return callback(new Error("No token provided"));  
-  }
+  tokenHandler(request.headers['x-access-token'], function(err, decoded) {
+    if(err) return callback(err)
+    request.decoded = decoded;
+    callback();
+  });
 }
 
-
-
+// ************************************************************************************
+// Let's set up swagger + CORS
+// ************************************************************************************
 
 SwaggerExpress.create({
   appRoot: __dirname 
@@ -59,7 +74,7 @@ SwaggerExpress.create({
   app.use(swaggerExpress.runner.swaggerTools.swaggerUi());
 
   swaggerExpress.runner.config.swagger.securityHandlers = {
-  	'X-Access-Token': tokenHandler
+  	'X-Access-Token': verifyTokenInHeader
   };
   
   // install middleware
@@ -90,73 +105,44 @@ SwaggerExpress.create({
 
 require('./config/express')(app, config);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// ************************************************************************************
+// It's socket time
+// ************************************************************************************
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-io.use(function(socket, next){
-  console.log(socket);
-  next();
-});
+// io.use(function(socket, next){
+//   next();
+// });
 
 io.on('connection', function (socket) {
-
   socket.auth = false;
   socket.on('authenticate', function(data){
-    //check the auth data sent by the client
-    checkAuthToken(data.token, function(err, success){
+    tokenHandler(data.token, function(err, success){
       if (!err && success){
-        console.log("Authenticated socket ", socket.id);
-        socket.auth = true;
+        debug("Authenticated socket ", socket.id);
+        socket.auth = success;
+      } else {
+        socket.auth = false;
       }
     });
   });
  
-  setTimeout(function(){
+  setTimeout(function() {
     //If the socket didn't authenticate, disconnect it
     if (!socket.auth) {
-      console.log("Disconnecting socket ", socket.id);
+      debug("Disconnecting socket ", socket.id);
       socket.disconnect('unauthorized');
     }
   }, 1000);
 
-
-
-
-
   socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
 });
 
+
+// ************************************************************************************
+// Socket time is over, back to normal time
+// ************************************************************************************
+
 server.listen(config.port);
-
-
-
-
-
-
-
-
-
-
-
-
-// app.listen(config.port, function () {
-//   console.log('Express server listening on port ' + config.port);
-// });
-
