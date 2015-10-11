@@ -11,7 +11,7 @@ var config = {
     secret: 'nobodyknowsthis',
     port: (process.env.PORT || 3000),
     //db: 'tingodb:///tmp/applesauce'
-    db: (process.env.DB || 'mongodb://localhost/applesauce-development')
+    DB: (process.env.DB || 'mongodb://localhost/applesauce-development')
   },
 
   development: {

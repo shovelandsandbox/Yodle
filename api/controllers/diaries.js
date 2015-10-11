@@ -18,7 +18,7 @@ module.exports = {
 };
 
 function getDiaries(req, res, next) {
-  var name = req.swagger.params.search;
+  var name = req.swagger.params.search.value;
 
   var search = {
     users: req.decoded.email
@@ -26,7 +26,11 @@ function getDiaries(req, res, next) {
 
   if(name) search.$where = 'this._id.str.match(/' + name + '$/)';
 
-  Diary.find(search, function(err, diaries) {
+  Diary.find(search).lean().exec(function(err, diaries) {
+    for(var i in diaries) {
+      diaries[i]._id = diaries[i]._id.toString();
+    }
+
     res.send(diaries);
   });
 }
@@ -40,8 +44,9 @@ function getDiary(req, res, next) {
   }, {
     entries: 1,
     users: 1
-  }, function(err, diary) {
+  }).lean().exec(function(err, diary) {
     if(diary) {
+      diary._id = diary._id.toString();
       res.send(diary);
     } else {
       res.statusCode = 404;

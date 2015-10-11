@@ -12,10 +12,20 @@ module.exports = function(app, config) {
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
 
-  // app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));
   app.use(compress());
   app.use(methodOverride());
+
+  app.use('/v1/swagger.json', function(req, res, next) {
+    var yamljs = require('yamljs');
+
+    var fs = require('fs');
+    fs.readFile(__dirname + '/../api/swagger/swagger.yaml', 'utf8', function(err, data) {
+      var swagger = yamljs.parse(data);
+console.log(data);
+      res.send(swagger);
+    });
+  });
 
   app.use(function (req, res, next) {
     var err = new Error('Not Found');
