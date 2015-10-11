@@ -22,7 +22,7 @@ module.exports = function(app, config) {
     var fs = require('fs');
     fs.readFile(__dirname + '/../api/swagger/swagger.yaml', 'utf8', function(err, data) {
       var swagger = yamljs.parse(data);
-console.log(data);
+      
       res.send(swagger);
     });
   });

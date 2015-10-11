@@ -21,7 +21,7 @@ var config = {
     },
     secret: 'nobodyknowsthis',
     port: (process.env.PORT || 3000),
-    db: process.env.MONGOLAB_URI
+    DB: process.env.MONGOLAB_URI
   },
 
   test: {
@@ -31,7 +31,7 @@ var config = {
     },
     secret: 'nobodyknowsthis',
     port: 3000,
-    db: 'mongodb://localhost/applesauce-test'
+    DB: 'mongodb://localhost/applesauce-test'
   },
 
   production: {
@@ -41,7 +41,7 @@ var config = {
     },
     secret: 'nobodyknowsthis',
     port: 3000,
-    db: 'mongodb://localhost/applesauce-production'
+    DB: 'mongodb://localhost/applesauce-production'
   }
 };
 
