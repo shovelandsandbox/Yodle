@@ -6,12 +6,14 @@ var express = require('express'),
   config = require('./config/config'),
   glob = require('glob'),
   SwaggerExpress = require('swagger-express-mw'),
+  debug = require('debug')('applesauce'),
   // tungus = require('tungus'),
   mongoose = require('mongoose');
 
 mongoose.connect(config.DB);
 var db = mongoose.connection;
-db.on('error', function () {
+db.on('error', function (err) {
+  debug(err);
   throw new Error('unable to connect to database at ' + config.db);
 });
 
@@ -111,6 +113,30 @@ io.use(function(socket, next){
 });
 
 io.on('connection', function (socket) {
+
+  socket.auth = false;
+  socket.on('authenticate', function(data){
+    //check the auth data sent by the client
+    checkAuthToken(data.token, function(err, success){
+      if (!err && success){
+        console.log("Authenticated socket ", socket.id);
+        socket.auth = true;
+      }
+    });
+  });
+ 
+  setTimeout(function(){
+    //If the socket didn't authenticate, disconnect it
+    if (!socket.auth) {
+      console.log("Disconnecting socket ", socket.id);
+      socket.disconnect('unauthorized');
+    }
+  }, 1000);
+
+
+
+
+
   socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
     console.log(data);
