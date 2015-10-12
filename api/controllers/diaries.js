@@ -291,6 +291,7 @@ function createLog(req, res, next) {
             message: 'Invalid diary - not found.'
           });
         } else if(data.nModified === 1) {
+          // TODO make util for this
           console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
           global.io.to(diary).emit('log', entry);
           res.statusCode = 303;
