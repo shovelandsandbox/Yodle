@@ -112,6 +112,8 @@ require('./config/express')(app, config);
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+global.io = io;
+
 // io.use(function(socket, next){
 //   next();
 // });
@@ -123,7 +125,10 @@ io.on('connection', function (socket) {
       if (!err && success){
         debug("Authenticated socket ", socket.id);
         socket.auth = success;
+        socket.emit('authenticated');
+        socket.join(data.room);
       } else {
+        debug("Authentication failed for socket");
         socket.auth = false;
       }
     });

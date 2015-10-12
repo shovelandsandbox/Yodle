@@ -274,8 +274,6 @@ function createLog(req, res, next) {
     update: true
   };
 
-  console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message) + '\n\r');
-
   Diary.update(
     {
       _id: diary,
@@ -293,6 +291,8 @@ function createLog(req, res, next) {
             message: 'Invalid diary - not found.'
           });
         } else if(data.nModified === 1) {
+          console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
+          global.io.to(diary).emit('log', entry);
           res.statusCode = 303;
           res.setHeader('Location', '/diaries/' + diary + '/entries' + entry.id);
           res.send({
