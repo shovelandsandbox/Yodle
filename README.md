@@ -39,23 +39,27 @@ For help:
 Some of the commands are:
 ```javascript
 =============== Setup
-# login(email, password);
-# server(server, port); // future
+# login(email, password)
+# server(server, port) // future
 # database(host) // future
-# changePassword(newPassword, confirmNewPassword); // future
-# exportConfiguration() // future
+# changeEmail(newEmail)
+# changePassword(newPassword)
+# writeConfig()
+# resgister(email, password) // future
 
 =============== Diary manipulation
-# getDiaries();
-# diary();
-# useDiary(diaryId);
-# addUser(email);
-# removeUser(email); // future
+# getDiaries()
+# diary(name)
+# useDiary(diaryId)
+# addUser(email)
+# removeUser(email)
+# getUsers()
 
 =============== Log functions
-# log(level, message, code);
-# getLogs(conditions);
-# count(conditions); // future
+# log(level, message, code)
+# getLogs(conditions)
+# count(conditions) // future
+# live()
 ```
 
 That's it. It's pretty bad. Also it crashes a bunch so don't be scared. Right now the only way to view the logs is through the CLI (and you can't sort or search or limit anything) or directly in your mongoDB.
