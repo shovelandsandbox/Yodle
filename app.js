@@ -51,7 +51,8 @@ function tokenHandler(token, callback) {
 }
 
 function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
-  if(request._parsedUrl.pathname.match(/users\/auth$/)) {
+  if(request._parsedUrl.pathname.match(/users\/auth$/) ||
+    request._parsedUrl.pathname.match(/users$/)) {
     return callback();
   }
 
