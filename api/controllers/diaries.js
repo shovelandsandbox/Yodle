@@ -91,17 +91,28 @@ function getDiaryEntries(req, res, next) {
     users: req.decoded.email
   };
 
+  var group = {_id: "$_id", count: {$sum: 1}};
+
+  var metaOnly = false;
   for(var i in req.query) {
-    search[i] = req.query[i];
+    if(i === 'metaOnly') {
+      if(req.query[i] === 'true') metaOnly = true;
+    } else search[i] = req.query[i];
   }
+  if(!metaOnly) group.entries = {$push: "$entries"};
 
   Diary.aggregate()
     .unwind('entries')
     .match(search)
-    .group({_id: "$_id", entries: {$push: "$entries"}})
+    .group(group)
+    .project({
+        _id : 0,
+        count: 1,
+        entries: 1
+    })
     .exec(function(err, diary) {
       if(diary.length) {
-        res.send(diary[0].entries);
+        res.send(diary[0]);
       } else {
         res.statusCode = 404;
         res.send({
@@ -295,7 +306,7 @@ function createLog(req, res, next) {
           console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
           global.io.to(diary).emit('log', entry);
           res.statusCode = 303;
-          res.setHeader('Location', '/diaries/' + diary + '/entries' + entry.id);
+          res.setHeader('Location', '/diaries/' + diary + '/entries/' + entry.id);
           res.send({
               status: 303
           });

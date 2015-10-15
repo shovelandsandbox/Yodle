@@ -81,13 +81,24 @@ paths:
       summary: Get a diary's entries
       description: Pass in the diary id and get back an array of diary entries objects
       operationId: getDiaryEntries
+      parameters:
+        - name: metaOnly
+          in: query
+          required: false
+          description: whether or not to return only the count
+          type: string
       responses:
         200:
           description: Success
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Entry"
+            type: object
+            properties:
+              count:
+                type: number
+              entries:
+                type: array
+                items:
+                  $ref: "#/definitions/Entry"
         default:
           description: Error
           schema:
