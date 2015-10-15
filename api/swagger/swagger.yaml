@@ -22,11 +22,33 @@ security: [
   X-Access-Token: []
   }
   ]
+tags: [
+  {
+    name: diary,
+    description: Diary operations
+  },
+  {
+    name: logging,
+    description: Loggin operations
+  },
+  {
+    name: users,
+    description: User operations
+  },
+  {
+    name: authentication,
+    description: Authentication operations
+  }
+  ]
 paths:
   /diaries/{diaryId}:
     x-swagger-router-controller: diaries
     get:
-      description: Get a diary by id
+      tags: [
+        diary
+        ]
+      summary: Get a diary by id
+      description: Pass in the diary id and get back a diary object
       operationId: getDiary
       parameters:
         - name: diaryId
@@ -52,7 +74,12 @@ paths:
         type: string
         required: true
     get:
-      description: Get a diary's entries
+      tags: [
+        diary,
+        logging
+        ]
+      summary: Get a diary's entries
+      description: Pass in the diary id and get back an array of diary entries objects
       operationId: getDiaryEntries
       responses:
         200:
@@ -66,7 +93,11 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
-      description: post an entry to a diary
+      tags: [
+        diary,
+        logging
+        ]
+      summary: post an entry to a diary
       operationId: createLog
       parameters:
         - name: entry
@@ -90,7 +121,11 @@ paths:
   /diaries/{diaryId}/entries/{entryId}:
     x-swagger-router-controller: diaries
     get:
-      description: get an entry from a diary
+      tags: [
+        diary,
+        logging
+        ]
+      summary: get an entry from a diary
       operationId: getDiaryEntry
       parameters:
         - name: diaryId
@@ -115,7 +150,11 @@ paths:
   /diaries/{diaryId}/users:
     x-swagger-router-controller: diaries
     get:
-      description: Get a diary's users
+      tags: [
+        diary,
+        users
+        ]
+      summary: Get a diary's users
       operationId: getDiaryUsers
       parameters:
         - name: diaryId
@@ -135,7 +174,11 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
-      description: Add a user to a diary
+      tags: [
+        users,
+        diary
+        ]
+      summary: Add a user to a diary
       operationId: addDiaryUser
       parameters:
         - name: diaryId
@@ -159,7 +202,11 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     delete:
-      description: Remove a user from a diary
+      tags: [
+        users,
+        diary
+        ]
+      summary: Remove a user from a diary
       operationId: removeDiaryUser
       parameters:
         - name: diaryId
@@ -184,7 +231,10 @@ paths:
   /diaries:
     x-swagger-router-controller: diaries
     get:
-      description: Get all diary
+      tags: [
+        diary
+        ]
+      summary: Get all diary
       operationId: getDiaries
       parameters:
         - name: search
@@ -204,7 +254,10 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
-      description: Create a diary
+      tags: [
+        diary
+        ]
+      summary: Create a diary
       operationId: createDiary
       parameters:
         - name: diary
@@ -228,7 +281,10 @@ paths:
   /users/{userId}:
     x-swagger-router-controller: users
     get:
-      description: Fetch a user
+      tags: [
+        users
+        ]
+      summary: Fetch a user
       operationId: getUser
       parameters:
         - name: userId
@@ -246,7 +302,10 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     patch:
-      description: Update a user's email or password
+      tags: [
+        users
+        ]
+      summary: Update a user's email or password
       operationId: editUser
       parameters:
         - name: userId
@@ -271,6 +330,11 @@ paths:
   /users/auth:
     x-swagger-router-controller: users
     post:
+      tags: [
+        users,
+        authentication
+        ]
+      summary: Authenticate a user
       description: Submits the user's credentials in exchange for a token to be used in the 'x-access-token' header in subsequent requests
       operationId: auth
       security: []
@@ -292,7 +356,10 @@ paths:
   /users:
     x-swagger-router-controller: users
     get:
-      description: Gets all of the users the current user has permission to see
+      tags: [
+        users
+        ]
+      summary: Gets all of the users the current user has permission to see
       operationId: listUsers
       responses:
         200:
@@ -306,8 +373,13 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
-      description: Creates a user
+      tags: [
+        users
+        ]
+      summary: Creates a user
+      description: Creates a user. Can be done without authentication; this is where you'll create a new user for yourself.
       operationId: createUser
+      security: []
       parameters:
         - name: user
           in: body
