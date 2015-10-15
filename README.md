@@ -40,8 +40,9 @@ Some of the commands are:
 ```javascript
 =============== Setup
 # login(email, password)
-# server(server, port) // future
-# database(host) // future
+# server(server)
+# port(port)
+# database(host)
 # changeEmail(newEmail)
 # changePassword(newPassword)
 # writeConfig()
