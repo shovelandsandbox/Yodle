@@ -46,7 +46,7 @@ Some of the commands are:
 # changeEmail(newEmail)
 # changePassword(newPassword)
 # writeConfig()
-# resgister(email, password) // future
+# user(email, password)
 
 =============== Diary manipulation
 # getDiaries()
@@ -59,7 +59,7 @@ Some of the commands are:
 =============== Log functions
 # log(level, message, code)
 # getLogs(conditions)
-# count(conditions) // future
+# count(conditions)
 # live()
 ```
 
