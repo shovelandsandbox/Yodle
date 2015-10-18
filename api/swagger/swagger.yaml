@@ -17,11 +17,8 @@ securityDefinitions:
     in: header
     description: The token to prove you're a user
     type: apiKey
-security: [
-  {
-  X-Access-Token: []
-  }
-  ]
+security:
+  - X-Access-Token: []
 tags:
   - name: diary
     description: Diary operations
