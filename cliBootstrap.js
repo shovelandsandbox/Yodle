@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-var Cli = require('./cli/index');
+var Cli = require('./lib/cli');
 var cli = new Cli();
 
 // load config from CLI
@@ -36,11 +36,11 @@ else {
       if(global.applesauce.config.PORT) process.env.PORT = global.applesauce.config.PORT;
       if(global.applesauce.config.DB) process.env.DB = global.applesauce.config.DB;
 
-      require('../app.js');
+      require('./server');
     } else {
       var readline = require('readline');
       var rl = readline.createInterface(process.stdin, process.stdout);
-      var applesauce = require('../index');
+      var applesauce = require('./');
 
       cli.startCli(rl, applesauce, function() {
         console.log("goodbye");

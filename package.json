@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "test": "node ./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha"
   },
   "bin": {
-    "applesauce": "lib/bin.js"
+    "applesauce": "cliBootstrap.js"
   },
   "description": "mix some applesauce into your project and get zero configuration logging from anywhere to share with anyone",
   "main": "index.js",
