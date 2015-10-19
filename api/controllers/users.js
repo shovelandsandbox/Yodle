@@ -65,6 +65,7 @@ function getUser(req, res) {
 }
 
 function createUser(req, res) {
+  console.log("test");
   var user = new User();
 
   var data = {};
