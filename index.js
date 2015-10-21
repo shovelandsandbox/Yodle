@@ -1,7 +1,7 @@
 function Applesauce() {}
 
 var glob = require('glob');
-var models = glob.sync(__dirname + '/lib/commands/*.js');
+var commands = glob.sync(__dirname + '/lib/commands/*.js');
 var debug = require('debug')('applesauce');
 	
 Applesauce.prototype.commands = [];
@@ -27,7 +27,7 @@ Applesauce.prototype.execute = function(command, callback) {
 	return false;
 };
 
-models.forEach(function (file) {
+commands.forEach(function (file) {
 	debug('scanned ' + file);
 	var command = require(file);
 
