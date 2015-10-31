@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
 	name: 'count',
 	usage: 'count(query)',
@@ -7,11 +5,10 @@ module.exports = {
 	alias: [
 		'count'
 	],
-	api: function(query) {
-		query = query ? query : {};
-
-		return api.call(query, '/diaries/' + global.applesauce.config.DIARY + '/entries?metaOnly=true', 'GET')
-	 	.then(function(json) {
+	execute: function(applesauce, query) {
+  		query = query ? query : {};
+  		
+		return applesauce.count(query).then(function(json) {
 	   		var output = 'Logs: ' + json.count;
 
 	    	return output;

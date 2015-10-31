@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
   name: 'log',
   usage: 'log("level", "code", "message")',
@@ -7,13 +5,8 @@ module.exports = {
   alias: [
     'log'
   ],
-  api: function(level, code, message) {
-      return api.call({
-          level: level,
-          code: code,
-          message: message
-        }, '/diaries/' + global.applesauce.config.DIARY + '/entries', 'POST')
-        .then(function(json) {
+  execute: function(applesauce, level, code, message) {
+      return applesauce.log(level, code, message).then(function(json) {
           var output = 'Done.';
 
           for(var i in json) {

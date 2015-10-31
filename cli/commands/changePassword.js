@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
 	name: 'changePassword',
 	usage: 'password("new password")',
@@ -9,12 +7,7 @@ module.exports = {
 		'set\spassword',
 		'password'
 	],
-	api: function(password) {
-		return api.call({
-	    	password: password
-	  	}, '/users/me', 'PATCH')
-	    .then(function(json) {
-	    	return json;
-	    });
+	execute: function(applesauce, password) {
+		return applesauce.setPassword(password);
 	}
 };

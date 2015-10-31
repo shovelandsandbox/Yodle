@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
 	name: 'useDiary',
 	usage: 'use("diaryId")',
@@ -8,8 +6,8 @@ module.exports = {
 		'useDiary',
 		'use'
   ],
-  function(name) {
-	  return api.call({}, '/diaries/?' + 'search=' + name, 'GET').then(function(json) {
+  execute: function(applesauce, name) {
+	  return applesauce.then(function(json) {
 	    if(json.length) {
 	      global.applesauce.config.DIARY = json[0]._id;
 	      return 'diary set to ' + global.applesauce.config.DIARY;

@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
   name: 'getLogs',
   usage: 'logs(query)',
@@ -8,11 +6,10 @@ module.exports = {
 		'getLogs',
 		'logs'
 	],
-	api: function(query) {
+	execute: function(applesauce, query) {
   		query = query ? query : {};
 
-  		return api.call(query, '/diaries/' + global.applesauce.config.DIARY + '/entries', 'GET')
-    		.then(function(json) {
+  		return applesauce.logs(query).then(function(json) {
       			var output = 'Logs:';
       
       			for(var i in json.entries) {

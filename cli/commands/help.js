@@ -8,7 +8,7 @@ module.exports = {
         'help',
         '\\?'
     ],
-    api: function() {
+    execute: function() {
         return new Promise(function (_resolve, _reject) {
             var output = '';
             output += '\n\r Commands: (paranthesis are optional. \'Eg: use("5b")\' is identical to \'use "5b"\'';

@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
 	name: 'user',
 	usage: 'user("email", "password")',
@@ -7,12 +5,8 @@ module.exports = {
   alias: [
 		'user'
   ],
-  function(email, password) {
-	  return api.call({
-	    email: email,
-	    password: password
-	  }, '/users', 'POST')
-	    .then(function(json) {
+  execute: function(applesauce, email, password) {
+	  return applesauce.user(email, password).then(function(json) {
 	      return json;
 	    });
 	}

@@ -1,5 +1,4 @@
 var fs = require('fs');
-var api = require('../api.js');
 
 module.exports = {
 	name: 'login',
@@ -8,12 +7,8 @@ module.exports = {
   alias: [
 		'login'
   ],
-  function(email, password) {
-	  return api.call({
-	      email: email,
-	      password: password
-	    }, '/users/auth', 'POST')
-	    .then(function(data) {
+  execute: function(applesauce, email, password) {
+	  return applesauce.login(email, password).then(function(data) {
 
 	      global.applesauce.config.TOKEN = data.token;
 

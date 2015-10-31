@@ -1,7 +1,12 @@
 #! /usr/bin/env node
 
-var Cli = require('./lib/cli');
-var cli = new Cli();
+// TODO: this should all be done below once we have determined that we aren't starting a server
+// TODO: cli.configure needs to be moved into it's own utility
+var applesauce = require('./');
+var readline = require('readline');
+var rl = readline.createInterface(process.stdin, process.stdout);
+var Cli = require('./cli/index');
+var cli = new Cli(rl, applesauce);
 
 // load config from CLI
 var config = cli.configure(process.argv.slice(2));
@@ -38,11 +43,7 @@ else {
 
       require('./server');
     } else {
-      var readline = require('readline');
-      var rl = readline.createInterface(process.stdin, process.stdout);
-      var applesauce = require('./');
-
-      cli.startCli(rl, applesauce, function() {
+      cli.startCli(function() {
         console.log("goodbye");
         process.exit(0);
       });
