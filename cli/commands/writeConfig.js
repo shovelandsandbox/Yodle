@@ -8,7 +8,7 @@ module.exports = {
     'writeConfig',
     'save'
   ],
-  function() {
+  execute: function() {
     return new Promise(function (_resolve, _reject) {
       var fs = require('fs');
 

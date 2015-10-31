@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
   name: 'getDiaries',
   usage: 'list()',
@@ -8,9 +6,8 @@ module.exports = {
     'getDiaries',
     'list'
 	],
-	api: function() {
-  	return api.call({}, '/diaries', 'GET')
-      	.then(function(json) {
+	execute: function(applesauce) {
+  	return applesauce.list().then(function(json) {
         var output = '';
 
         output += 'ID                       Name';

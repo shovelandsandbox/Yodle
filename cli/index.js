@@ -1,4 +1,9 @@
-function Cli() {}
+var debug = require('debug')('applesauce');
+
+function Cli(rl, applesauce) { 
+  this.rl = rl;
+  this.applesauce = applesauce;
+}
 
 Cli.prototype.isInt = function(n) {
   return Number(n) == n && n % 1 === 0;
@@ -60,29 +65,29 @@ Cli.prototype.configure = function(userArgs) {
   return config;
 };
 
-Cli.prototype.execute = function(applesauce, command, callback) {
+Cli.prototype.processLine = function(command, callback) {
   try {
-    if(applesauce.execute(command, callback)) return;
+    if(this.execute(command, callback)) return;
     
     eval(command);
   } catch(e) {
+    debug(e);
     callback(e);
   }
 };
 
-Cli.prototype.turnOnPrompt = function(rl, callback, closedCallback) {
-  rl.setPrompt('# ');
-  rl.prompt();
+Cli.prototype.turnOnPrompt = function(callback, closedCallback) {
+  this.rl.setPrompt('# ');
+  this.rl.prompt();
 
-  rl.on('line', function(command) {
-    if (command === "bye") rl.close();
+  this.rl.on('line', function(command) {
+    if (command === "bye") this.rl.close();
     else callback(command);
   }).on('close', closedCallback);
 };
 
-Cli.prototype.startCli = function(rl, applesauce, exit) {
-
-  rl.on("SIGINT", function () {
+Cli.prototype.startCli = function(exit) {
+  this.rl.on("SIGINT", function () {
     if(global.socket && global.socket.connected) global.socket.close();
     else process.exit(0);
   });
@@ -90,16 +95,18 @@ Cli.prototype.startCli = function(rl, applesauce, exit) {
   var self = this;
   var executing = false;
 
-  self.turnOnPrompt(rl, function (command) {
+  self.turnOnPrompt(function (command) {
     if(!executing) {
       executing = true;
-      self.execute(applesauce, command, function(output) {
+      self.processLine(command, function(output) {
         executing = false;
         console.log(output);
-        rl.prompt();
+        self.rl.prompt();
       });
     }
   }, exit);
 };
+
+require('../merge')(Cli, __dirname + '/commands/*.js');
 
 var cli = module.exports = exports = Cli;

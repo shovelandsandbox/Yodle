@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
 	name: 'changeEmail',
 	usage: 'email("email")',
@@ -9,12 +7,7 @@ module.exports = {
 		'set\semail',
 		'email'
 	],
-	api: function(email) {
-	  return api.call({
-	    email: email
-	  }, '/users/me', 'PATCH')
-	    .then(function(json) {
-	      return json;
-	    });
+	execute: function(applesauce, email) {
+	  return applesauce.setEmail(email);
 	}
 };

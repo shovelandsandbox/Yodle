@@ -1,5 +1,3 @@
-var api = require('../api.js');
-
 module.exports = {
 	name: 'addUser',
 	usage: 'add("email")',
@@ -8,12 +6,7 @@ module.exports = {
 		'addUser',
 		'add'
 	],
-	api: function(email) {
-	  return api.call({
-	    email: email
-	  }, '/diaries/' + global.applesauce.config.DIARY + '/users', 'POST')
-	    .then(function(json) {
-	      return json;
-	    });
+	execute: function(applesauce, email) {
+		return applesauce.addUser(email);
 	}
 }
