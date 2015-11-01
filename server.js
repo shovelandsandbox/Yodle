@@ -142,8 +142,6 @@ io.on('connection', function (socket) {
       socket.disconnect('unauthorized');
     }
   }, 1000);
-
-  socket.emit('news', { hello: 'world' });
 });
 
 

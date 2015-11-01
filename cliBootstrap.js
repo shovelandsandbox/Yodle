@@ -37,6 +37,8 @@ else {
       global.yodle.config[attrname] = config[attrname];
     }
 
+    global.yodle.config.PROTOCOL = 'http';
+
     if (global.yodle.config.DAEMON === true) {
       if(global.yodle.config.PORT) process.env.PORT = global.yodle.config.PORT;
       if(global.yodle.config.DB) process.env.DB = global.yodle.config.DB;
