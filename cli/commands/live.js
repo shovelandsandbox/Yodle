@@ -1,5 +1,5 @@
 var Promise = require('promise'),
-  debug = require('debug')('applesauce');
+  debug = require('debug')('yodle');
 
 module.exports = {
 	name: 'live',
@@ -8,7 +8,7 @@ module.exports = {
 	alias: [
 		'live'
 	],
-	execute: function(applesauce, callback) {
+	execute: function(yodle, callback) {
 		var callback = function(entry) {
 	      	// TODO make util for this
 	      	console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
@@ -16,6 +16,6 @@ module.exports = {
 
 		console.log("listening...");
 
-		return applesauce.live(callback);
+		return yodle.live(callback);
 	}
 };

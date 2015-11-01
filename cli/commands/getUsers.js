@@ -6,8 +6,8 @@ module.exports = {
 		'getUsers',
 		'users'
 	],
-	execute: function(applesauce) {
-		return applesauce.users().then(function(json) {
+	execute: function(yodle) {
+		return yodle.users().then(function(json) {
   			var output = 'Users:';
 
   			for(var i in json) {

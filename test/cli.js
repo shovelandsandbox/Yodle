@@ -60,11 +60,11 @@ describe('Cli', function() {
 		it('test configuring everything', function() {
       var config;
 
-      config = cli.configure(['-d', '-p', '500', '-h', '192.168.1.5', '-l', '560859a03b3994ed25fe89ee', '-m', 'mongodb://otherhost/applesauce-development']);
+      config = cli.configure(['-d', '-p', '500', '-h', '192.168.1.5', '-l', '560859a03b3994ed25fe89ee', '-m', 'mongodb://otherhost/yodle-development']);
 			assert.equal(true, config.DAEMON);
       assert.equal('192.168.1.5', config.HOST);
 			assert.equal(500, config.PORT);
-			assert.equal('mongodb://otherhost/applesauce-development', config.DB);
+			assert.equal('mongodb://otherhost/yodle-development', config.DB);
 			assert.equal('560859a03b3994ed25fe89ee', config.DIARY);
 		});
 	});
@@ -76,7 +76,7 @@ describe('Cli', function() {
 //      fs.writeFile('/tmp/test', "success");
 //
 //      cli.loadFromFile('/tmp/test', function() {
-//        assert.equal('success', global.applesauce.token);
+//        assert.equal('success', global.yodle.token);
 //      });
 //
 //		});
@@ -86,7 +86,7 @@ describe('Cli', function() {
 describe('Cli', function() {
 	describe('#execute(executable, command, callback)', function() {
 		it('fires off command on executable and calls callback', function() {
-      var applesauce = {
+      var yodle = {
         command: function() {
           return new Promise(function (_resolve, _reject) {
             _resolve();
@@ -94,7 +94,7 @@ describe('Cli', function() {
         }
       };
 
-      cli.execute(applesauce, 'command()', function() {
+      cli.execute(yodle, 'command()', function() {
         assert.equal(1, 1);
       });
 
@@ -152,7 +152,7 @@ describe('Cli', function() {
 });
 
 describe('Cli', function() {
-	describe('#startCli(savePath, rl, applesauce, exit)', function() {
+	describe('#startCli(savePath, rl, yodle, exit)', function() {
 		it('emulate the main function', function() {
       var rl = {
         setPrompt: function(value) {this.value = value;},
@@ -164,7 +164,7 @@ describe('Cli', function() {
         }
       };
 
-      var applesauce = {
+      var yodle = {
         endit: function() {
           return new Promise(function (_resolve, _reject) {
             assert.equal(1, 1);
@@ -172,7 +172,7 @@ describe('Cli', function() {
         }
       };
 
-      cli.startCli(rl, applesauce, null);
+      cli.startCli(rl, yodle, null);
 
       rl.line('endit()');
 		});

@@ -5,10 +5,10 @@ module.exports = {
 	alias: [
 		'count'
 	],
-	execute: function(applesauce, query) {
+	execute: function(yodle, query) {
   		query = query ? query : {};
   		
-		return applesauce.count(query).then(function(json) {
+		return yodle.count(query).then(function(json) {
 	   		var output = 'Logs: ' + json.count;
 
 	    	return output;

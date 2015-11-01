@@ -9,8 +9,6 @@ module.exports = exports = function(object, directory) {
 
 	object.prototype.execute = function(command, callback) {
 		debug(command);
-		debug(Object.getPrototypeOf(this));
-
 		for(var i in this.commands) {
 			var commandCheck = this.commands[i];
 
@@ -22,6 +20,8 @@ module.exports = exports = function(object, directory) {
 				var match = command.match(alias);
 
 				if(match) {
+					debug('matched');
+					debug(match);
 					eval('commandCheck.execute(' + match[1] + ')').then(callback, callback);
 					
 					return true;

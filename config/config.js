@@ -6,18 +6,18 @@ var config = {
   local: {
     root: rootPath,
     app: {
-      name: 'applesauce'
+      name: 'yodle'
     },
     secret: 'nobodyknowsthis',
     port: (process.env.PORT || 3000),
-    //db: 'tingodb:///tmp/applesauce'
-    DB: (process.env.DB || 'mongodb://localhost/applesauce-development')
+    //db: 'tingodb:///tmp/yodle'
+    DB: (process.env.DB || 'mongodb://localhost/yodle-development')
   },
 
   development: {
     root: rootPath,
     app: {
-      name: 'applesauce'
+      name: 'yodle'
     },
     secret: 'nobodyknowsthis',
     port: (process.env.PORT || 3000),
@@ -27,21 +27,21 @@ var config = {
   test: {
     root: rootPath,
     app: {
-      name: 'applesauce'
+      name: 'yodle'
     },
     secret: 'nobodyknowsthis',
     port: 3000,
-    DB: 'mongodb://localhost/applesauce-test'
+    DB: 'mongodb://localhost/yodle-test'
   },
 
   production: {
     root: rootPath,
     app: {
-      name: 'applesauce'
+      name: 'yodle'
     },
     secret: 'nobodyknowsthis',
     port: 3000,
-    DB: 'mongodb://localhost/applesauce-production'
+    DB: 'mongodb://localhost/yodle-production'
   }
 };
 

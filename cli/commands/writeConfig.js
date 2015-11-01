@@ -3,7 +3,7 @@ var Promise = require('promise');
 module.exports = {
   name: 'writeConfig',
   usage: 'save()',
-  description: 'saves the current config to ~/.applesauce/.config',
+  description: 'saves the current config to ~/.yodle/.config',
   alias: [
     'writeConfig',
     'save'
@@ -13,8 +13,8 @@ module.exports = {
       var fs = require('fs');
 
       var file;
-      if(global.applesauce.configFile) {
-        file = global.applesauce.configFile;
+      if(global.yodle.configFile) {
+        file = global.yodle.configFile;
 
         var pathTo = file.split('/config.json')[0];
 
@@ -23,7 +23,7 @@ module.exports = {
         file = './config.json';
       }
 
-      fs.writeFile(file, JSON.stringify(global.applesauce.config), function(err) {
+      fs.writeFile(file, JSON.stringify(global.yodle.config), function(err) {
         _resolve("Done");
       });
     });

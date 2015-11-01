@@ -1,8 +1,8 @@
-var debug = require('debug')('applesauce');
+var debug = require('debug')('yodle');
 
-function Cli(rl, applesauce) { 
+function Cli(rl, yodle) { 
   this.rl = rl;
-  this.applesauce = applesauce;
+  this.yodle = yodle;
 }
 
 Cli.prototype.isInt = function(n) {
@@ -57,7 +57,7 @@ Cli.prototype.configure = function(userArgs) {
         console.log("-l [diary], --logbook [diary]    diary");
         console.log("-p [port], --port [port]         port");
         console.log("-m [server], --mongo [server]    mongo server (daemon mode only)");
-        console.log("-h [host], --host [host]         applesauce server");
+        console.log("-h [host], --host [host]         yodle server");
         return -3;
     }
   }
