@@ -22,7 +22,7 @@ module.exports = exports = function(object, directory) {
 				if(match) {
 					debug('matched');
 					debug(match);
-					eval('commandCheck.execute(' + match[1] + ')').then(callback, callback);
+					eval('this[commandCheck.name](' + match[1] + ')').then(callback, callback);
 					
 					return true;
 				}

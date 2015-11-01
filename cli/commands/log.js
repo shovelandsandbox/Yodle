@@ -5,8 +5,9 @@ module.exports = {
   alias: [
     'log'
   ],
-  execute: function(yodle, level, code, message) {
-      return yodle.log(level, code, message).then(function(json) {
+  execute: function(level, code, message) {
+    console.log(this.yodle);
+      return this.yodle.log(level, code, message).then(function(json) {
           var output = 'Done.';
 
           for(var i in json) {
