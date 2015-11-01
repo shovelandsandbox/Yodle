@@ -8,8 +8,8 @@ module.exports = {
 		'removeUser',
 		'remove'
   ],
-  execute: function(yodle, email) {
-	  return yodle.remove(email).then(function(data) {
+  execute: function(email) {
+	  return this.yodle.remove(email).then(function(data) {
 	      return data;
 	    });
 	}

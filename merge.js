@@ -3,7 +3,7 @@ module.exports = exports = function(object, directory) {
 	var commands = glob.sync(directory);
 	var debug = require('debug')('matcher');
 
-	debug(__dirname + './commands/*.js');
+	debug(__dirname + '/commands/*.js');
 
 	object.prototype.commands = [];
 
@@ -22,6 +22,7 @@ module.exports = exports = function(object, directory) {
 				if(match) {
 					debug('matched');
 					debug(match);
+					debug('this[' + commandCheck.name + '](' + match[1] + ')');
 					eval('this[commandCheck.name](' + match[1] + ')').then(callback, callback);
 					
 					return true;

@@ -6,10 +6,10 @@ module.exports = {
 		'getLogs',
 		'logs'
 	],
-	execute: function(yodle, query) {
+	execute: function(query) {
   		query = query ? query : {};
 
-  		return yodle.logs(query).then(function(json) {
+  		return this.yodle.logs(query).then(function(json) {
       			var output = 'Logs:';
       
       			for(var i in json.entries) {

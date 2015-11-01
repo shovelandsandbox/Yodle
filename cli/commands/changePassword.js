@@ -7,7 +7,7 @@ module.exports = {
 		'set\spassword',
 		'password'
 	],
-	execute: function(yodle, password) {
-		return yodle.setPassword(password);
+	execute: function(password) {
+		return this.yodle.setPassword(password);
 	}
 };

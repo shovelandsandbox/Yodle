@@ -5,10 +5,10 @@ module.exports = {
 	alias: [
 		'count'
 	],
-	execute: function(yodle, query) {
+	execute: function(query) {
   		query = query ? query : {};
   		
-		return yodle.count(query).then(function(json) {
+		return this.yodle.count(query).then(function(json) {
 	   		var output = 'Logs: ' + json.count;
 
 	    	return output;
