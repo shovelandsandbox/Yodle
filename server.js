@@ -6,7 +6,7 @@ var express = require('express'),
   config = require('./config/config'),
   glob = require('glob'),
   SwaggerExpress = require('swagger-express-mw'),
-  debug = require('debug')('applesauce'),
+  debug = require('debug')('yodle'),
   // tungus = require('tungus'),
   mongoose = require('mongoose');
 

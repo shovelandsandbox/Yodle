@@ -6,11 +6,11 @@ module.exports = {
 		'useDiary',
 		'use'
   ],
-  execute: function(applesauce, name) {
-	  return applesauce.then(function(json) {
+  execute: function(yodle, name) {
+	  return yodle.then(function(json) {
 	    if(json.length) {
-	      global.applesauce.config.DIARY = json[0]._id;
-	      return 'diary set to ' + global.applesauce.config.DIARY;
+	      global.yodle.config.DIARY = json[0]._id;
+	      return 'diary set to ' + global.yodle.config.DIARY;
 	    } else {
 	      return 'error - diary not found';
 	    }

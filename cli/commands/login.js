@@ -7,10 +7,10 @@ module.exports = {
   alias: [
 		'login'
   ],
-  execute: function(applesauce, email, password) {
-	  return applesauce.login(email, password).then(function(data) {
+  execute: function(yodle, email, password) {
+	  return yodle.login(email, password).then(function(data) {
 
-	      global.applesauce.config.TOKEN = data.token;
+	      global.yodle.config.TOKEN = data.token;
 
 	      return 'done';
 	    });

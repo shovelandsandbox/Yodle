@@ -1,4 +1,4 @@
-# Applesauce [![Build Status](https://travis-ci.org/shovelandsandbox/applesauce.svg)](https://travis-ci.org/shovelandsandbox/applesauce) [![Code Climate](https://codeclimate.com/github/shovelandsandbox/applesauce/badges/gpa.svg)](https://codeclimate.com/github/shovelandsandbox/applesauce) [![Test Coverage](https://codeclimate.com/github/shovelandsandbox/applesauce/badges/coverage.svg)](https://codeclimate.com/github/shovelandsandbox/applesauce/coverage) [![bitHound Score](https://www.bithound.io/github/shovelandsandbox/applesauce/badges/score.svg)](https://www.bithound.io/github/shovelandsandbox/applesauce)
+# yodle [![Build Status](https://travis-ci.org/shovelandsandbox/yodle.svg)](https://travis-ci.org/shovelandsandbox/yodle) [![Code Climate](https://codeclimate.com/github/shovelandsandbox/yodle/badges/gpa.svg)](https://codeclimate.com/github/shovelandsandbox/yodle) [![Test Coverage](https://codeclimate.com/github/shovelandsandbox/yodle/badges/coverage.svg)](https://codeclimate.com/github/shovelandsandbox/yodle/coverage) [![bitHound Score](https://www.bithound.io/github/shovelandsandbox/yodle/badges/score.svg)](https://www.bithound.io/github/shovelandsandbox/yodle)
 
 Easy logging for your node applications! You just have to master:
 
@@ -6,8 +6,8 @@ Easy logging for your node applications! You just have to master:
 Right now the cloud portion of this is being worked on and the API locked down. To get started with what we have now:
 
 ```
-git clone git@github.com:unnamedstudios/applesauce.git
-cd applesauce
+git clone git@github.com:unnamedstudios/yodle.git
+cd yodle
 npm link
 ```
 
@@ -15,7 +15,7 @@ and that's it! Installed. If you want to actually use it you can open a terminal
 
 ## Running it
 ```
-applesauce -d -m mongodb://user:pass@server:port/db
+yodle -d -m mongodb://user:pass@server:port/db
 ```
 
 Depending on the state of the code that should fire up the server and connect to the specified database. Unfortunately the embedded DB is broken right now so you need a mongo server. Before you can read your logs, though, you've got to try:
@@ -23,18 +23,18 @@ Depending on the state of the code that should fire up the server and connect to
 ## Logging it
 To use this in your code:
 ```javascript
-var applesauce = require('applesauce');
-applesauce.log(level, message, code);
+var yodle = require('yodle');
+yodle.log(level, message, code);
 ```
 
 All three of the above pieces of data can be json. Do whatever you want with them. Put whatever you want into them. Later on they will be searchable and reportable! You'll probably also want to master:
 
 ## Command lining it
 To use the CLI:
-> applesauce
+> yodle
 
 For help:
-> applesauce --help
+> yodle --help
 
 Some of the commands are:
 ```javascript

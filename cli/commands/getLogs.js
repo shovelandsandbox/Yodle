@@ -6,10 +6,10 @@ module.exports = {
 		'getLogs',
 		'logs'
 	],
-	execute: function(applesauce, query) {
+	execute: function(yodle, query) {
   		query = query ? query : {};
 
-  		return applesauce.logs(query).then(function(json) {
+  		return yodle.logs(query).then(function(json) {
       			var output = 'Logs:';
       
       			for(var i in json.entries) {

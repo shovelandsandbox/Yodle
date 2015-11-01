@@ -5,8 +5,8 @@ module.exports = {
   alias: [
     'log'
   ],
-  execute: function(applesauce, level, code, message) {
-      return applesauce.log(level, code, message).then(function(json) {
+  execute: function(yodle, level, code, message) {
+      return yodle.log(level, code, message).then(function(json) {
           var output = 'Done.';
 
           for(var i in json) {

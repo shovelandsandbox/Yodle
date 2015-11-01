@@ -180,7 +180,7 @@ function addDiaryUser(req, res, next) {
       } else {
         var error = "Unknown error...";
 
-        // TODO: Log this.... with applesauce?!
+        // TODO: Log this.... with yodle?!
 
         if((err.name === "CastError") && (err.path === '_id')) {
           error = "Invalid diary id!";
@@ -231,7 +231,7 @@ function removeDiaryUser(req, res, next) {
       } else {
         var error = "Unknown error...";
 
-        // TODO: Log this.... with applesauce?!
+        // TODO: Log this.... with yodle?!
 
         if((err.name === "CastError") && (err.path === '_id')) {
           error = "Invalid diary id!";
@@ -320,7 +320,7 @@ function createLog(req, res, next) {
       } else {
         var error = "Unknown error...";
 
-        // TODO: Log this.... with applesauce?!
+        // TODO: Log this.... with yodle?!
 
         if((err.name === "CastError") && (err.path === '_id')) {
           error = "Invalid diary id!";

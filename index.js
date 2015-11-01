@@ -1,5 +1,5 @@
-function Applesauce() {}
+function yodle() {}
 
-require('./merge')(Applesauce, __dirname + '/lib/commands/*.js');
+require('./merge')(yodle, __dirname + '/lib/commands/*.js');
 
-var applesauce = module.exports = exports = new Applesauce();
+var yodle = module.exports = exports = new yodle();

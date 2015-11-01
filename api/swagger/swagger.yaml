@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Applesauce
+  title: yodle
   description: Here to solve all of your logging needs
 host: localhost:10010
 basePath: /

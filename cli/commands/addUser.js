@@ -6,7 +6,7 @@ module.exports = {
 		'addUser',
 		'add'
 	],
-	execute: function(applesauce, email) {
-		return applesauce.addUser(email);
+	execute: function(yodle, email) {
+		return yodle.addUser(email);
 	}
 }

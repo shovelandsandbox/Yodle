@@ -1,5 +1,5 @@
 {
-  "name": "applesauce",
+  "name": "yodle",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,20 +7,20 @@
     "test": "node ./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha"
   },
   "bin": {
-    "applesauce": "cliBootstrap.js"
+    "yodle": "cliBootstrap.js"
   },
-  "description": "mix some applesauce into your project and get zero configuration logging from anywhere to share with anyone",
+  "description": "mix some yodle into your project and get zero configuration logging from anywhere to share with anyone",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unnamedstudios/applesauce-node.git"
+    "url": "git+https://github.com/shovelandsandbox/yodle-node.git"
   },
   "author": "giuseppe mancone",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/unnamedstudios/applesauce-node/issues"
+    "url": "https://github.com/shovelandsandbox/yodle/issues"
   },
-  "homepage": "https://github.com/unnamedstudios/applesauce-node#readme",
+  "homepage": "https://github.com/shovelandsandbox/yodle#readme",
   "dependencies": {
     "body-parser": "^1.13.3",
     "compression": "^1.5.2",
