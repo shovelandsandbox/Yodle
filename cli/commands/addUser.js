@@ -6,7 +6,7 @@ module.exports = {
 		'addUser',
 		'add'
 	],
-	execute: function(yodle, email) {
-		return yodle.addUser(email);
+	execute: function(email) {
+		return this.yodle.addUser(email);
 	}
 }

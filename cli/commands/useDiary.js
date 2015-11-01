@@ -6,8 +6,8 @@ module.exports = {
 		'useDiary',
 		'use'
   ],
-  execute: function(yodle, name) {
-	  return yodle.then(function(json) {
+  execute: function(name) {
+	  return this.yodle.then(function(json) {
 	    if(json.length) {
 	      global.yodle.config.DIARY = json[0]._id;
 	      return 'diary set to ' + global.yodle.config.DIARY;

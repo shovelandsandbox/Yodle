@@ -3,10 +3,11 @@ module.exports = {
 	usage: 'user("email", "password")',
 	description: 'registers a user at the selected yodle server',
   alias: [
-		'user'
+		'user',
+		'register'
   ],
-  execute: function(yodle, email, password) {
-	  return yodle.user(email, password).then(function(json) {
+  execute: function(email, password) {
+	  return this.yodle.user(email, password).then(function(json) {
 	      return json;
 	    });
 	}

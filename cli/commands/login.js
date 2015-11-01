@@ -7,8 +7,8 @@ module.exports = {
   alias: [
 		'login'
   ],
-  execute: function(yodle, email, password) {
-	  return yodle.login(email, password).then(function(data) {
+  execute: function(email, password) {
+	  return this.yodle.login(email, password).then(function(data) {
 
 	      global.yodle.config.TOKEN = data.token;
 

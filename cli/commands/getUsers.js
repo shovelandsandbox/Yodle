@@ -6,8 +6,8 @@ module.exports = {
 		'getUsers',
 		'users'
 	],
-	execute: function(yodle) {
-		return yodle.users().then(function(json) {
+	execute: function() {
+		return this.yodle.users().then(function(json) {
   			var output = 'Users:';
 
   			for(var i in json) {

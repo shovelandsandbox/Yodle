@@ -8,7 +8,7 @@ module.exports = {
 	alias: [
 		'live'
 	],
-	execute: function(yodle, callback) {
+	execute: function(callback) {
 		var callback = function(entry) {
 	      	// TODO make util for this
 	      	console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
@@ -16,6 +16,6 @@ module.exports = {
 
 		console.log("listening...");
 
-		return yodle.live(callback);
+		return this.yodle.live(callback);
 	}
 };

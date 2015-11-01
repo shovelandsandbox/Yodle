@@ -6,8 +6,8 @@ module.exports = {
     'getDiaries',
     'list'
 	],
-	execute: function(yodle) {
-  	return yodle.list().then(function(json) {
+	execute: function() {
+  	return this.yodle.list().then(function(json) {
         var output = '';
 
         output += 'ID                       Name';

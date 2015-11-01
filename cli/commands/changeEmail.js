@@ -7,7 +7,7 @@ module.exports = {
 		'set\semail',
 		'email'
 	],
-	execute: function(yodle, email) {
-	  return yodle.setEmail(email);
+	execute: function(email) {
+	  return this.yodle.setEmail(email);
 	}
 };

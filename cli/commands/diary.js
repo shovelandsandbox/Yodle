@@ -6,8 +6,8 @@ module.exports = {
 		'diary',
 		'new'
 	],
-	execute: function(yodle, name) {
-	  return yodle.new(name).then(function(json) {
+	execute: function(name) {
+	  return this.yodle.new(name).then(function(json) {
     		return 'done';
 	  });
 	}
