@@ -1,5 +1,7 @@
-function yodle() {}
+function Yodle() {}
 
-require('./merge')(yodle, __dirname + '/lib/commands/*.js');
+require('./merge')(Yodle, __dirname + '/lib/commands/*.js');
 
-var yodle = module.exports = exports = new yodle();
+console.log(Yodle.prototype);
+
+var yodle = module.exports = exports = Yodle;

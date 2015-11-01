@@ -2,10 +2,10 @@
 
 // TODO: this should all be done below once we have determined that we aren't starting a server
 // TODO: cli.configure needs to be moved into it's own utility
-var yodle = require('./');
-var readline = require('readline');
-var rl = readline.createInterface(process.stdin, process.stdout);
+var Yodle = require('./');
+var rl = require('readline').createInterface(process.stdin, process.stdout);
 var Cli = require('./cli/index');
+var yodle = new Yodle();
 var cli = new Cli(rl, yodle);
 
 // load config from CLI
