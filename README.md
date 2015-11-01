@@ -1,4 +1,4 @@
-# yodle [![Build Status](https://travis-ci.org/shovelandsandbox/yodle.svg)](https://travis-ci.org/shovelandsandbox/yodle) [![Test Coverage](https://codeclimate.com/github/shovelandsandbox/yodle/badges/coverage.svg)](https://codeclimate.com/github/shovelandsandbox/yodle/coverage) [![bitHound Score](https://www.bithound.io/github/shovelandsandbox/yodle/badges/score.svg)](https://www.bithound.io/github/shovelandsandbox/yodle)
+# Yodle [![Build Status](https://travis-ci.org/shovelandsandbox/applesauce.svg)](https://travis-ci.org/shovelandsandbox/yodle) [![Code Climate](https://codeclimate.com/github/shovelandsandbox/yodle/badges/gpa.svg)](https://codeclimate.com/github/shovelandsandbox/yodle) [![Test Coverage](https://codeclimate.com/github/shovelandsandbox/yodle/badges/coverage.svg)](https://codeclimate.com/github/shovelandsandbox/applesauce/coverage) [![bitHound Score](https://www.bithound.io/github/shovelandsandbox/yodle/badges/score.svg)](https://www.bithound.io/github/shovelandsandbox/yodle)
 
 Easy logging for your node applications! You just have to master:
 
@@ -6,7 +6,7 @@ Easy logging for your node applications! You just have to master:
 Right now the cloud portion of this is being worked on and the API locked down. To get started with what we have now:
 
 ```
-git clone git@github.com:unnamedstudios/yodle.git
+git clone git@github.com:shovelandsandbox/yodle.git
 cd yodle
 npm link
 ```
