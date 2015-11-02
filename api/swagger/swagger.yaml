@@ -20,8 +20,8 @@ securityDefinitions:
 security:
   - X-Access-Token: []
 tags:
-  - name: diary
-    description: Diary operations
+  - name: project
+    description: project operations
   - name: logging
     description: Loggin operations
   - name: users
@@ -29,44 +29,44 @@ tags:
   - name: authentication
     description: Authentication operations
 paths:
-  /diaries/{diaryId}:
-    x-swagger-router-controller: diaries
+  /projects/{projectId}:
+    x-swagger-router-controller: projects
     get:
       tags:
-        - diary
-      summary: Get a diary by id
-      description: Pass in the diary id and get back a diary object
-      operationId: getDiary
+        - project
+      summary: Get a project by id
+      description: Pass in the project id and get back a project object
+      operationId: getProject
       parameters:
-        - name: diaryId
+        - name: projectId
           in: path
-          description: Id of diary to fetch
+          description: Id of project to fetch
           type: string
           required: true
       responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/Diary"
+            $ref: "#/definitions/Project"
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /diaries/{diaryId}/entries:
-    x-swagger-router-controller: diaries
+  /projects/{projectId}/entries:
+    x-swagger-router-controller: projects
     parameters:
-      - name: diaryId
+      - name: projectId
         in: path
-        description: Id of diary to fetch entries from
+        description: Id of project to fetch entries from
         type: string
         required: true
     get:
       tags:
-        - diary
+        - project
         - logging
-      summary: Get a diary's entries
-      description: Pass in the diary id and get back an array of diary entries objects
-      operationId: getDiaryEntries
+      summary: Get a project's entries
+      description: Pass in the project id and get back an array of project entries objects
+      operationId: getProjectEntries
       parameters:
         - name: metaOnly
           in: query
@@ -91,9 +91,9 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     post:
       tags:
-        - diary
+        - project
         - logging
-      summary: post an entry to a diary
+      summary: post an entry to a project
       operationId: createLog
       parameters:
         - name: entry
@@ -114,18 +114,18 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /diaries/{diaryId}/entries/{entryId}:
-    x-swagger-router-controller: diaries
+  /projects/{projectId}/entries/{entryId}:
+    x-swagger-router-controller: projects
     get:
       tags:
-        - diary
+        - project
         - logging
-      summary: get an entry from a diary
-      operationId: getDiaryEntry
+      summary: get an entry from a project
+      operationId: getProjectEntry
       parameters:
-        - name: diaryId
+        - name: projectId
           in: path
-          description: Id of the diary to look into
+          description: Id of the project to look into
           type: string
           required: true
         - name: entryId
@@ -142,18 +142,18 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /diaries/{diaryId}/users:
-    x-swagger-router-controller: diaries
+  /projects/{projectId}/users:
+    x-swagger-router-controller: projects
     get:
       tags:
-        - diary
+        - project
         - users
-      summary: Get a diary's users
-      operationId: getDiaryUsers
+      summary: Get a project's users
+      operationId: getProjectUsers
       parameters:
-        - name: diaryId
+        - name: projectId
           in: path
-          description: Id of diary to fetch users from
+          description: Id of project to fetch users from
           type: string
           required: true
       responses:
@@ -170,13 +170,13 @@ paths:
     post:
       tags:
         - users
-        - diary
-      summary: Add a user to a diary
-      operationId: addDiaryUser
+        - project
+      summary: Add a user to a project
+      operationId: addProjectUser
       parameters:
-        - name: diaryId
+        - name: projectId
           in: path
-          description: Id of diary to fetch users from
+          description: Id of project to fetch users from
           type: string
           required: true
         - name: user
@@ -197,13 +197,13 @@ paths:
     delete:
       tags:
         - users
-        - diary
-      summary: Remove a user from a diary
-      operationId: removeDiaryUser
+        - project
+      summary: Remove a user from a project
+      operationId: removeProjectUser
       parameters:
-        - name: diaryId
+        - name: projectId
           in: path
-          description: Id of diary to modify
+          description: Id of project to modify
           type: string
           required: true
         - name: user
@@ -220,17 +220,17 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /diaries:
-    x-swagger-router-controller: diaries
+  /projects:
+    x-swagger-router-controller: projects
     get:
       tags:
-        - diary
-      summary: Get all diary
-      operationId: getDiaries
+        - project
+      summary: Get all project
+      operationId: getProjects
       parameters:
         - name: search
           in: query
-          description: Partial ID of diary to fetch, must be from the end of the ID
+          description: Partial ID of project to fetch, must be from the end of the ID
           type: string
           required: false
       responses:
@@ -239,28 +239,28 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Diary"
+              $ref: "#/definitions/Project"
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
       tags:
-        - diary
-      summary: Create a diary
-      operationId: createDiary
+        - project
+      summary: Create a project
+      operationId: createProject
       parameters:
-        - name: diary
+        - name: project
           in: body
-          description: Diary to create
+          description: project to create
           schema:
-            $ref: "#/definitions/Diary"
+            $ref: "#/definitions/Project"
       responses:
         303:
           description: Success
           headers:
             Location:
-              description: "Location of new diary"
+              description: "Location of new project"
               type: string
           schema:
             $ref: "#/definitions/SuccessResponse"
@@ -425,7 +425,7 @@ definitions:
         type: string
       password:
         type: string
-  Diary:
+  Project:
     type: object
     properties:
       _id:

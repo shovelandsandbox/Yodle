@@ -2,22 +2,22 @@ var express = require('express'),
   router = express.Router(),
   config = require('../../config/config.js'),
   mongoose = require('mongoose'),
-  Diary = mongoose.model('Diary'),
+  Project = mongoose.model('Project'),
   Entry = mongoose.model('Entry');
 
 module.exports = {
-  addDiaryUser: addDiaryUser,
-  createDiary: createDiary,
+  addprojectUser: addprojectUser,
+  createProject: createProject,
   createLog: createLog,
-  getDiaries: getDiaries,
-  getDiary: getDiary,
-  getDiaryEntries: getDiaryEntries,
-  getDiaryEntry: getDiaryEntry,
-  getDiaryUsers: getDiaryUsers,
-  removeDiaryUser: removeDiaryUser
+  getProjects: getProjects,
+  getProject: getProject,
+  getProjectEntries: getProjectEntries,
+  getProjectEntry: getProjectEntry,
+  getProjectUsers: getProjectUsers,
+  removeProjectUser: removeProjectUser
 };
 
-function getDiaries(req, res, next) {
+function getProjects(req, res, next) {
   var name = req.swagger.params.search.value;
 
   var search = {
@@ -26,48 +26,48 @@ function getDiaries(req, res, next) {
 
   if(name) search.$where = 'this._id.str.match(/' + name + '$/)';
 
-  Diary.find(search).lean().exec(function(err, diaries) {
-    for(var i in diaries) {
-      diaries[i]._id = diaries[i]._id.toString();
+  Project.find(search).lean().exec(function(err, projects) {
+    for(var i in projects) {
+      projects[i]._id = projects[i]._id.toString();
     }
 
-    res.send(diaries);
+    res.send(projects);
   });
 }
 
-function getDiary(req, res, next) {
-  var diary = req.swagger.params.diaryId.value;
+function getProject(req, res, next) {
+  var project = req.swagger.params.projectId.value;
 
-  Diary.findOne({
-    _id: diary,
+  Project.findOne({
+    _id: project,
     users: req.decoded.email
   }, {
     entries: 1,
     users: 1
-  }).lean().exec(function(err, diary) {
-    if(diary) {
-      diary._id = diary._id.toString();
-      res.send(diary);
+  }).lean().exec(function(err, project) {
+    if(project) {
+      project._id = project._id.toString();
+      res.send(project);
     } else {
       res.statusCode = 404;
       res.send({
         status: 404,
-        message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+        message: 'Are you snooping? We couldn\'t find the project you\'re looking for.'
       });
     }
   });
 }
 
-function createDiary(req, res, next) {
-  var diary = new Diary();
+function createProject(req, res, next) {
+  var project = new Project();
 
-  diary.users = req.swagger.params.diary.value.users ? req.swagger.params.diary.value.users : [];
-  diary.entries = req.swagger.params.diary.value.entries;
-  diary.name = req.swagger.params.diary.value.name;
+  project.users = req.swagger.params.project.value.users ? req.swagger.params.project.value.users : [];
+  project.entries = req.swagger.params.project.value.entries;
+  project.name = req.swagger.params.project.value.name;
   
-  if(diary.users.indexOf(req.decoded.email) === -1) diary.users.push(req.decoded.email);
+  if(project.users.indexOf(req.decoded.email) === -1) project.users.push(req.decoded.email);
 
-  diary.save(function(err, data) {
+  Project.save(function(err, data) {
     if(err) {
       res.statusCode = 500;
       res.send({
@@ -76,18 +76,18 @@ function createDiary(req, res, next) {
       });
     } else {
       res.statusCode = 303;
-      res.setHeader('Location', '/diaries/' + diary.id);
+      res.setHeader('Location', '/projects/' + project.id);
       res.send({
           status: 303
       });
     }});
 }
 
-function getDiaryEntries(req, res, next) {
-  var diary = req.swagger.params.diaryId.value;
+function getProjectEntries(req, res, next) {
+  var project = req.swagger.params.projectId.value;
 
   var search = {
-    _id: mongoose.Types.ObjectId(diary),
+    _id: mongoose.Types.ObjectId(project),
     users: req.decoded.email
   };
 
@@ -101,7 +101,7 @@ function getDiaryEntries(req, res, next) {
   }
   if(!metaOnly) group.entries = {$push: "$entries"};
 
-  Diary.aggregate()
+  Project.aggregate()
     .unwind('entries')
     .match(search)
     .group(group)
@@ -110,45 +110,45 @@ function getDiaryEntries(req, res, next) {
         count: 1,
         entries: 1
     })
-    .exec(function(err, diary) {
-      if(diary.length) {
-        res.send(diary[0]);
+    .exec(function(err, project) {
+      if(project.length) {
+        res.send(project[0]);
       } else {
         res.statusCode = 404;
         res.send({
           status: 404,
-          message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+          message: 'Are you snooping? We couldn\'t find the project you\'re looking for.'
         });
       }
     });
 }
 
-function getDiaryUsers (req, res, next) {
-  var diary = req.swagger.params.diaryId.value;
+function getProjectUsers (req, res, next) {
+  var project = req.swagger.params.projectId.value;
 
-  Diary.findOne({
-    _id: diary,
+  Project.findOne({
+    _id: project,
     users: req.decoded.email
   }, {
-  }, function(err, diary) {
-    if(diary && diary.users) {
-      res.send(diary.users);
+  }, function(err, project) {
+    if(project && project.users) {
+      res.send(project.users);
     } else {
       res.statusCode = 404;
       res.send({
         status: 404,
-        message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+        message: 'Are you snooping? We couldn\'t find the project you\'re looking for.'
       });
     }
   });
 }
 
-function addDiaryUser(req, res, next) {
-  var diary = req.swagger.params.diaryId.value;
+function addprojectUser(req, res, next) {
+  var project = req.swagger.params.projectId.value;
   var user = req.swagger.params.user.value.email;
 
-  Diary.update({
-    _id: diary,
+  Project.update({
+    _id: project,
     users: req.decoded.email
   },
   {
@@ -162,7 +162,7 @@ function addDiaryUser(req, res, next) {
           res.statusCode = 404;
           res.send({
             status: 404,
-            message: 'Invalid diary - not found.'
+            message: 'Invalid project - not found.'
           });
         } else if(data.nModified === 1) {
           res.statusCode = 200;
@@ -174,7 +174,7 @@ function addDiaryUser(req, res, next) {
           res.statusCode = 500;
           res.send({
             status: 500,
-            message: 'Are you a wizard? You just updated more than one diary with this entry.'
+            message: 'Are you a wizard? You just updated more than one project with this entry.'
           });
         }
       } else {
@@ -183,7 +183,7 @@ function addDiaryUser(req, res, next) {
         // TODO: Log this.... with yodle?!
 
         if((err.name === "CastError") && (err.path === '_id')) {
-          error = "Invalid diary id!";
+          error = "Invalid project id!";
         }
         res.statusCode = 500;
         res.send({
@@ -194,12 +194,12 @@ function addDiaryUser(req, res, next) {
   });
 }
 
-function removeDiaryUser(req, res, next) {
-  var diary = req.swagger.params.diaryId.value;
+function removeProjectUser(req, res, next) {
+  var project = req.swagger.params.projectId.value;
   var user = req.swagger.params.user.value;
 
-  Diary.update({
-    _id: diary,
+  Project.update({
+    _id: project,
     users: req.decoded.email
   },
   {
@@ -213,7 +213,7 @@ function removeDiaryUser(req, res, next) {
           res.statusCode = 404;
           res.send({
             status: 404,
-            message: 'Invalid diary or user - not found.'
+            message: 'Invalid project or user - not found.'
           });
         } else if(data.nModified === 1) {
           res.statusCode = 200;
@@ -225,7 +225,7 @@ function removeDiaryUser(req, res, next) {
           res.statusCode = 500;
           res.send({
             status: 500,
-            message: 'Are you a wizard? You just updated more than one diary with this entry.'
+            message: 'Are you a wizard? You just updated more than one project with this entry.'
           });
         }
       } else {
@@ -234,7 +234,7 @@ function removeDiaryUser(req, res, next) {
         // TODO: Log this.... with yodle?!
 
         if((err.name === "CastError") && (err.path === '_id')) {
-          error = "Invalid diary id!";
+          error = "Invalid project id!";
         }
         res.statusCode = 500;
         res.send({
@@ -245,18 +245,18 @@ function removeDiaryUser(req, res, next) {
   });
 }
 
-function getDiaryEntry(req, res, next) {
-  var diary = req.swagger.params.diaryId.value;
+function getProjectEntry(req, res, next) {
+  var project = req.swagger.params.projectId.value;
   var entry = req.swagger.params.entryId.value;
 
-  Diary.findOne({
-    _id: diary,
+  Project.findOne({
+    _id: project,
     users: req.decoded.email
   }, {
     'entries': 1
-  }, function(err, diary) {
-    if(diary) {
-      diary.entries.forEach(function(subEntry) {
+  }, function(err, project) {
+    if(project) {
+      project.entries.forEach(function(subEntry) {
         if(subEntry._id == entry) {
           res.send(subEntry);
         }
@@ -266,14 +266,14 @@ function getDiaryEntry(req, res, next) {
       res.statusCode = 404;
       res.send({
         status: 404,
-        message: 'That Diary is missing! Weird.'
+        message: 'That project is missing! Weird.'
       });
     }
   });
 }
 
 function createLog(req, res, next) {
-  var diary = req.swagger.params.diaryId.value;
+  var project = req.swagger.params.projectId.value;
 
   var entry = new Entry();
   entry.level = req.swagger.params.entry.value.level;
@@ -285,9 +285,9 @@ function createLog(req, res, next) {
     update: true
   };
 
-  Diary.update(
+  Project.update(
     {
-      _id: diary,
+      _id: project,
       users: req.decoded.email
     },
     {
@@ -299,14 +299,14 @@ function createLog(req, res, next) {
           res.statusCode = 404;
           res.send({
             status: 404,
-            message: 'Invalid diary - not found.'
+            message: 'Invalid project - not found.'
           });
         } else if(data.nModified === 1) {
           // TODO make util for this
           console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
-          global.io.to(diary).emit('log', entry);
+          global.io.to(project).emit('log', entry);
           res.statusCode = 303;
-          res.setHeader('Location', '/diaries/' + diary + '/entries/' + entry.id);
+          res.setHeader('Location', '/projects/' + project + '/entries/' + entry.id);
           res.send({
               status: 303
           });
@@ -314,7 +314,7 @@ function createLog(req, res, next) {
           res.statusCode = 500;
           res.send({
             status: 500,
-            message: 'Are you a wizard? You just updated more than one diary with this entry.'
+            message: 'Are you a wizard? You just updated more than one project with this entry.'
           });
         }
       } else {
@@ -323,7 +323,7 @@ function createLog(req, res, next) {
         // TODO: Log this.... with yodle?!
 
         if((err.name === "CastError") && (err.path === '_id')) {
-          error = "Invalid diary id!";
+          error = "Invalid project id!";
         }
         res.statusCode = 500;
         res.send({
