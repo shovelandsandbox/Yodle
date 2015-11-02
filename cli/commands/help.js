@@ -11,7 +11,7 @@ module.exports = {
     execute: function() {
         return new Promise(function (_resolve, _reject) {
             var output = '';
-            output += '\n\r Commands: (paranthesis are optional. \'Eg: use("5b")\' is identical to \'use "5b"\'';
+            output += 'Commands: (paranthesis are optional. Eg: \'# use("5b")\' is identical to \'# use "5b"\')';
 
             var glob = require('glob');
             var commands = glob.sync(__dirname + '/*.js');
