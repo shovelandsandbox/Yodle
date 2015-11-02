@@ -8,6 +8,6 @@ module.exports = {
 		'email'
 	],
 	execute: function(email) {
-	  return this.yodle.setEmail(email);
+	  return this.yodle.changeEmail(email);
 	}
 };
