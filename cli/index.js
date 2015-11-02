@@ -29,8 +29,8 @@ Cli.prototype.configure = function(userArgs) {
         break;
 
       case '-l':
-      case '--logbook':
-        config.DIARY = nextArg;
+      case '--project':
+        config.project = nextArg;
         break;
 
       case '-p':
@@ -52,12 +52,12 @@ Cli.prototype.configure = function(userArgs) {
 
       case '-?':
       case '--help':
-        console.log("-?, --help                       this menu!");
-        console.log("-d, --daemon                     daemon mode");
-        console.log("-l [diary], --logbook [diary]    diary");
-        console.log("-p [port], --port [port]         port");
-        console.log("-m [server], --mongo [server]    mongo server (daemon mode only)");
-        console.log("-h [host], --host [host]         yodle server");
+        console.log("-?, --help                        this menu!");
+        console.log("-d, --daemon                      daemon mode");
+        console.log("-l [project], --project [project] project");
+        console.log("-p [port], --port [port]          port");
+        console.log("-m [server], --mongo [server]     mongo server (daemon mode only)");
+        console.log("-h [host], --host [host]          yodle server");
         return -3;
     }
   }

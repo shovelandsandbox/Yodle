@@ -15,7 +15,7 @@ module.exports = exports = function(object, directory) {
 			for(var aliasI in commandCheck.alias) {
 				var alias = commandCheck.alias[aliasI];
 
-				alias += '(\\s?\\(?([^)]+)\\)?)?'
+				alias += '(?![a-z])(\\s?\\(?([^)]+)\\)?)?'
 
 				var match = command.match(alias);
 

@@ -48,10 +48,10 @@ Some of the commands are:
 # writeConfig()
 # user(email, password)
 
-=============== Diary manipulation
-# getDiaries()
-# diary(name)
-# useDiary(diaryId)
+=============== project manipulation
+# getProjects()
+# project(name)
+# useProject(projectId)
 # addUser(email)
 # removeUser(email)
 # getUsers()

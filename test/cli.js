@@ -67,7 +67,7 @@ describe('Cli', function() {
       assert.equal(null, config.PORT);
       assert.equal(null, config.DAEMON);
       assert.equal(null, config.DB);
-      assert.equal(null, config.DIARY);
+      assert.equal(null, config.project);
     });
   });
 });
@@ -82,7 +82,7 @@ describe('Cli', function() {
       assert.equal('192.168.1.5', config.HOST);
 			assert.equal(500, config.PORT);
 			assert.equal('mongodb://otherhost/yodle-development', config.DB);
-			assert.equal('560859a03b3994ed25fe89ee', config.DIARY);
+			assert.equal('560859a03b3994ed25fe89ee', config.project);
 		});
 	});
 });

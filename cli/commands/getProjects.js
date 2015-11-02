@@ -1,13 +1,14 @@
 module.exports = {
-  name: 'getDiaries',
+  name: 'getProjects',
   usage: 'list()',
-  description: 'lists all diaries the signed in user has permission to see',
+  description: 'lists all projects the signed in user has permission to see',
 	alias: [
-    'getDiaries',
+    'getProjects',
+    'projects',
     'list'
 	],
 	execute: function() {
-  	return this.yodle.getDiaries().then(function(json) {
+  	return this.yodle.getProjects().then(function(json) {
         var output = '';
 
         output += 'ID                       Name';

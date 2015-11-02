@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'getUsers',
 	usage: 'users()',
-	description: 'gets the users for the current diary',
+	description: 'gets the users for the current project',
 	alias: [
 		'getUsers',
 		'users'

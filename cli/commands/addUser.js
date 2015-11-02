@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'addUser',
 	usage: 'add("email")',
-	description: 'adds a user by email to the current diary',
+	description: 'adds a user by email to the current project',
 	alias: [
 		'addUser',
 		'add'

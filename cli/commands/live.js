@@ -4,7 +4,7 @@ var Promise = require('promise'),
 module.exports = {
 	name: 'live',
 	usage: 'live()',
-	description: 'watches current diary live',
+	description: 'watches current project live',
 	alias: [
 		'live'
 	],
