@@ -8,6 +8,6 @@ module.exports = {
 		'password'
 	],
 	execute: function(password) {
-		return this.yodle.setPassword(password);
+		return this.yodle.changePassword(password);
 	}
 };

@@ -9,7 +9,7 @@ module.exports = {
 		'remove'
   ],
   execute: function(email) {
-	  return this.yodle.remove(email).then(function(data) {
+	  return this.yodle.removeUser(email).then(function(data) {
 	      return data;
 	    });
 	}

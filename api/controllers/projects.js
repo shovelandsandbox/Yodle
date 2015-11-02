@@ -6,7 +6,7 @@ var express = require('express'),
   Entry = mongoose.model('Entry');
 
 module.exports = {
-  addprojectUser: addprojectUser,
+  addProjectUser: addProjectUser,
   createProject: createProject,
   createLog: createLog,
   getProjects: getProjects,
@@ -143,7 +143,7 @@ function getProjectUsers (req, res, next) {
   });
 }
 
-function addprojectUser(req, res, next) {
+function addProjectUser(req, res, next) {
   var project = req.swagger.params.projectId.value;
   var user = req.swagger.params.user.value.email;
 
@@ -284,7 +284,7 @@ function createLog(req, res, next) {
   var createMethod = {
     update: true
   };
-  
+
   Project.update(
     {
       _id: project,
