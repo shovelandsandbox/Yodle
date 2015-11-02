@@ -1,8 +1,25 @@
 var assert = require("assert");
-var fs = require('fs');
 
-var Cli = require("../lib/cli.js");
-var cli = new Cli();
+var rl = {
+  setPrompt: function(value) {this.value = value;},
+  prompt: function() {this.prompted = true;},
+  close: function() {this.closed = true;},
+  on: function(event, callback) {
+    this[event] = callback;
+    return this;
+  }
+};
+
+var yodle = {
+  command: function() {
+    return new Promise(function (_resolve, _reject) {
+      _resolve();
+    });
+  }
+};
+
+var Cli = require("../cli/index");
+var cli = new Cli(rl, yodle);
 
 describe('Cli', function() {
 	describe('#isInt(n)', function() {
@@ -70,34 +87,13 @@ describe('Cli', function() {
 	});
 });
 
-//describe('Cli', function() {
-//	describe('#loadFromFile(n)', function() {
-//		it('will load from file', function() {
-//      fs.writeFile('/tmp/test', "success");
-//
-//      cli.loadFromFile('/tmp/test', function() {
-//        assert.equal('success', global.yodle.token);
-//      });
-//
-//		});
-//	});
-//});
-
 describe('Cli', function() {
-	describe('#execute(executable, command, callback)', function() {
+	describe('#processLine(command, callback)', function() {
 		it('fires off command on executable and calls callback', function() {
-      var yodle = {
-        command: function() {
-          return new Promise(function (_resolve, _reject) {
-            _resolve();
-          });
-        }
-      };
-
-      cli.execute(yodle, 'command()', function() {
+      cli.processLine('command()', function() {
         assert.equal(1, 1);
       });
-
+      assert.equal(1, 0);
 		});
 	});
 });
@@ -105,24 +101,14 @@ describe('Cli', function() {
 describe('Cli', function() {
 	describe('#turnOnPrompt(rl, callback, closedCallback)', function() {
 		it('command - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
-      var prompt = {
-        setPrompt: function(value) {this.value = value;},
-        prompt: function() {this.prompted = true;},
-        close: function() {this.closed = true;},
-        on: function(event, callback) {
-          this[event] = callback;
-          return this;
-        }
-      };
-
-      cli.turnOnPrompt(prompt, function(command) {
+      cli.turnOnPrompt(function(command) {
         assert.equal('test', command);
-        assert.equal('# ', prompt.value);
+        assert.equal('# ', rl.value);
       }, function() {
         assert.equal(1, 1);
       });
 
-      prompt.line('test');
+      rl.line('test');
 		});
 	});
 });
@@ -130,17 +116,7 @@ describe('Cli', function() {
 describe('Cli', function() {
 	describe('#turnOnPrompt(rl, callback, closedCallback)', function() {
 		it('bye - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
-      var rl = {
-        setPrompt: function(value) {this.value = value;},
-        prompt: function() {this.prompt = true;},
-        close: function() {this.closed = true;},
-        on: function(event, callback) {
-          this[event] = callback;
-          return this;
-        }
-      };
-
-      cli.turnOnPrompt(rl, function(command) {
+      cli.turnOnPrompt(function(command) {
         assert.equal(1, 0);
       }, function() {
         assert.equal(1, 1);
@@ -152,18 +128,8 @@ describe('Cli', function() {
 });
 
 describe('Cli', function() {
-	describe('#startCli(savePath, rl, yodle, exit)', function() {
+	describe('#start(savePath, rl, yodle, exit)', function() {
 		it('emulate the main function', function() {
-      var rl = {
-        setPrompt: function(value) {this.value = value;},
-        prompt: function() {this.prompted = true;},
-        close: function() {this.closed = true;},
-        on: function(event, callback) {
-          this[event] = callback;
-          return this;
-        }
-      };
-
       var yodle = {
         endit: function() {
           return new Promise(function (_resolve, _reject) {
@@ -172,7 +138,7 @@ describe('Cli', function() {
         }
       };
 
-      cli.startCli(rl, yodle, null);
+      cli.start(yodle, null);
 
       rl.line('endit()');
 		});
