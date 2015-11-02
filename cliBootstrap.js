@@ -45,7 +45,7 @@ else {
 
       require('./server');
     } else {
-      cli.startCli(function() {
+      cli.start(function() {
         console.log("goodbye");
         process.exit(0);
       });

@@ -86,7 +86,7 @@ Cli.prototype.turnOnPrompt = function(callback, closedCallback) {
   }).on('close', closedCallback);
 };
 
-Cli.prototype.startCli = function(exit) {
+Cli.prototype.start = function(exit) {
   this.rl.on("SIGINT", function () {
     if(global.socket && global.socket.connected) global.socket.close();
     else process.exit(0);
