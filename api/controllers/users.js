@@ -128,7 +128,7 @@ function editUser(req, res) {
       if(data.nModified === 0) {
         res.statusCode = 404;
 
-        var message = 'Are you snooping? We couldn\'t find the diary you\'re looking for.';
+        var message = 'Are you snooping? We couldn\'t find the project you\'re looking for.';
         if(userId === 'me') message = 'Invalid user. Did you forget to sent an auth token in your header?';
 
         res.send({
@@ -169,7 +169,7 @@ console.log(err);
       res.statusCode = 404;
       res.send({
         status: 404,
-        message: 'Are you snooping? We couldn\'t find the diary you\'re looking for.'
+        message: 'Are you snooping? We couldn\'t find the project you\'re looking for.'
       });
     }
   });

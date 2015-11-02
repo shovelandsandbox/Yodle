@@ -9,7 +9,7 @@ module.exports = {
 	execute: function(query) {
   		query = query ? query : {};
 
-  		return this.yodle.logs(query).then(function(json) {
+  		return this.yodle.getLogs(query).then(function(json) {
       			var output = 'Logs:';
       
       			for(var i in json.entries) {

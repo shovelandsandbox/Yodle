@@ -284,7 +284,7 @@ function createLog(req, res, next) {
   var createMethod = {
     update: true
   };
-
+  
   Project.update(
     {
       _id: project,
