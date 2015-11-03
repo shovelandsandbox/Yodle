@@ -43,8 +43,8 @@
     "yamljs": "^0.2.4"
   },
   "devDependencies": {
-    "istanbul": "0.3.21",
-    "codeclimate-test-reporter": "^0.1.1"
+    "codeclimate-test-reporter": "^0.1.1",
+    "coveralls": "^2.11.4",
+    "istanbul": "0.3.21"
   }
 }
-
