@@ -9,4 +9,4 @@ after_script:
   - CODECLIMATE_REPO_TOKEN=6b1c343ad8f7b18febdd3fc8ba814d6de7a1fed740fa26b19bfae11a694741ba codeclimate-test-reporter < coverage/lcov.info
 script:
   - "npm test --coverage"
-  - "node ./node_modules/.bin/istanbul check-coverage --statements 35 --branches 40 --lines 8 --functions 35"
+  - "node ./node_modules/.bin/istanbul check-coverage --statements 35 --branches 40 --functions 8 --line 35"

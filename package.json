@@ -13,7 +13,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shovelandsandbox/yodle-node.git"
+    "url": "git+https://github.com/shovelandsandbox/yodle.git"
   },
   "author": "giuseppe mancone",
   "license": "ISC",
@@ -47,3 +47,4 @@
     "codeclimate-test-reporter": "^0.1.1"
   }
 }
+
