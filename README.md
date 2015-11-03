@@ -58,8 +58,8 @@ For command line server options:
 > yodle --help
 
 A fully configured server looks like this:
-> yodle --daemon --project projectId --port 3000 --mongo mongodb://mongoUrl/database
+> yodle --daemon --port 3000 --mongo mongodb://mongoUrl/database
 
-That's it. It's pretty bad. Also it crashes a bunch so don't be scared. Right now the only way to view the logs is through the CLI (and you can't sort or search or limit anything) or directly in your mongoDB.
+That's it. It's a little rough. Also it crashes a bunch so don't be scared. Right now the only way to view the logs is through the CLI (and you can't sort or search or limit anything) or directly in your mongo instance.
 
 Thanks for checking us out! Have fun.
