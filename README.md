@@ -24,32 +24,15 @@ and that's it! Installed. If you want to actually use it you can open a terminal
 
 > yodle
 
-Some of the commands are:
+### Getting started
 ```javascript
-=============== General
-# help()
-# login(email, password)
-# server(server)
-# port(port)
-# database(host)
-# changeEmail(newEmail)
-# changePassword(newPassword)
-# writeConfig()
-# user(email, password)
-
-=============== project manipulation
-# getProjects()
-# project(name)
-# useProject(projectId)
-# addUser(email)
-# removeUser(email)
-# getUsers()
-
-=============== Log functions
-# log(level, message, code)
-# getLogs(conditions)
-# count(conditions)
-# live()
+# register("email", "password") // Register a user on attached server
+# login("email", "password")    // Login with a given user
+# newProject("projectName")     // Create a new project
+# listProjects()                // Display all projects
+# openProject("5b")             // Open a project
+# live()                        // View logs for given project live
+# writeConfig()                 // Saves server, port, logged in user and selected project
 ```
 
 ## Running a server
