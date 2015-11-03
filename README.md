@@ -33,6 +33,8 @@ and that's it! Installed. If you want to actually use it you can open a terminal
 # openProject("5b")             // Open a project
 # live()                        // View logs for given project live
 # writeConfig()                 // Saves server, port, logged in user and selected project
+
+# help()                        // More commands live in here, check it out!
 ```
 
 ## Running a server
