@@ -1,6 +1,6 @@
 var debug = require('debug')('yodle');
 
-function Cli(rl, yodle) { 
+function Cli(rl, yodle) {
   this.rl = rl;
   this.yodle = yodle;
 }
@@ -68,8 +68,10 @@ Cli.prototype.configure = function(userArgs) {
 Cli.prototype.processLine = function(command, callback) {
   try {
     if(this.execute(command, callback)) return;
-    
+
     eval(command);
+
+    callback();
   } catch(e) {
     debug(e);
     callback(e);
@@ -91,7 +93,7 @@ Cli.prototype.start = function(exit) {
     if(global.socket && global.socket.connected) global.socket.close();
     else process.exit(0);
   });
-  
+
   var self = this;
   var executing = false;
 

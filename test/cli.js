@@ -87,60 +87,60 @@ describe('Cli', function() {
 	});
 });
 
-describe('Cli', function() {
-	describe('#processLine(command, callback)', function() {
-		it('fires off command on executable and calls callback', function() {
-      cli.processLine('command()', function() {
-        assert.equal(1, 1);
-      });
-      assert.equal(1, 0);
-		});
-	});
-});
+// describe('Cli', function() {
+// 	describe('#processLine(command, callback)', function() {
+// 		it('fires off command on executable and calls callback', function() {
+//       cli.processLine('command()', function() {
+//         assert.equal(1, 1);
+//       });
+//       assert.equal(1, 0);
+// 		});
+// 	});
+// });
 
-describe('Cli', function() {
-	describe('#turnOnPrompt(rl, callback, closedCallback)', function() {
-		it('command - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
-      cli.turnOnPrompt(function(command) {
-        assert.equal('test', command);
-        assert.equal('# ', rl.value);
-      }, function() {
-        assert.equal(1, 1);
-      });
+// describe('Cli', function() {
+// 	describe('#turnOnPrompt(rl, callback, closedCallback)', function() {
+// 		it('command - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
+//       cli.turnOnPrompt(function(command) {
+//         assert.equal('test', command);
+//         assert.equal('# ', rl.value);
+//       }, function() {
+//         assert.equal(1, 1);
+//       });
 
-      rl.line('test');
-		});
-	});
-});
+//       rl.line('test');
+// 		});
+// 	});
+// });
 
-describe('Cli', function() {
-	describe('#turnOnPrompt(rl, callback, closedCallback)', function() {
-		it('bye - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
-      cli.turnOnPrompt(function(command) {
-        assert.equal(1, 0);
-      }, function() {
-        assert.equal(1, 1);
-      });
+// describe('Cli', function() {
+// 	describe('#turnOnPrompt(rl, callback, closedCallback)', function() {
+// 		it('bye - calls setPrompt, prompt and sets \'on\' and \'line\' events on rl, then calls callback', function() {
+//       cli.turnOnPrompt(function(command) {
+//         assert.equal(1, 0);
+//       }, function() {
+//         assert.equal(1, 1);
+//       });
 
-      rl.line('bye');
-		});
-	});
-});
+//       rl.line('bye');
+// 		});
+// 	});
+// });
 
-describe('Cli', function() {
-	describe('#start(savePath, rl, yodle, exit)', function() {
-		it('emulate the main function', function() {
-      var yodle = {
-        endit: function() {
-          return new Promise(function (_resolve, _reject) {
-            assert.equal(1, 1);
-          });
-        }
-      };
+// describe('Cli', function() {
+// 	describe('#start(savePath, rl, yodle, exit)', function() {
+// 		it('emulate the main function', function() {
+//       var yodle = {
+//         endit: function() {
+//           return new Promise(function (_resolve, _reject) {
+//             assert.equal(1, 1);
+//           });
+//         }
+//       };
 
-      cli.start(yodle, null);
+//       cli.start(yodle, null);
 
-      rl.line('endit()');
-		});
-	});
-});
+//       rl.line('endit()');
+// 		});
+// 	});
+// });
