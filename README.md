@@ -62,4 +62,6 @@ A fully configured server looks like this:
 
 That's it. It's a little rough. Also it crashes a bunch so don't be scared. Right now the only way to view the logs is through the CLI (and you can't sort or search or limit anything) or directly in your mongo instance.
 
+Finally, you can implement your own server or your own client if you want; we've documented the API here https://swaggerhub.com/api/manconeg/Yodle
+
 Thanks for checking us out! Have fun.
