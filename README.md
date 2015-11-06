@@ -14,7 +14,7 @@ var yodle = require('yodle')({
 yodle.log(level, message, code);
 ```
 
-Level, message and code can all be json. Do whatever you want with them. Later on they will be searchable or used as tags! You'll probably also want to master:
+Level, message and code can all be json. Do whatever you want with them. Later on they will be searchable or used as tags! Also note the projectId; eventually yodle.yeti.com will have some GUI features for you to use but for now you'll probably also want to master:
 
 ## Advanced Client Usage
 
@@ -49,6 +49,8 @@ A fully configured server looks like this:
 > yodle --daemon --port 3000 --mongo mongodb://mongoUrl/database
 
 That's it. It's a little rough. Also it crashes a bunch so don't be scared. Right now the only way to view the logs is through the CLI (and you can't sort or search or limit anything) or directly in your mongo instance.
+
+Don't count on security or uptime or reliability. This is in active development!
 
 Finally, you can implement your own server or your own client if you want; we've documented the API here https://swaggerhub.com/api/manconeg/Yodle
 
