@@ -97,7 +97,7 @@ function getProjectEntries(req, res, next) {
   for(var i in req.query) {
     if(i === 'metaOnly') {
       if(req.query[i] === 'true') metaOnly = true;
-    } else search[i] = req.query[i];
+    } else search['entries.' + i] = req.query[i];
   }
   if(!metaOnly) group.entries = {$push: "$entries"};
 
