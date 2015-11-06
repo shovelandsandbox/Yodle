@@ -277,23 +277,9 @@ function createLog(req, res, next) {
 
   var entry = new Entry();
 
-  try {
-    entry.level = JSON.parse(req.swagger.params.entry.value.level);
-  } catch(e) {
-    entry.level = req.swagger.params.entry.value.level;
-  }
-
-  try {
-    entry.message = JSON.parse(req.swagger.params.entry.value.message);
-  } catch(e) {
-    entry.message = req.swagger.params.entry.value.message;
-  }
-
-  try {
-    entry.code = JSON.parse(req.swagger.params.entry.value.code);
-  } catch(e) {
-    entry.code = req.swagger.params.entry.value.code;
-  }
+  entry.level = req.swagger.params.entry.value.level;
+  entry.message = req.swagger.params.entry.value.message;
+  entry.code = req.swagger.params.entry.value.code;
 
   entry.ip = req.connection.remoteAddress;
 
