@@ -30,7 +30,10 @@ and that's it! Installed. If you want to actually use it you can open a terminal
 # login("email", "password")    // Login with a given user
 # newProject("projectName")     // Create a new project
 # listProjects()                // Display all projects
-# openProject("5b")             // Open a project
+# openProject("5b")             // Open a project; if project ID is 563ce917a6d9a2a55166e5b5
+                                // you can enter 'b5', '5b5', 'e5b5', etc and it will match
+                                // the first project ID it finds that matches starting at the
+                                // right of the ID
 # live()                        // View logs for given project live
 # writeConfig()                 // Saves server, port, logged in user and selected project
 
