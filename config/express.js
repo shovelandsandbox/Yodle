@@ -39,7 +39,7 @@ module.exports = function(app, config) {
     if(err.results) errorObj = err.results.errors;
     else errorObj = err;
 
-    app.get('yodle').log('severe', errorObj, '500');
+    // app.get('yodle').log('severe', errorObj, '500');
     // TODO: remove console log
     console.log("Error:");
     console.log(errorObj);
