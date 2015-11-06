@@ -13,8 +13,8 @@ module.exports = {
       var fs = require('fs');
 
       var file;
-      if(global.yodle.configFile) {
-        file = global.yodle.configFile;
+      if(this.config.configFile) {
+        file = this.config.configFile;
 
         var pathTo = file.split('/config.json')[0];
 
@@ -23,9 +23,9 @@ module.exports = {
         file = './config.json';
       }
 
-      fs.writeFile(file, JSON.stringify(global.yodle.config), function(err) {
+      fs.writeFile(file, JSON.stringify(this.config), function(err) {
         _resolve("Done");
       });
-    });
+    }.bind(this));
   }
 };

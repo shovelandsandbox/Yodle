@@ -10,9 +10,9 @@ module.exports = {
   execute: function(email, password) {
 	  return this.yodle.login(email, password).then(function(data) {
 
-	      global.yodle.config.TOKEN = data.token;
+	      this.config.token = data.token;
 
 	      return 'done';
-	    });
+	    }.bind(this));
 	}
 };

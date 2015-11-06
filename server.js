@@ -68,7 +68,7 @@ function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
 // ************************************************************************************
 
 SwaggerExpress.create({
-  appRoot: __dirname 
+  appRoot: __dirname
 }, function(err, swaggerExpress) {
   if (err) { throw err; }
 
@@ -77,7 +77,7 @@ SwaggerExpress.create({
   swaggerExpress.runner.config.swagger.securityHandlers = {
   	'X-Access-Token': verifyTokenInHeader
   };
-  
+
   // install middleware
   app.use(swaggerExpress.metadata());
   app.use(swaggerExpress.security());
@@ -134,7 +134,7 @@ io.on('connection', function (socket) {
       }
     });
   });
- 
+
   setTimeout(function() {
     //If the socket didn't authenticate, disconnect it
     if (!socket.auth) {

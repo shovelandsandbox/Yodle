@@ -9,7 +9,7 @@
   "bin": {
     "yodle": "cliBootstrap.js"
   },
-  "description": "mix some yodle into your project and get zero configuration logging from anywhere to share with anyone",
+  "description": "(in active development; feedback requested!) make your projects yodle! start a log listener with minimal configuration cloud logging from anywhere to share with anyone",
   "main": "index.js",
   "repository": {
     "type": "git",

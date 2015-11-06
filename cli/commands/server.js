@@ -9,8 +9,8 @@ module.exports = {
  	],
  	execute: function(server) {
 		return new Promise(function (_resolve, _reject) {
-			global.yodle.config.HOST = server;
+			this.config.host = server;
 			_resolve("Server set to " + server);
-		});
+		}.bind(this));
 	}
 };
