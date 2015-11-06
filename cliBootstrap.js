@@ -1,5 +1,9 @@
 #! /usr/bin/env node
 
+function isInt(n) {
+  return Number(n) == n && n % 1 === 0;
+};
+
 function configure(userArgs) {
   var config = {};
 
@@ -16,7 +20,7 @@ function configure(userArgs) {
 
       case '-h':
       case '--host':
-        config.host = nextArg;
+        config.server = nextArg;
         break;
 
       case '-l':
@@ -26,7 +30,7 @@ function configure(userArgs) {
 
       case '-p':
       case '--port':
-        if (!this.isInt(nextArg)) {
+        if (!isInt(nextArg)) {
           return -1;
         }
 

@@ -22,7 +22,7 @@ module.exports = function(app, config) {
     var fs = require('fs');
     fs.readFile(__dirname + '/../api/swagger/swagger.yaml', 'utf8', function(err, data) {
       var swagger = yamljs.parse(data);
-      
+
       res.send(swagger);
     });
   });
@@ -34,11 +34,16 @@ module.exports = function(app, config) {
   });
 
   app.use(function (err, req, res, next) {
+
+    var errorObj = '';
+    if(err.results) errorObj = err.results.errors;
+    else errorObj = err;
+
+    app.get('yodle').log('severe', errorObj, '500');
     // TODO: remove console log
     console.log("Error:");
-    if(err.results) console.log(err.results.errors);
-    else console.log(err);
-    
+    console.log(errorObj);
+
     res.status(err.status || 500);
     res.send({
       status: err.status || 500,

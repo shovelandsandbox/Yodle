@@ -6,10 +6,6 @@ function Cli(config, rl, yodle) {
   this.Yodle = yodle;
 }
 
-Cli.prototype.isInt = function(n) {
-  return Number(n) == n && n % 1 === 0;
-};
-
 Cli.prototype.processLine = function(command, callback) {
   try {
     this.yodle = new this.Yodle(this.config);
