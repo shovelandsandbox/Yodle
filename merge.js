@@ -13,18 +13,18 @@ module.exports = exports = function(object, directory) {
 			var commandCheck = this.commands[i];
 
 			for(var aliasI in commandCheck.alias) {
-				var alias = commandCheck.alias[aliasI];
+				var alias = '^\\s*' + commandCheck.alias[aliasI];
 
-				alias += '(?![a-z])(\\s?\\(?([^)]+)\\)?)?'
+				alias += '(?![a-z])(\\s?\\(?([^(^)]+)\\)?)?'
 
 				var match = command.match(alias);
 
 				if(match) {
           debug('matched');
           debug(match);
-          debug('this[' + commandCheck.name + '](' + match[1] + ')');
+          debug('this[' + commandCheck.name + '](' + match[2] + ')');
 
-					eval('this[commandCheck.name](' + match[1] + ')').then(callback, callback);
+					eval('this[commandCheck.name](' + match[2] + ')').then(callback, callback);
 
 					return true;
 				}
