@@ -9,7 +9,7 @@ Easy logging for your node applications! You just have to master:
 ```javascript
 var yodle = require('yodle')({
   project: projectId,
-  server: 'yodle.yeti.com'
+  server: 'yodle.yetilogs.com'
 });
 yodle.log(level, message, code);
 ```
