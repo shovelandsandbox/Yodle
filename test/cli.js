@@ -17,7 +17,7 @@ var yodle = {
     });
   }
 };
-
+/*
 var Cli = require("../cli/index");
 var cli = new Cli(rl, yodle);
 
@@ -144,3 +144,4 @@ describe('Cli', function() {
 // 		});
 // 	});
 // });
+*/
