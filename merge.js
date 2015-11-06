@@ -20,11 +20,12 @@ module.exports = exports = function(object, directory) {
 				var match = command.match(alias);
 
 				if(match) {
-					debug('matched');
-					debug(match);
-					debug('this[' + commandCheck.name + '](' + match[1] + ')');
+          debug('matched');
+          debug(match);
+          debug('this[' + commandCheck.name + '](' + match[1] + ')');
+
 					eval('this[commandCheck.name](' + match[1] + ')').then(callback, callback);
-					
+
 					return true;
 				}
 			}

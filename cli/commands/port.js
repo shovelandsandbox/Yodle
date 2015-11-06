@@ -9,8 +9,8 @@ module.exports = {
   ],
   execute: function(port) {
 	return new Promise(function (_resolve, _reject) {
-		global.yodle.config.PORT = port;
+		this.config.port = port;
 		_resolve("Port set to " + port);
-	});
+	}.bind(this));
   }
 };

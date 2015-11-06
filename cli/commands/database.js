@@ -10,8 +10,8 @@ module.exports = {
 	],
 	execute: function(db) {
 		return new Promise(function (_resolve, _reject) {
-			global.yodle.config.DB = db;
+			this.config.db = db;
 			_resolve("Database for daemon mode set to " + db);
-		});
+		}.bind(this));
 	}
 };

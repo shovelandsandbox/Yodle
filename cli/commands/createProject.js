@@ -5,6 +5,7 @@ module.exports = {
 	alias: [
 		'newProject',
 		'project',
+    'create',
 		'new'
 	],
 	execute: function(name) {

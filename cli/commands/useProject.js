@@ -10,11 +10,11 @@ module.exports = {
   execute: function(name) {
 	  return this.yodle.useProject(name).then(function(json) {
 	    if(json.length) {
-	      global.yodle.config.PROJECT = json[0]._id;
-	      return 'project set to ' + global.yodle.config.PROJECT;
+	      this.config.project = json[0]._id;
+	      return 'project set to ' + this.config.project;
 	    } else {
 	      return 'error - project not found';
 	    }
-	  });
+	  }.bind(this));
 	}
 };

@@ -64,10 +64,10 @@ function createProject(req, res, next) {
   project.users = req.swagger.params.project.value.users ? req.swagger.params.project.value.users : [];
   project.entries = req.swagger.params.project.value.entries;
   project.name = req.swagger.params.project.value.name;
-  
+
   if(project.users.indexOf(req.decoded.email) === -1) project.users.push(req.decoded.email);
 
-  Project.save(function(err, data) {
+  project.save(function(err, data) {
     if(err) {
       res.statusCode = 500;
       res.send({
