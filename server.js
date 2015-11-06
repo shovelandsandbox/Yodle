@@ -10,7 +10,16 @@ var express = require('express'),
   // tungus = require('tungus'),
   mongoose = require('mongoose');
 
+var yodle = require('../yodle').getInstance({
+  project: '563d06b65135c011002ff49c',
+  server: 'yeti.yodlelogs.com'
+  // project: '563ce917a6d9a2a55166e5ee',
+  // server: '127.0.0.1',
+  // port: 3000
+});
+
 var app = express();
+app.set('yodle', yodle);
 
 // ************************************************************************************
 // Mongoose config
@@ -51,8 +60,14 @@ function tokenHandler(token, callback) {
 }
 
 function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
+  var allowed = false;
+
   if(request._parsedUrl.pathname.match(/^\/users\/auth$/) ||
-    request._parsedUrl.pathname.match(/^\/users$/)) {
+    request._parsedUrl.pathname.match(/^\/users$/)) allowed = true;
+
+  if(request.method == 'POST' && request._parsedUrl.pathname.match(/^\/projects\/[a-z0-9]{24}\/entries$/)) allowed = true;
+
+  if(allowed) {
     return callback();
   }
 

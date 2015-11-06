@@ -9,7 +9,7 @@ module.exports = {
  	],
  	execute: function(server) {
 		return new Promise(function (_resolve, _reject) {
-			this.config.host = server;
+			this.config.server = server;
 			_resolve("Server set to " + server);
 		}.bind(this));
 	}
