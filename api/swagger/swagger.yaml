@@ -442,12 +442,3 @@ definitions:
           $ref: "#/definitions/Entry"
   Entry:
     type: object
-    properties:
-      level:
-        type: string
-      message:
-        type: string
-      code:
-        type: string
-      ip:
-        type: string
