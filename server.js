@@ -29,7 +29,7 @@ db.on('error', function (err) {
   throw new Error('unable to connect to database at ' + config.db);
 });
 
-var models = glob.sync(config.root + '/api/models/*.js');
+var models = glob.sync(config.root + '/api/models/mongo/*.js');
 models.forEach(function (model) {
   require(model);
 });
