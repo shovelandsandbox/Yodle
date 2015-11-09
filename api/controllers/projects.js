@@ -1,9 +1,6 @@
 var express = require('express'),
   router = express.Router(),
-  mongoose = require('mongoose'),
-  Project = mongoose.model('Project'),
-  Entry = mongoose.model('Entry'),
-  mongoDriver = require('../db/mongoDriver');
+  mongoDriver = require('../db/mongo/project');
 
 module.exports = {
   addProjectUser: addProjectUser,
