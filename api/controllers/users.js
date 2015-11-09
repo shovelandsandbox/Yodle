@@ -1,8 +1,4 @@
-var express = require('express'),
-  router = express.Router(),
-  config = require('../../config/config.js'),
-  mongoDriver = require('../db/mongo/user'),
-  jwt = require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
   auth: auth,
@@ -13,9 +9,9 @@ module.exports = {
 };
 
 function auth(req, res) {
-  mongoDriver.auth(req.swagger.params.credentials.value.email, req.swagger.params.credentials.value.password).then(
+  global.authDriver.auth(req.swagger.params.credentials.value.email, req.swagger.params.credentials.value.password).then(
     (user) => {
-      var token = jwt.sign(user, config.secret, {
+      var token = jwt.sign(user, global.secret, {
         expiresInMinutes: 1440
       });
       res.send({
@@ -31,7 +27,7 @@ function auth(req, res) {
 }
 
 function listUsers(req, res) {
-  mongoDriver.listUsers().then((users) => {
+  global.authDriver.listUsers().then((users) => {
     res.send(users);
   });
 }
@@ -41,7 +37,7 @@ function getUser(req, res) {
 
   var realUserId = userId === 'me' ? req.decoded._id : userId;
 
-  mongoDriver.getUser(realUserId).then((user) => {
+  global.authDriver.getUser(realUserId).then((user) => {
     res.send(user);
   }, (error, message) => {
     res.statusCode = error;
@@ -57,7 +53,7 @@ function createUser(req, res) {
   if(req.swagger.params.user.value.email) data.email = req.swagger.params.user.value.email;
   if(req.swagger.params.user.value.password) data.password = req.swagger.params.user.value.password;
 
-  mongoDriver.createUser(data).then((user) => {
+  global.authDriver.createUser(data).then((user) => {
     res.statusCode = 303;
     res.setHeader('Location', '/users/' + user.id);
     res.send({
@@ -103,7 +99,7 @@ function editUser(req, res) {
     return;
   }
 
-  mongoDriver.editUser(realUserId, data).then(() => {
+  global.authDriver.editUser(realUserId, data).then(() => {
     res.statusCode = 200;
     res.send({
       status: 200,
