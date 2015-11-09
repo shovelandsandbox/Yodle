@@ -7,7 +7,7 @@
     "test": "node ./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha"
   },
   "bin": {
-    "yodle": "cliBootstrap.js"
+    "yodle": "cli.js"
   },
   "description": "(in active development; feedback requested!) make your projects yodle! start a log listener with minimal configuration cloud logging from anywhere to share with anyone",
   "main": "index.js",
