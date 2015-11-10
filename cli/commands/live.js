@@ -16,6 +16,8 @@ module.exports = {
 
 		console.log("listening...");
 
-		return this.yodle.live(callback);
+		return this.yodle.live(callback, function(error) {
+      console.log(error);
+    });
 	}
 };

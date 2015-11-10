@@ -149,6 +149,7 @@ io.on('connection', function (socket) {
         socket.join(data.room);
       } else {
         debug("Authentication failed for socket");
+        socket.emit('unauthorized');
         socket.auth = false;
       }
     });
