@@ -1,3 +1,3 @@
-#! /usr/bin/env node --use_strict
+#! /usr/bin/env node
 
 require('./cli/cliBootstrap').init();

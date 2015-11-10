@@ -99,9 +99,9 @@ CliBootstrap.init = function() {
         if(config.port) process.env.PORT = config.port;
         if(config.db) process.env.DB = config.db;
 
-        require('./server');
+        require('../server');
       } else {
-        var Yodle = require('./');
+        var Yodle = require('../');
         var Cli = require('./index');
 
         var rl = require('readline').createInterface(process.stdin, process.stdout);

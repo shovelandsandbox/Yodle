@@ -18,7 +18,23 @@ Yodle.getInstance = function(config, api) {
   return new Yodle(config, api);
 }
 
-require('./merge')(Yodle, __dirname + '/lib/commands/*.js');
+// require('./merge')(Yodle, __dirname + '/lib/commands/*.js');
+
+Yodle.prototype.addUser = require('./lib/commands/addUser').execute;
+Yodle.prototype.changeEmail = require('./lib/commands/changeEmail').execute;
+Yodle.prototype.changePassword = require('./lib/commands/changePassword').execute;
+Yodle.prototype.count = require('./lib/commands/count').execute;
+Yodle.prototype.getLogs = require('./lib/commands/getLogs').execute;
+Yodle.prototype.getProjects = require('./lib/commands/getProjects').execute;
+Yodle.prototype.getUsers = require('./lib/commands/getUsers').execute;
+Yodle.prototype.live = require('./lib/commands/live').execute;
+Yodle.prototype.log= require('./lib/commands/log').execute;
+Yodle.prototype.login = require('./lib/commands/login').execute;
+Yodle.prototype.newProject = require('./lib/commands/newProject').execute;
+Yodle.prototype.removeUser = require('./lib/commands/removeUser').execute;
+Yodle.prototype.useProject = require('./lib/commands/useProject').execute;
+Yodle.prototype.user = require('./lib/commands/user').execute;
+
 
 exports = module.exports = Yodle;
 
