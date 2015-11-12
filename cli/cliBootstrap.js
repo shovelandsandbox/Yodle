@@ -1,8 +1,8 @@
 'use strict';
 
-class CliBootstrap {}
-
-CliBootstrap.isInt = function(n) { return Number(n) == n && n % 1 === 0; };
+class CliBootstrap {
+  static isInt(n) { return Number(n) == n && n % 1 === 0; };
+}
 
 CliBootstrap.configure = function(userArgs) {
   var config = {};
@@ -71,29 +71,13 @@ CliBootstrap.init = function() {
   if(commandLineConfig === -1) console.log('Invalid Port');
   else if(commandLineConfig === -2) console.log('Invalid Mongo Server');
   else {
-    var home = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
     var config = {
-      configFile: home + '/.yodle/config.json'
+      configFile: this.getHomeDirectory() + '/.yodle/config.json',
+      protocol: 'http'
     };
 
-    var fs = require('fs');
-
-    fs.readFile(config.configFile, 'utf8', function(err, data) {
-      // set global config to config.json values
-      if (!err) {
-        var json = JSON.parse(data);
-
-        for (var attrname in json) {
-          config[attrname] = json[attrname];
-        }
-      }
-
-      // override with cli values
-      for (var attrname in commandLineConfig) {
-        config[attrname] = commandLineConfig[attrname];
-      }
-
-      config.protocol = 'http';
+    this.loadConfigFile(config.configFile, (fileConfig) => {
+      config = Object.assign(config, fileConfig, commandLineConfig);
 
       if (config.daemon === true) {
         if(config.port) process.env.PORT = config.port;
@@ -115,6 +99,30 @@ CliBootstrap.init = function() {
       }
     });
   }
-}
+};
+
+CliBootstrap.getHomeDirectory = function() {
+  var home = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+  return home;
+};
+
+CliBootstrap.loadConfigFile = function(configFile, callback) {
+  var fs = require('fs');
+
+  var config = [];
+
+  fs.readFile(configFile, 'utf8', function(err, data) {
+    // set global config to config.json values
+    if (!err) {
+      var json = JSON.parse(data);
+
+      for (var attrname in json) {
+        config[attrname] = json[attrname];
+      }
+    }
+
+    callback(config);
+  });
+};
 
 module.exports = CliBootstrap;
