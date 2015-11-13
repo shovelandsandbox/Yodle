@@ -76,13 +76,32 @@ function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
 }
 
 // ************************************************************************************
-// Let's set up swagger + CORS
+// Let's set up CORS + swagger
 // ************************************************************************************
 
 SwaggerExpress.create({
   appRoot: __dirname
 }, function(err, swaggerExpress) {
   if (err) { throw err; }
+
+  app.use(function(req, res, next) {
+    if(!res.headers) res.headers = {};
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-Token, Location');
+
+    if(req.method === "OPTIONS") {
+      res.statusCode = 200;
+      res.send({
+        status: 200,
+        message: "okay"
+      });
+      return;
+    }
+
+    return next();
+  });
 
   app.use(swaggerExpress.runner.swaggerTools.swaggerUi());
 
@@ -94,24 +113,6 @@ SwaggerExpress.create({
   app.use(swaggerExpress.metadata());
   app.use(swaggerExpress.security());
   app.use(swaggerExpress.validator());
-  app.use(function(req, res, next) {
-  	if(!res.headers) res.headers = {};
-
-  	res.setHeader('Access-Control-Allow-Origin', '*');
-  	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
-  	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-Token, Location');
-
-  	if(req.method === "OPTIONS") {
-  		res.statusCode = 200;
-  		res.send({
-  			status: 200,
-  			message: "okay"
-  		});
-  		return;
-  	}
-
-  	return next();
-  });
   app.use(swaggerExpress.expressCompatibilityMW());
   app.use(swaggerExpress.router());
 });

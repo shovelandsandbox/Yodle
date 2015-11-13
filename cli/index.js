@@ -8,7 +8,7 @@ function Cli(config, rl, yodle) {
 
 Cli.prototype.processLine = function(command, callback) {
   try {
-    this.yodle = new this.Yodle.getInstance(this.config);
+    this.yodle = this.Yodle.getInstance(this.config);
 
     if(this.execute(command, callback)) return;
 
