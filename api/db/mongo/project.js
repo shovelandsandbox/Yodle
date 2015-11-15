@@ -77,11 +77,14 @@ MongoDriver.getProjectEntries = function(project, searchOptions, query) {
     _id: mongoose.Types.ObjectId(project),
     users: searchOptions.user
   };
+  for(var i in query) {
+    search[i] = query[i];
+  }
 
   return new Promise((_resolve, _reject) => {
     Project.aggregate()
       .unwind('entries')
-      .match(query)
+      .match(search)
       .group(group)
       .project({
           _id : 0,
