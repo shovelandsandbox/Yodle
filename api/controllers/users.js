@@ -69,7 +69,6 @@ function createUser(req, res) {
   });
 }
 
-
 function editUser(req, res) {
   var userId = req.swagger.params.userId.value;
 
@@ -92,7 +91,7 @@ function editUser(req, res) {
     return;
   }
 
-  if(!data.email.match(/.+@.+\..+/)) {
+  if(data.email && !data.email.match(/.+@.+\..+/)) {
     res.send({
       message: 'no way is that email valid'
     });
@@ -106,9 +105,14 @@ function editUser(req, res) {
       message: "User Updated"
     });
   }, (error, message) => {
+    if(typeof error === 'object') {
+      message = error.toString();
+      error = 500;
+    }
+
     res.statusCode = error;
     res.send({
-      status: error,
+      status: error ? error : 500,
       message: message
     });
   });
