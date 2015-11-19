@@ -23,6 +23,7 @@ class Yodle {
 Yodle.prototype.addUser = require('./lib/commands/addUser').execute;
 Yodle.prototype.changeEmail = require('./lib/commands/changeEmail').execute;
 Yodle.prototype.changePassword = require('./lib/commands/changePassword').execute;
+Yodle.prototype.reconfig = require('./lib/commands/reconfig').execute;
 Yodle.prototype.count = require('./lib/commands/count').execute;
 Yodle.prototype.getLogs = require('./lib/commands/getLogs').execute;
 Yodle.prototype.getProjects = require('./lib/commands/getProjects').execute;
