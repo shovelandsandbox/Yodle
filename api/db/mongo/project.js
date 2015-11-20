@@ -50,7 +50,6 @@ MongoDriver.getProject = function(project, searchOptions) {
 };
 
 MongoDriver.createProject = function(projectData) {
-
   var project = new Project();
 
   project.users = projectData.users;
@@ -69,9 +68,9 @@ MongoDriver.createProject = function(projectData) {
 
 };
 
-MongoDriver.getProjectEntries = function(project, searchOptions, query) {
+MongoDriver.getFromProject = function(project, searchOptions, query) {
   var group = {_id: "$_id", count: {$sum: 1}};
-  if(!searchOptions.metaOnly === true) group.entries = {$push: "$entries"};
+  if(!searchOptions.metaOnly === true) group.entries = { $push: "$" + searchOptions.path };
 
   var search = {
     _id: mongoose.Types.ObjectId(project),
@@ -81,16 +80,29 @@ MongoDriver.getProjectEntries = function(project, searchOptions, query) {
     search[i] = query[i];
   }
 
-  return new Promise((_resolve, _reject) => {
-    Project.aggregate()
-      .unwind('entries')
+  var projections = {
+     _id : 0,
+    count: 1
+  };
+  projections[searchOptions.path] = 1;
+
+  var aggregateFunction = Project.aggregate();
+
+  var path = searchOptions.path.split('.');
+  var currentPath = '';
+  for(var i in path) {
+    currentPath += path[i];
+    aggregateFunction.unwind(currentPath);
+    currentPath += '.';
+  }
+
+  aggregateFunction
       .match(search)
       .group(group)
-      .project({
-          _id : 0,
-          count: 1,
-          entries: 1
-      })
+      .project(projections);
+
+  return new Promise((_resolve, _reject) => {
+    aggregateFunction
       .exec(function(err, project) {
         if(project.length) {
           _resolve(project[0]);
@@ -99,6 +111,13 @@ MongoDriver.getProjectEntries = function(project, searchOptions, query) {
         }
       });
     });
+
+}
+
+MongoDriver.getProjectEntries = function(project, searchOptions, query) {
+  searchOptions.path = "entries";
+
+  return MongoDriver.getFromProject(project, searchOptions, query);
 };
 
 MongoDriver.getProjectUsers = function(project, searchOptions) {
