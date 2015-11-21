@@ -54,12 +54,9 @@ function createUser(req, res) {
   if(req.swagger.params.user.value.password) data.password = req.swagger.params.user.value.password;
 
   global.authDriver.createUser(data).then((user) => {
-    res.statusCode = 303;
+    res.statusCode = 200;
     res.setHeader('Location', '/users/' + user.id);
-    res.send({
-      status: 303,
-      message: 'User created!'
-    });
+    res.send(user);
   }, (error, message) => {
     res.statusCode = error;
     res.send({

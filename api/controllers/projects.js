@@ -48,12 +48,10 @@ function createProject(req, res, next) {
 
   if(project.users.indexOf(req.decoded.email) === -1) project.users.push(req.decoded.email);
 
-  mongoDriver.createProject(project).then((id) => {
-    res.statusCode = 303;
+  mongoDriver.createProject(project).then((project) => {
+    res.statusCode = 200;
     res.setHeader('Location', '/projects/' + project.id);
-    res.send({
-        status: 303
-    });
+    res.send(project);
   }, (err) => {
     res.statusCode = 500;
     res.send({
@@ -186,11 +184,9 @@ function createLog(req, res, next) {
     // TODO make util for this
     console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
     global.io.to(project).emit('log', entry);
-    res.statusCode = 303;
+    res.statusCode = 200;
     res.setHeader('Location', '/projects/' + project + '/entries/' + entry.id);
-    res.send({
-        status: 303
-    });
+    res.send(entry);
   }, (error, message) => {
     res.statusCode = error;
     res.send({
