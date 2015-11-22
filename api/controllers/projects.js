@@ -9,7 +9,8 @@ module.exports = {
   getProjectEntries: getProjectEntries,
   getProjectEntry: getProjectEntry,
   getProjectUsers: getProjectUsers,
-  removeProjectUser: removeProjectUser
+  removeProjectUser: removeProjectUser,
+  getProjectTags: getProjectTags
 };
 
 function getProjects(req, res, next) {
@@ -23,11 +24,31 @@ function getProjects(req, res, next) {
   });
 }
 
+function getProjectTags(req, res, next) {
+  var project = req.swagger.params.projectId.value;
+
+  var searchOptions = {
+    user: req.decoded.email,
+    metaOnly: false
+  };
+
+  mongoDriver.getProjectTags(project, searchOptions, []).then(
+    (tags) => {
+      res.send(tags);
+    }, () => {
+      res.statusCode = 404;
+      res.send({
+        status: 404,
+        message: 'Are you snooping? We couldn\'t find any tags for that request.'
+      });
+    });
+}
+
 function getProject(req, res, next) {
   var project = req.swagger.params.projectId.value;
 
   mongoDriver.getProject(project, {
-    email: req.decoded.email
+    user: req.decoded.email
   }).then((project) => {
     res.send(project);
   }, () => {

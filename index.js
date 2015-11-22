@@ -33,6 +33,7 @@ Yodle.prototype.log= require('./lib/commands/log').execute;
 Yodle.prototype.login = require('./lib/commands/login').execute;
 Yodle.prototype.newProject = require('./lib/commands/newProject').execute;
 Yodle.prototype.removeUser = require('./lib/commands/removeUser').execute;
+Yodle.prototype.tags = require('./lib/commands/tags').execute;
 Yodle.prototype.useProject = require('./lib/commands/useProject').execute;
 Yodle.prototype.user = require('./lib/commands/user').execute;
 
