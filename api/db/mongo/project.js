@@ -96,24 +96,19 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
   });
 
   // Building unwinds
-  var path = searchOptions.path.split('.');
-  var currentPath = '';
-  for(var i in path) {
-    currentPath += path[i];
-
+  for(var i in searchOptions.unwind) {
     aggregate.push({
-      $unwind: "$" + currentPath
+      $unwind: "$" + searchOptions.unwind[i]
     });
-
-    currentPath += '.';
   }
 
   // Adding groups
   var group = {
-    _id: "$_id",
+    _id: searchOptions.key,
     count: { $sum: 1 }
   };
-  if(!searchOptions.metaOnly === true) group[searchOptions.path] = { $push: "$" + searchOptions.path };
+  var name = searchOptions.path[searchOptions.path.length - 1];
+  if(!searchOptions.metaOnly === true) group[searchOptions.name] = { $push: "$" + searchOptions.path };
   aggregate.push({
     $group: group
   });
@@ -123,7 +118,7 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
      _id : 0,
     count: 1
   };
-  projections[searchOptions.path] = 1;
+  projections[searchOptions.name] = 1;
   aggregate.push({
     $project: projections
   });
@@ -140,9 +135,35 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
 
 MongoDriver.getProjectEntries = function(project, searchOptions, query) {
   searchOptions.path = "entries";
+  searchOptions.key = "$_id";
+  searchOptions.name = 'entries';
+  searchOptions.unwind = [
+    'entries'
+  ];
 
   return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
     return results[0];
+  });
+};
+
+MongoDriver.getProjectTags = function(project, searchOptions, query) {
+  searchOptions.path = "entries.message.tags";
+  searchOptions.key = "$entries.message.tags";
+  searchOptions.name = 'tags';
+  searchOptions.unwind = [
+    'entries',
+    'entries.message.tags'
+  ];
+
+  return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
+    var tags = [];
+    results.forEach((entry) => {
+      tags.push({
+        tag: entry.tags[0],
+        count: entry.count
+      });
+    });
+    return tags;
   });
 };
 

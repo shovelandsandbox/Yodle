@@ -28,6 +28,8 @@ tags:
     description: User operations
   - name: authentication
     description: Authentication operations
+  - name: tags
+    description: Gives you what you need to stay organized
 paths:
   /projects/{projectId}:
     x-swagger-router-controller: projects
@@ -48,6 +50,37 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/Project"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /projects/{projectId}/tags:
+    x-swagger-router-controller: projects
+    get:
+      tags:
+        - project
+        - tags
+      summary: Get tags for project by id
+      description: Pass in the project id and get back a list of tags
+      operationId: getProjectTags
+      parameters:
+        - name: projectId
+          in: path
+          description: Id of project to peek into
+          type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                count:
+                  type: number
+                tag:
+                  type: string
         default:
           description: Error
           schema:
