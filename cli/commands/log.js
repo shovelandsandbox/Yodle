@@ -8,11 +8,6 @@ module.exports = {
   execute: function(level, code, message) {
       return this.yodle.log(level, code, message).then(function(json) {
           var output = 'Done.';
-
-          for(var i in json) {
-            output += '\n\r' + json[i];
-          }
-
           return output;
         });
     }
