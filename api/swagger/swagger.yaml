@@ -135,14 +135,10 @@ paths:
           schema:
             $ref: "#/definitions/Entry"
       responses:
-        303:
+        200:
           description: Success
-          headers:
-            Location:
-              description: "Location of new Entry"
-              type: string
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: "#/definitions/Entry"
         default:
           description: Error
           schema:
@@ -289,14 +285,10 @@ paths:
           schema:
             $ref: "#/definitions/Project"
       responses:
-        303:
+        200:
           description: Success
-          headers:
-            Location:
-              description: "Location of new project"
-              type: string
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: "#/definitions/User"
         default:
           description: Error
           schema:
@@ -405,14 +397,10 @@ paths:
           schema:
             $ref: "#/definitions/User"
       responses:
-        303:
+        200:
           description: Success
-          headers:
-            Location:
-              description: "Location of new user"
-              type: string
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: "#/definitions/User"
         default:
           description: Error
           schema:
