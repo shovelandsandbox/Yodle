@@ -113,7 +113,7 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
     _id: "$_id",
     count: { $sum: 1 }
   };
-  if(!searchOptions.metaOnly === true) group.entries = { $push: "$" + searchOptions.path };
+  if(!searchOptions.metaOnly === true) group[searchOptions.path] = { $push: "$" + searchOptions.path };
   aggregate.push({
     $group: group
   });
@@ -131,8 +131,9 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
   // Making it go
   return new Promise((_resolve, _reject) => {
     var cursor = database.collection('projects').aggregate(aggregate, function(err, result) {
+      if(err) return _reject(err);
+
       _resolve(result);
-      database.close();
     });
   });
 }
@@ -140,7 +141,9 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
 MongoDriver.getProjectEntries = function(project, searchOptions, query) {
   searchOptions.path = "entries";
 
-  return MongoDriver.getFromProject(project, searchOptions, query);
+  return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
+    return results[0];
+  });
 };
 
 MongoDriver.getProjectUsers = function(project, searchOptions) {
