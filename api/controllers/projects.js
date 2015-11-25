@@ -98,8 +98,8 @@ function getProjectEntries(req, res, next) {
   }
 
   mongoDriver.getProjectEntries(project, searchOptions, query).then(
-    (project) => {
-      res.send(project);
+    (entries) => {
+      res.send(entries);
     }, () => {
       res.statusCode = 404;
       res.send({
@@ -200,6 +200,9 @@ function createLog(req, res, next) {
     code: req.swagger.params.entry.value.code,
     ip: req.connection.remoteAddress
   };
+
+  if(typeof log.message != 'object') log.message = { message: log.message };
+  if(log.message.tags) log.message.tags = [].concat(log.message.tags);
 
   mongoDriver.createLog(project, log).then((entry) => {
     // TODO make util for this
