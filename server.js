@@ -22,6 +22,7 @@ var app = express();
 // Mongoose config
 // ************************************************************************************
 
+process.env.DB = config.DB;
 mongoose.connect(config.DB);
 var db = mongoose.connection;
 db.on('error', function (err) {
