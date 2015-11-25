@@ -12,8 +12,7 @@ var Db = require('mongodb').Db,
     Server = require('mongodb').Server;
 
 var database;
-var databaseTl = new Db("yodle-development", new Server('localhost', 27017));
-databaseTl.open(function(err, db) {
+MongoClient.connect(process.env.DB, function(err, db) {
   database = db;
 });
 
@@ -85,7 +84,7 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
 
   // Setup Match
   var match = {
-    _id: new ObjectID(project),
+    // _id: new ObjectID(project),
     users: [ searchOptions.user ]
   };
   for(var i in query) {
@@ -100,7 +99,7 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
     aggregate.push({
       $unwind: "$" + searchOptions.unwind[i]
     });
-  }
+ }
 
   // Adding groups
   var group = {
@@ -121,11 +120,16 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
   projections[searchOptions.name] = 1;
   aggregate.push({
     $project: projections
-  });
+ });
 
+// console.log(searchOptions);
+// console.log(aggregate);
+// console.log(match.users);
+// console.log(database);
   // Making it go
-  return new Promise((_resolve, _reject) => {
-    var cursor = database.collection('projects').aggregate(aggregate, function(err, result) {
+  return new Promise((_resolve, _reject) => {//console.log(database);
+    var cursor = database.collection('projects').aggregate(aggregate, (err, result) => {
+
       if(err) return _reject(err);
 
       _resolve(result);
@@ -140,10 +144,12 @@ MongoDriver.getProjectEntries = function(project, searchOptions, query) {
   searchOptions.unwind = [
     'entries'
   ];
-
+// console.log(project);
+// console.log(searchOptions);
+// console.log(query);
   return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
     return results[0];
-  });
+  }, (err, res) => { console.log("hm");console.log(err);console.log(res);} );
 };
 
 MongoDriver.getProjectTags = function(project, searchOptions, query) {
