@@ -10,9 +10,9 @@ module.exports = {
 
         var output = '';
 
-        output += 'Name\t\t\tCount';
+        output += 'Count\tName';
         for(var i in json) {
-          output += '\n\r' + json[i].tag + '\t\t\t' + json[i].count;
+          output += '\n\r' + json[i].count + '\t' + json[i].tag;
         }
 
         return output;
