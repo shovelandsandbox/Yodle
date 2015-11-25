@@ -88,7 +88,10 @@ SwaggerExpress.create({
   app.use(function(req, res, next) {
     if(!res.headers) res.headers = {};
 
-    res.setHeader('Access-Control-Allow-Origin', req.headers.referer.slice(0, -1));
+    var origin = '*';
+    if(req.headers.referer) origin = req.headers.referer.slice(0, -1);
+
+    res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-Token, Location');
     res.setHeader('Access-Control-Allow-Credentials', true);
