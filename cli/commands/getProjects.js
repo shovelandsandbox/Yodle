@@ -11,7 +11,7 @@ module.exports = {
   	return this.yodle.getProjects().then(function(json) {
         var output = '';
 
-        output += 'ID\t\t\t\tName';
+        output += 'ID\t\t\t Name';
 
         for(var i in json) {
           output += '\n\r' + json[i]._id + ' ' + json[i].name;
