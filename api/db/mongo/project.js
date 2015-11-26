@@ -19,23 +19,50 @@ MongoClient.connect(process.env.DB, function(err, db) {
 class MongoDriver {}
 
 MongoDriver.getProjects = function(searchOptions) {
-  searchOptions = searchOptions ? searchOptions : {};
+
+  var aggregate = [
+    {
+      $match: {
+        users: [ searchOptions.user ]
+      }
+    },
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: '$name' },
+        count: { $sum: { $size: "$entries" } }
+      }
+    },
+    {
+      $project: { _id: 1, name: 1, count: 1 }
+    }
+  ];
 
   return new Promise((_resolve, _reject) => {
-    var search = {
-      users: searchOptions.user
-    };
+    var cursor = database.collection('projects').aggregate(aggregate, (err, result) => {
+      if(err) return _reject(err);
 
-    if(searchOptions.name) search.$where = 'this._id.str.match(/' + searchOptions.name + '$/)';
-
-    Project.find(search).lean().exec((err, projects) => {
-      for(var i in projects) {
-        projects[i]._id = projects[i]._id.toString();
-      }
-
-      _resolve(projects);
+      _resolve(result);
     });
   });
+
+  // searchOptions = searchOptions ? searchOptions : {};
+
+  // return new Promise((_resolve, _reject) => {
+  //   var search = {
+  //     users: searchOptions.user
+  //   };
+
+  //   if(searchOptions.name) search.$where = 'this._id.str.match(/' + searchOptions.name + '$/)';
+
+  //   Project.find(search).lean().exec((err, projects) => {
+  //     for(var i in projects) {
+  //       projects[i]._id = projects[i]._id.toString();
+  //     }
+
+  //     _resolve(projects);
+  //   });
+  // });
 };
 
 MongoDriver.getProject = function(project, searchOptions) {
@@ -82,18 +109,6 @@ MongoDriver.createProject = function(projectData) {
 MongoDriver.getFromProject = function(project, searchOptions, query) {
   var aggregate = [];
 
-  // Setup Match
-  var match = {
-    // _id: new ObjectID(project),
-    users: [ searchOptions.user ]
-  };
-  for(var i in query) {
-    match[i] = query[i];
-  }
-  aggregate.push({
-    $match: match
-  });
-
   // Building unwinds
   for(var i in searchOptions.unwind) {
     aggregate.push({
@@ -101,10 +116,23 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
     });
  }
 
+  // Setup Match
+  var match = {
+    users: [ searchOptions.user ]
+  };
+  if(project) match._id = new ObjectID(project);
+  for(var i in query) {
+    match[i] = query[i];
+  }
+  aggregate.push({
+    $match: match
+  });
+
   // Adding groups
   var group = {
     _id: searchOptions.key,
-    count: { $sum: 1 }
+    count: { $sum: 1 },
+    name: { $first:'$name' }
   };
   var name = searchOptions.path[searchOptions.path.length - 1];
   if(!searchOptions.metaOnly === true) group[searchOptions.name] = { $push: "$" + searchOptions.path };
@@ -115,21 +143,17 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
   // Setup projections
   var projections = {
      _id : 0,
+     name: 1,
     count: 1
   };
   projections[searchOptions.name] = 1;
   aggregate.push({
     $project: projections
- });
+  });
 
-// console.log(searchOptions);
-// console.log(aggregate);
-// console.log(match.users);
-// console.log(database);
   // Making it go
   return new Promise((_resolve, _reject) => {//console.log(database);
     var cursor = database.collection('projects').aggregate(aggregate, (err, result) => {
-
       if(err) return _reject(err);
 
       _resolve(result);
@@ -144,28 +168,26 @@ MongoDriver.getProjectEntries = function(project, searchOptions, query) {
   searchOptions.unwind = [
     'entries'
   ];
-// console.log(project);
-// console.log(searchOptions);
-// console.log(query);
+
   return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
-    return results[0];
+    return results[0] ? results[0] : { count: 0, entries: []};
   }, (err, res) => { console.log("hm");console.log(err);console.log(res);} );
 };
 
 MongoDriver.getProjectTags = function(project, searchOptions, query) {
-  searchOptions.path = "entries.message.tags";
-  searchOptions.key = "$entries.message.tags";
+  searchOptions.path = "entries.tags";
+  searchOptions.key = "$entries.tags";
   searchOptions.name = 'tags';
   searchOptions.unwind = [
     'entries',
-    'entries.message.tags'
+    'entries.tags'
   ];
 
   return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
     var tags = [];
     results.forEach((entry) => {
       tags.push({
-        tag: entry.tags[0],
+        tag: entry.tags[0] ? entry.tags[0] : 'none',
         count: entry.count
       });
     });
@@ -275,32 +297,26 @@ MongoDriver.getProjectEntry = function(project, searchOptions, entry) {
 };
 
 MongoDriver.createLog = function(project, log) {
-  var entry = new Entry();
-
-  entry.level = log.level;
-  entry.message = log.message;
-  entry.code = log.code;
-
-  entry.ip = log.ip;
-
   var createMethod = {
     update: true
   };
 
+  log._id = new ObjectID();
+
   return new Promise((_resolve, _reject) => {
-    Project.update(
+    database.collection('projects').updateOne(
       {
-        _id: project
+        _id: new ObjectID(project)
       },
       {
-        $push: { entries: entry }
+        $push: { entries: log }
       },
       createMethod, function(err, data) {
-        if(data.ok) {
-          if(data.nModified === 0) {
+        if(data.result.ok) {
+          if(data.result.nModified === 0) {
             _reject(404, 'Invalid project - not found.');
-          } else if(data.nModified === 1) {
-            _resolve(entry);
+          } else if(data.result.nModified === 1) {
+            _resolve(log);
           } else {
             _reject(500, 'Are you a wizard? You just updated more than one project with this entry.');
           }

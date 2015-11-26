@@ -64,7 +64,7 @@ function createProject(req, res, next) {
   var project = {};
 
   project.users = req.swagger.params.project.value.users ? req.swagger.params.project.value.users : [];
-  project.entries = req.swagger.params.project.value.entries;
+  project.entries = req.swagger.params.project.value.entries ? req.swagger.params.project.value.entries : [];
   project.name = req.swagger.params.project.value.name;
 
   if(project.users.indexOf(req.decoded.email) === -1) project.users.push(req.decoded.email);
@@ -94,7 +94,9 @@ function getProjectEntries(req, res, next) {
   for(var i in req.query) {
     if(i === 'metaOnly') {
       if(req.query[i] === 'true') searchOptions.metaOnly = true;
-    } else query['entries.' + i] = req.query[i];
+    } else {
+      query['entries.' + i] = req.query[i];
+    }
   }
 
   mongoDriver.getProjectEntries(project, searchOptions, query).then(
@@ -198,16 +200,17 @@ function createLog(req, res, next) {
     level: req.swagger.params.entry.value.level,
     message: req.swagger.params.entry.value.message,
     code: req.swagger.params.entry.value.code,
+    tags: [].concat(req.swagger.params.entry.value.tags),
+    time: new Date(),
     ip: req.connection.remoteAddress
   };
-
-  if(typeof log.message != 'object') log.message = { message: log.message };
-  if(log.message.tags) log.message.tags = [].concat(log.message.tags);
 
   mongoDriver.createLog(project, log).then((entry) => {
     // TODO make util for this
     console.log(entry.ip + ": " + entry.level + ' [' + entry.code + '] - ' + JSON.stringify(entry.message));
+
     global.io.to(project).emit('log', entry);
+
     res.statusCode = 200;
     res.setHeader('Location', '/projects/' + project + '/entries/' + entry.id);
     res.send(entry);
