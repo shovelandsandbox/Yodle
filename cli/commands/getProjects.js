@@ -11,10 +11,10 @@ module.exports = {
   	return this.yodle.getProjects().then(function(json) {
         var output = '';
 
-        output += 'ID\t\t\t Name';
+        output += 'ID\t\t\t Count\t\tName';
 
         for(var i in json) {
-          output += '\n\r' + json[i]._id + ' ' + json[i].name;
+          output += '\n\r' + json[i]._id + ' ' + json[i].count + '\t\t' + json[i].name;
         }
 
         return output;

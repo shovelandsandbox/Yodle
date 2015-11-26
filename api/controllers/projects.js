@@ -64,7 +64,7 @@ function createProject(req, res, next) {
   var project = {};
 
   project.users = req.swagger.params.project.value.users ? req.swagger.params.project.value.users : [];
-  project.entries = req.swagger.params.project.value.entries;
+  project.entries = req.swagger.params.project.value.entries ? req.swagger.params.project.value.entries : [];
   project.name = req.swagger.params.project.value.name;
 
   if(project.users.indexOf(req.decoded.email) === -1) project.users.push(req.decoded.email);

@@ -19,23 +19,50 @@ MongoClient.connect(process.env.DB, function(err, db) {
 class MongoDriver {}
 
 MongoDriver.getProjects = function(searchOptions) {
-  searchOptions = searchOptions ? searchOptions : {};
+
+  var aggregate = [
+    {
+      $match: {
+        users: [ searchOptions.user ]
+      }
+    },
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: '$name' },
+        count: { $sum: { $size: "$entries" } }
+      }
+    },
+    {
+      $project: { _id: 1, name: 1, count: 1 }
+    }
+  ];
 
   return new Promise((_resolve, _reject) => {
-    var search = {
-      users: searchOptions.user
-    };
+    var cursor = database.collection('projects').aggregate(aggregate, (err, result) => {
+      if(err) return _reject(err);
 
-    if(searchOptions.name) search.$where = 'this._id.str.match(/' + searchOptions.name + '$/)';
-
-    Project.find(search).lean().exec((err, projects) => {
-      for(var i in projects) {
-        projects[i]._id = projects[i]._id.toString();
-      }
-
-      _resolve(projects);
+      _resolve(result);
     });
   });
+
+  // searchOptions = searchOptions ? searchOptions : {};
+
+  // return new Promise((_resolve, _reject) => {
+  //   var search = {
+  //     users: searchOptions.user
+  //   };
+
+  //   if(searchOptions.name) search.$where = 'this._id.str.match(/' + searchOptions.name + '$/)';
+
+  //   Project.find(search).lean().exec((err, projects) => {
+  //     for(var i in projects) {
+  //       projects[i]._id = projects[i]._id.toString();
+  //     }
+
+  //     _resolve(projects);
+  //   });
+  // });
 };
 
 MongoDriver.getProject = function(project, searchOptions) {
@@ -91,9 +118,9 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
 
   // Setup Match
   var match = {
-    _id: new ObjectID(project),
     users: [ searchOptions.user ]
   };
+  if(project) match._id = new ObjectID(project);
   for(var i in query) {
     match[i] = query[i];
   }
@@ -104,7 +131,8 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
   // Adding groups
   var group = {
     _id: searchOptions.key,
-    count: { $sum: 1 }
+    count: { $sum: 1 },
+    name: { $first:'$name' }
   };
   var name = searchOptions.path[searchOptions.path.length - 1];
   if(!searchOptions.metaOnly === true) group[searchOptions.name] = { $push: "$" + searchOptions.path };
@@ -115,21 +143,17 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
   // Setup projections
   var projections = {
      _id : 0,
+     name: 1,
     count: 1
   };
   projections[searchOptions.name] = 1;
   aggregate.push({
     $project: projections
- });
+  });
 
-// console.log(searchOptions);
-// console.log(aggregate);
-// console.log(match.users);
-// console.log(database);
   // Making it go
   return new Promise((_resolve, _reject) => {//console.log(database);
     var cursor = database.collection('projects').aggregate(aggregate, (err, result) => {
-
       if(err) return _reject(err);
 
       _resolve(result);
@@ -163,7 +187,7 @@ MongoDriver.getProjectTags = function(project, searchOptions, query) {
     var tags = [];
     results.forEach((entry) => {
       tags.push({
-        tag: entry.tags[0],
+        tag: entry.tags[0] ? entry.tags[0] : 'none',
         count: entry.count
       });
     });
