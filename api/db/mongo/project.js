@@ -82,9 +82,16 @@ MongoDriver.createProject = function(projectData) {
 MongoDriver.getFromProject = function(project, searchOptions, query) {
   var aggregate = [];
 
+  // Building unwinds
+  for(var i in searchOptions.unwind) {
+    aggregate.push({
+      $unwind: "$" + searchOptions.unwind[i]
+    });
+ }
+
   // Setup Match
   var match = {
-    // _id: new ObjectID(project),
+    _id: new ObjectID(project),
     users: [ searchOptions.user ]
   };
   for(var i in query) {
@@ -93,13 +100,6 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
   aggregate.push({
     $match: match
   });
-
-  // Building unwinds
-  for(var i in searchOptions.unwind) {
-    aggregate.push({
-      $unwind: "$" + searchOptions.unwind[i]
-    });
- }
 
   // Adding groups
   var group = {
@@ -144,21 +144,19 @@ MongoDriver.getProjectEntries = function(project, searchOptions, query) {
   searchOptions.unwind = [
     'entries'
   ];
-// console.log(project);
-// console.log(searchOptions);
-// console.log(query);
+
   return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
-    return results[0];
+    return results[0] ? results[0] : { count: 0, entries: []};
   }, (err, res) => { console.log("hm");console.log(err);console.log(res);} );
 };
 
 MongoDriver.getProjectTags = function(project, searchOptions, query) {
-  searchOptions.path = "entries.message.tags";
-  searchOptions.key = "$entries.message.tags";
+  searchOptions.path = "entries.tags";
+  searchOptions.key = "$entries.tags";
   searchOptions.name = 'tags';
   searchOptions.unwind = [
     'entries',
-    'entries.message.tags'
+    'entries.tags'
   ];
 
   return MongoDriver.getFromProject(project, searchOptions, query).then((results) => {
@@ -275,32 +273,26 @@ MongoDriver.getProjectEntry = function(project, searchOptions, entry) {
 };
 
 MongoDriver.createLog = function(project, log) {
-  var entry = new Entry();
-
-  entry.level = log.level;
-  entry.message = log.message;
-  entry.code = log.code;
-
-  entry.ip = log.ip;
-
   var createMethod = {
     update: true
   };
 
+  log._id = new ObjectID();
+
   return new Promise((_resolve, _reject) => {
-    Project.update(
+    database.collection('projects').updateOne(
       {
-        _id: project
+        _id: new ObjectID(project)
       },
       {
-        $push: { entries: entry }
+        $push: { entries: log }
       },
       createMethod, function(err, data) {
-        if(data.ok) {
-          if(data.nModified === 0) {
+        if(data.result.ok) {
+          if(data.result.nModified === 0) {
             _reject(404, 'Invalid project - not found.');
-          } else if(data.nModified === 1) {
-            _resolve(entry);
+          } else if(data.result.nModified === 1) {
+            _resolve(log);
           } else {
             _reject(500, 'Are you a wizard? You just updated more than one project with this entry.');
           }
