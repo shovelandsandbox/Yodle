@@ -19,7 +19,6 @@ MongoClient.connect(process.env.DB, function(err, db) {
 class MongoDriver {}
 
 MongoDriver.getProjects = function(searchOptions) {
-
   var aggregate = [
     {
       $match: {
@@ -45,24 +44,6 @@ MongoDriver.getProjects = function(searchOptions) {
       _resolve(result);
     });
   });
-
-  // searchOptions = searchOptions ? searchOptions : {};
-
-  // return new Promise((_resolve, _reject) => {
-  //   var search = {
-  //     users: searchOptions.user
-  //   };
-
-  //   if(searchOptions.name) search.$where = 'this._id.str.match(/' + searchOptions.name + '$/)';
-
-  //   Project.find(search).lean().exec((err, projects) => {
-  //     for(var i in projects) {
-  //       projects[i]._id = projects[i]._id.toString();
-  //     }
-
-  //     _resolve(projects);
-  //   });
-  // });
 };
 
 MongoDriver.getProject = function(project, searchOptions) {
@@ -159,7 +140,7 @@ MongoDriver.getFromProject = function(project, searchOptions, query) {
       _resolve(result);
     });
   });
-}
+};
 
 MongoDriver.getProjectEntries = function(project, searchOptions, query) {
   searchOptions.path = "entries";
