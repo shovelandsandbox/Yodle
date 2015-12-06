@@ -19,7 +19,7 @@ yodle.log({
 })
 ```
 
-Level, message and code can all be json. Do whatever you want with them. Later on they will be searchable or used as tags! Also note the projectId; eventually http://www.yeti.com will have some GUI features for you to use to manage projects but for now you'll probably also want to master:
+The message be an object and can be searched as such. Do whatever you want with it! A projectId can be found when a new project is created using the command line or possily a GUI:
 
 ## Advanced Client Usage
 
