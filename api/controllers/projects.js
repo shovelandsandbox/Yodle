@@ -95,7 +95,7 @@ function getProjectEntries(req, res, next) {
     if(i === 'metaOnly') {
       if(req.query[i] === 'true') searchOptions.metaOnly = true;
     } else {
-      query['entries.' + i] = req.query[i];
+      query['entries.' + i] = { $regex: req.query[i] };
     }
   }
 
