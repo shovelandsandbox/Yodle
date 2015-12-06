@@ -14,7 +14,7 @@ var yodle = require('yodle')({
 yodle.log('log without tags or level');
 yodle.log({
   tags: [ 'tag', 'tag2' ],
-  message: 'log with tags and level,
+  message: 'log with tags and level',
   level: 'severe'
 })
 ```
