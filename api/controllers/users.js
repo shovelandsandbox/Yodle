@@ -49,6 +49,12 @@ function getUser(req, res) {
 }
 
 function createUser(req, res) {
+  res.statusCode = 403
+  return res.send({
+    status: 403,
+    message: 'Sorry, registration is closed at this time.'
+  })
+
   var data = {};
   if(req.swagger.params.user.value.email) data.email = req.swagger.params.user.value.email;
   if(req.swagger.params.user.value.password) data.password = req.swagger.params.user.value.password;
