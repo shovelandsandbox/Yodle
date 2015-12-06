@@ -1,7 +1,6 @@
 {
   "name": "yodle",
   "version": "0.0.1",
-  "private": true,
   "scripts": {
     "start": "node server.js",
     "test": "node ./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/.bin/_mocha"
@@ -9,7 +8,7 @@
   "bin": {
     "yodle": "cli.js"
   },
-  "description": "(in active development; feedback requested!) make your projects yodle! start a log listener with minimal configuration cloud logging from anywhere to share with anyone",
+  "description": "Yeti likes snowballs. turkeylegs.",
   "main": "index.js",
   "repository": {
     "type": "git",

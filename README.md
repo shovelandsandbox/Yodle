@@ -11,7 +11,12 @@ var yodle = require('yodle')({
   project: projectId,
   server: 'yodle.yetilogs.com'
 });
-yodle.log(level, message, code);
+yodle.log('log without tags or level');
+yodle.log({
+  tags: [ 'tag', 'tag2' ],
+  message: 'log with tags and level,
+  level: 'severe'
+})
 ```
 
 Level, message and code can all be json. Do whatever you want with them. Later on they will be searchable or used as tags! Also note the projectId; eventually http://www.yeti.com will have some GUI features for you to use to manage projects but for now you'll probably also want to master:
