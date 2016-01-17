@@ -143,9 +143,10 @@ SwaggerExpress.create({
   app.use(swaggerExpress.validator());
   app.use(swaggerExpress.expressCompatibilityMW());
   app.use(swaggerExpress.router());
+
+  require('./config/express')(app, config);
 });
 
-require('./config/express')(app, config);
 
 // ************************************************************************************
 // Configure auth driver
