@@ -8,9 +8,9 @@ module.exports = {
 		'use'
   ],
   execute: function(name) {
-	  return this.yodle.useProject(name).then(function(json) {
-	    if(json.length) {
-	      this.config.project = json[0]._id;
+	  return this.yodle.useProject(name).then(function(project) {
+	    if(project) {
+	      this.config.project = project._id;
 	      return 'project set to ' + this.config.project;
 	    } else {
 	      return 'error - project not found';

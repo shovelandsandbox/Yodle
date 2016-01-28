@@ -41,7 +41,6 @@ MongoDriver.getProjects = function(searchOptions) {
   return new Promise((_resolve, _reject) => {
     var cursor = database.collection('projects').aggregate(aggregate, (err, result) => {
       if(err) return _reject(err);
-
       _resolve(result);
     });
   });
@@ -72,7 +71,12 @@ MongoDriver.getProject = function(project, searchOptions) {
 MongoDriver.createProject = function(projectData) {
   var project = new Project();
 
-  project.users = projectData.users;
+  let users = []
+  projectData.users.forEach(userId => {
+    users.push(userId)
+  })
+
+  project.users = users;
   project.entries = projectData.entries;
   project.name = projectData.name ? projectData.name : '';
 
@@ -265,7 +269,7 @@ MongoDriver.getProjectEntry = function(project, searchOptions, entry) {
   return new Promise((_resolve, _reject) => {
     Project.findOne({
       _id: project,
-      users: req.decoded.email
+      users: searchOptions.user
     }, {
       'entries': 1
     }, function(err, project) {
